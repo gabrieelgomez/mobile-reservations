@@ -8,6 +8,7 @@ import {
 
 import TransferWidget from './src/screens/TransferWidget'
 import Profile from './src/screens/Profile'
+import TransferList from './src/screens/TransferList'
 
 const StackNavigator = createStackNavigator(
   {
@@ -20,9 +21,17 @@ const StackNavigator = createStackNavigator(
     Profile: {
       screen: Profile,
       navigationOptions:{
-        title: 'Perfil Header'
+        title: 'Perfil'
       }
     },
+
+    TransferList: {
+      screen: TransferList,
+      navigationOptions:{
+        title: 'Lista de Traslados'
+      }
+    },
+
   },
 
   {

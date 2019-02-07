@@ -4,6 +4,7 @@ import InputsGoogleMaps from '../components/widget/transfers/InputsGoogleMaps';
 import RadioButtonFlights from '../components/widget/transfers/RadioButtonFlights';
 import InputsAdultsKids from '../components/widget/transfers/InputsAdultsKids';
 import InputsDatePicker from '../components/widget/transfers/InputsDatePicker';
+
 import { Button, Divider } from 'react-native-paper';
 
 export default class TransferWidget extends Component {
@@ -14,7 +15,7 @@ export default class TransferWidget extends Component {
   }
 
   handlePress = () => {
-    this.props.navigation.navigate('Profile');
+    this.props.navigation.navigate('TransferList');
   }
 
   render() {
@@ -29,7 +30,7 @@ export default class TransferWidget extends Component {
           <Divider />
           <Divider />
           <Divider />
-          <Button icon="add-a-photo" mode="contained" onPress={() => console.log('Pressed')}>
+          <Button icon="add-a-photo" mode="contained" onPress={this.handlePress}>
             Buscar
           </Button>
 
