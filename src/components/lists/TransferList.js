@@ -6,6 +6,8 @@ export default class TransferList extends Component {
 
   constructor(props){
     super(props);
+    const data = this.props.navigation.state.params;
+    console.warn('data_bigwave', data);
     this.state ={ isLoading: true}
   }
 
