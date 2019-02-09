@@ -18,7 +18,7 @@ export default class InputsDatePicker extends Component {
       <View>
         <Button
           mode = 'contained'
-          icon = 'fingerprint'
+          icon = 'date-range'
           onPress = {() => this.setState({gone_date: true})}
         >
           Fecha Ida
@@ -36,20 +36,20 @@ export default class InputsDatePicker extends Component {
                 title: "OK",
                 onPress: () => this.setState({gone_date: false})
             }}>
-            <Text style = {styles.text}>Calendar with selectable date and arrows</Text>
             <Calendar
               onDayPress  = {this.setDateIda}
               style       = {styles.calendar}
+              monthFormat = {'dd MM yyyy'}
               markedDates = {{[this.state.fecha_ida]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}}}
               hideExtraDays
             />
         </ConfirmDialog>
 
         {
-          this.state.return_date &&
+          this.props.dataForm.round_trip == 'true'  &&
           <Button
             mode = 'contained'
-            icon = 'fingerprint'
+            icon = 'date-range'
             onPress = {() => this.setState({return_date_button: true})}
             >
               Fecha Vuelta
@@ -57,7 +57,7 @@ export default class InputsDatePicker extends Component {
         }
 
         {
-          this.state.return_date &&
+          this.props.dataForm.round_trip == 'true'  &&
 
           <ConfirmDialog
               visible        = {this.state.return_date_button}
@@ -67,10 +67,10 @@ export default class InputsDatePicker extends Component {
                   title: "OK",
                   onPress: () => this.setState({return_date_button: false})
               }}>
-              <Text style = {styles.text}>Calendar with selectable date and arrows</Text>
               <Calendar
                 onDayPress  = {this.setDateVuelta}
                 style       = {styles.calendar}
+                monthFormat = {'dd MM yyyy'}
                 markedDates = {{[this.state.fecha_vuelta]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}}}
                 hideExtraDays
               />
@@ -81,14 +81,16 @@ export default class InputsDatePicker extends Component {
   }
 
   setDateIda(day) {
-    console.warn('fecha ida', day);
+    // console.warn('fecha ida', day);
+    this.props.updateFormState('flight_origin_picker', day.dateString);
     this.setState({
       fecha_ida: day.dateString
     });
   }
 
   setDateVuelta(day) {
-    console.warn('fecha vuelta', day);
+    // console.warn('fecha vuelta', day);
+    this.props.updateFormState('flight_arrival_picker', day.dateString);
     this.setState({
       fecha_vuelta: day.dateString
     });

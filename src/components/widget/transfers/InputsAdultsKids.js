@@ -4,11 +4,6 @@ import { TextInput } from 'react-native-paper';
 
 export default class InputsAdultsKids extends Component {
 
-  state = {
-    adults: '',
-    kids: ''
-  };
-
   render() {
 
     return (
@@ -16,14 +11,14 @@ export default class InputsAdultsKids extends Component {
         <TextInput
           mode         = 'outlined'
           label        = 'Adultos'
-          value        = {this.state.adults}
-          onChangeText = {text => this.setState({ adults: text })}
+          value        = {this.props.dataForm.quantity_adults}
+          onChangeText = {text => this.props.updateFormState('quantity_adults', text)}
         />
         <TextInput
           mode         = 'outlined'
           label        = 'Niños'
-          value        = {this.state.kids}
-          onChangeText = {text => this.setState({ kids: text })}
+          value        = {this.props.dataForm.quantity_kids}
+          onChangeText = {text => this.props.updateFormState('quantity_kids', text)}
         />
       </View>
     );

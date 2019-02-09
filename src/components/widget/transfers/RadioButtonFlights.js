@@ -6,7 +6,7 @@ export default class RadioButtonFlights extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {checked: 'ida_vuelta'};
+    this.state = {round_trip: 'true'};
   }
 
   render() {
@@ -15,16 +15,22 @@ export default class RadioButtonFlights extends Component {
       <View>
         <Text>Ida - Vuelta</Text>
         <RadioButton
-          value   = "ida_vuelta"
-          status  = {this.state.checked === 'ida_vuelta' ? 'checked' : 'unchecked'}
-          onPress = {() => { this.setState({ checked: 'ida_vuelta' }); }}
+          value   = 'true'
+          status  = {this.state.round_trip === 'true' ? 'checked' : 'unchecked'}
+          onPress = {() => {
+            this.props.updateFormState('round_trip', 'true');
+            this.setState({ round_trip: 'true' });
+          }}
         />
 
         <Text>Sólo Ida</Text>
         <RadioButton
-          value   = "solo_ida"
-          status  = {this.state.checked === 'solo_ida' ? 'checked' : 'unchecked'}
-          onPress = {() => { this.setState({ checked: 'solo_ida' }); }}
+          value    = 'false'
+          status   = {this.state.round_trip === 'false' ? 'checked' : 'unchecked'}
+          onPress  = {() => {
+            this.props.updateFormState('round_trip', 'false');
+            this.setState({ round_trip: 'false' });
+          }}
         />
       </View>
     );
