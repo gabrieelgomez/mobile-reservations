@@ -6,8 +6,6 @@ export default class TransferList extends Component {
 
   constructor(props){
     super(props);
-    const data = this.props.navigation.state.params;
-    // console.warn('data_bigwave', data);
     this.state ={ isLoading: true}
   }
 
@@ -16,23 +14,42 @@ export default class TransferList extends Component {
       isLoading: false
     });
 
-    // return fetch(`https://bigwave-api.herokuapp.com/v1/users`)
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     this.setState({
-    //       dataSource: responseJson,
-    //     }, function(){
-    //       if (responseJson){
-    //         this.props.navigation.navigate('TransferList', responseJson);
-    //       }
-    //       else{
-    //         console.warn('Falló')
-    //       }
-    //     });
-    //   })
-    //   .catch((error) =>{
-    //     console.error(error);
-    //   });
+    const data = this.props.navigation.state.params;
+    locality =              data.locality
+    origin_locality =       data.origin_locality
+    arrival_locality =      data.arrival_locality
+    departament =           data.departament
+    origin_departament =    data.origin_departament
+    arrival_departament =   data.arrival_departament
+    origin_location =       data.origin_location
+    origin_name =           data.origin_name
+    arrival_location =      data.arrival_location
+    arrival_name =          data.arrival_name
+    flight_origin_picker =  data.flight_origin_picker
+    flight_arrival_picker = data.flight_arrival_picker
+    round_trip =            data.round_trip
+    quantity_adults =       data.quantity_adults
+    quantity_kids =         data.quantity_kids
+
+    const query = `round_trip=${round_trip}&origin_name=${origin_name}&origin_location=${origin_location}&origin_locality=${origin_locality}&origin_departament=${origin_departament}&flight_origin_picker=${flight_origin_picker}&arrival_name=${arrival_name}&arrival_location=${arrival_location}&arrival_locality=${arrival_locality}&arrival_departament=${arrival_departament}&flight_arrival_picker=${flight_arrival_picker}&quantity_adults=${quantity_adults}&quantity_kids=${quantity_kids}`
+
+    return fetch(`https://receptivocolombia.com/es/usd/vehicles.json?${query}`)
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          dataSource: responseJson,
+        }, function(){
+          if (responseJson){
+            console.warn('Data', responseJson)
+          }
+          else{
+            console.warn('Falló')
+          }
+        });
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
 
   }
 

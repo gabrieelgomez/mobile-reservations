@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { ActivityIndicator } from 'react-native';
+
 import {
   createStackNavigator,
   createAppContainer,
@@ -68,4 +70,28 @@ const TabNavigator = createBottomTabNavigator(
 const Stack     = createAppContainer(StackNavigator);
 const BottomTab = createAppContainer(TabNavigator);
 
-export default BottomTab;
+// export default BottomTab;
+
+export default class App extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = { isLoaded: false }
+  }
+
+  componentDidMount(){
+    this.setState({
+      isLoaded: true
+    });
+  }
+
+  renderLoading = () => (
+    <ActivityIndicator />
+  );
+
+  renderApp = () => (
+    <BottomTab />
+  );
+
+  render = () => (this.state.isLoaded ? this.renderApp() : this.renderLoading());
+}

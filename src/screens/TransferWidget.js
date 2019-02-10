@@ -45,7 +45,7 @@ export default class TransferWidget extends Component {
     // this.setState({
     //   isLoading: true
     // });
-    this.props.navigation.navigate('TransferList');
+    this.props.navigation.navigate('TransferList', this.state);
   }
 
   render() {
