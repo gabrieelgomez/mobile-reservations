@@ -10,7 +10,7 @@ import {
 
 import TransferWidget from './src/screens/TransferWidget'
 import Profile from './src/screens/Profile'
-import TransferList from './src/components/lists/TransferList'
+import TransferList from './src/components/transfers/Listing'
 
 const StackNavigator = createStackNavigator(
   {

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, RefreshControl } from 'react-native';
 import InputsGoogleMaps from '../components/widget/transfers/InputsGoogleMaps';
 import RadioButtonFlights from '../components/widget/transfers/RadioButtonFlights';
 import InputsAdultsKids from '../components/widget/transfers/InputsAdultsKids';
 import InputsDatePicker from '../components/widget/transfers/InputsDatePicker';
 import { Button, Divider, ActivityIndicator, Colors } from 'react-native-paper';
+import OfflineNotice from '../components/offline/OfflineNotice'
 
 export default class TransferWidget extends Component {
 
@@ -12,6 +13,7 @@ export default class TransferWidget extends Component {
     super(props);
     this.state = {
       isLoading: false,
+      refreshing: false,
       locality:              [],
       origin_locality:       '',
       arrival_locality:      '',
@@ -31,26 +33,37 @@ export default class TransferWidget extends Component {
   }
 
   updateState(key, value) {
-    this.setState({ [key]: value });
-    // console.warn(this.state);
+    this.setState({ [key]: value })
   }
 
   componentDidMount(){
-    this.setState({
-      isLoading: false
-    });
+    // this.setState({
+    //   isLoading: false
+    // })
   }
 
   handlePress = () => {
-    // this.setState({
-    //   isLoading: true
-    // });
-    this.props.navigation.navigate('TransferList', this.state);
+    this.props.navigation.navigate('TransferList', this.state)
   }
+
+  _onRefresh = () => {
+    this.setState({refreshing: true})
+    this.refs.offlineNotice.connectivityChange()
+    this.setState({refreshing: false})
+  }
+
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
+          />
+        }
+      >
+        <OfflineNotice ref = 'offlineNotice' />
         <View style={{ flex: 1 }}>
           <RadioButtonFlights
             dataForm        = {this.state}
@@ -72,11 +85,6 @@ export default class TransferWidget extends Component {
             updateFormState = {this.updateState.bind(this)}
           />
 
-          <Divider />
-          <Divider />
-          <Divider />
-          <Divider />
-
           <Text>`Fecha Ida - {this.state.flight_origin_picker}`</Text>
           <Text>`Fecha Vuelta - {this.state.flight_arrival_picker}`</Text>
 
@@ -92,9 +100,3 @@ export default class TransferWidget extends Component {
   }
 
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    }
-});
