@@ -12,6 +12,7 @@ import InputsAdultsKids from "../components/widget/transfers/InputsAdultsKids";
 import InputsDatePicker from "../components/widget/transfers/InputsDatePicker";
 import { Button, Divider, ActivityIndicator, Colors } from "react-native-paper";
 import OfflineNotice from "../components/offline/OfflineNotice";
+import { Switch } from "react-native-paper";
 
 export default class TransferWidget extends Component {
   constructor(props) {
@@ -37,6 +38,10 @@ export default class TransferWidget extends Component {
     };
   }
 
+  state = {
+    isSwitchOn: false
+  };
+
   updateState(key, value) {
     this.setState({ [key]: value });
   }
@@ -58,32 +63,41 @@ export default class TransferWidget extends Component {
   };
 
   render() {
+    const { isSwitchOn } = this.state;
     return (
       <View style={styles.container}>
-        <View style={styles.item}>
-          <RadioButtonFlights
+        <View style={styles.box}>
+          <View style={styles.item}>
+            {/* <RadioButtonFlights
             dataForm={this.state}
             updateFormState={this.updateState.bind(this)}
-          />
-        </View>
-        {/* <View style={styles.item}>
+          /> */}
+            <Switch
+              value={isSwitchOn}
+              onValueChange={() => {
+                this.setState({ isSwitchOn: !isSwitchOn });
+              }}
+            />
+          </View>
+          {/* <View style={styles.item}>
           <InputsGoogleMaps
             dataForm={this.state}
             updateFormState={this.updateState.bind(this)}
           />
         </View> */}
-        <View style={styles.item}>
-          <InputsDatePicker
-            dataForm={this.state}
-            updateFormState={this.updateState.bind(this)}
-          />
-        </View>
+          <View style={styles.item}>
+            <InputsDatePicker
+              dataForm={this.state}
+              updateFormState={this.updateState.bind(this)}
+            />
+          </View>
 
-        <View style={styles.item}>
-          <InputsAdultsKids
-            dataForm={this.state}
-            updateFormState={this.updateState.bind(this)}
-          />
+          <View style={styles.item}>
+            <InputsAdultsKids
+              dataForm={this.state}
+              updateFormState={this.updateState.bind(this)}
+            />
+          </View>
         </View>
 
         <View style={styles.item}>
@@ -147,12 +161,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#eb6b0a",
+    backgroundColor: "#fff",
     justifyContent: "space-between"
+  },
+  box: {
+    paddingHorizontal: 10,
+    paddingVertical: 10
   },
   item: {
     alignSelf: "stretch",
-    backgroundColor: "yellow"
+    backgroundColor: "transparent"
   },
   buttonColor: {
     backgroundColor: "#43b7e8"
