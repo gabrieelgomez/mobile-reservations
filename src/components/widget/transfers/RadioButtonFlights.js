@@ -20,7 +20,7 @@ export default class RadioButtonFlights extends Component {
             this.setState({ round_trip: "true" });
           }}
         />
-        <Text>Sólo Ida</Text>
+        <Text>Sólo Ida - Test</Text>
         <RadioButton
           value="false"
           status={this.state.round_trip === "false" ? "checked" : "unchecked"}
