@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-  Text,
-  RefreshControl
-} from "react-native";
+import { ScrollView, StyleSheet, View, Text, RefreshControl } from "react-native";
 import InputsGoogleMaps from "../components/widget/transfers/InputsGoogleMaps";
 import RadioButtonFlights from "../components/widget/transfers/RadioButtonFlights";
 import InputsAdultsKids from "../components/widget/transfers/InputsAdultsKids";
@@ -18,6 +12,7 @@ export default class TransferWidget extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isSwitchOn: false,
       isLoading: false,
       refreshing: false,
       locality: [],
@@ -38,18 +33,14 @@ export default class TransferWidget extends Component {
     };
   }
 
-  state = {
-    isSwitchOn: false
-  };
-
   updateState(key, value) {
     this.setState({ [key]: value });
   }
 
   componentDidMount() {
-    // this.setState({
-    //   isLoading: false
-    // })
+    this.setState({
+      isLoading: false
+    })
   }
 
   handlePress = () => {
@@ -63,9 +54,16 @@ export default class TransferWidget extends Component {
   };
 
   render() {
-    const { isSwitchOn } = this.state;
+
     return (
-      <View style={styles.container}>
+      <View style={styles.container}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+        >
         <View style={styles.box}>
           <View style={styles.item}>
             {/* <RadioButtonFlights
@@ -73,10 +71,8 @@ export default class TransferWidget extends Component {
             updateFormState={this.updateState.bind(this)}
           /> */}
             <Switch
-              value={isSwitchOn}
-              onValueChange={() => {
-                this.setState({ isSwitchOn: !isSwitchOn });
-              }}
+              value={this.state.isSwitchOn}
+              onValueChange={() => { this.setState({ isSwitchOn: !this.state.isSwitchOn }) }}
             />
           </View>
           {/* <View style={styles.item}>

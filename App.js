@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ActivityIndicator } from "react-native";
+import SplashScreen from 'react-native-splash-screen'
 
 import {
   createStackNavigator,
@@ -81,6 +82,7 @@ export default class App extends React.Component {
     this.setState({
       isLoaded: true
     });
+    SplashScreen.hide();
   }
 
   renderLoading = () => <ActivityIndicator />;
