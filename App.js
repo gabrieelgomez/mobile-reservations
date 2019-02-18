@@ -21,22 +21,24 @@ const StackNavigator = createStackNavigator(
       screen: TransferWidget,
       key: 'transferWidgetScreen',
       navigationOptions: {
-        title: 'Receptivo Colombia - Traslados'
+        key: 'transferWidgetScreen',
+        headerTitle: 'Receptivo Colombia - Traslados'
       }
     },
     Profile: {
       screen: Profile,
       key: 'profileScreen',
-      navigationOptions: {
-        title: 'Perfil'
-      }
+      navigationOptions: () => ({
+        key: 'profileScreen',
+        headerTitle: "Perfil"
+      })
     },
 
     TransferList: {
       screen: TransferList,
       navigationOptions: {
         key: 'transferListScreen',
-        title: 'Lista de Traslados'
+        headerTitle: 'Lista de Traslados'
       }
     }
   },
@@ -48,42 +50,49 @@ const StackNavigator = createStackNavigator(
 
 const TabNavigator = createMaterialBottomTabNavigator(
   {
-    Home: {
+    TransferWidget: {
       screen: StackNavigator,
-      key: 'stackNavigatorScreen',
+      key: 'transferWidgetScreen',
       navigationOptions: () => ({
-            title: 'Traslados',
-            tabBarIcon: ({tintColor}) => (
-                <Icon
-                    name='car'
-                    color={tintColor}
-                    size={20}
-                />
-            )
-        })
+        key: 'transferWidgetScreen',
+        title: 'Traslados',
+        tabBarIcon: ({focused, tintColor}) => (
+          <Icon
+              name='car'
+              color={tintColor}
+              size={20}
+          />
+        )
+      })
     },
+
     Profile: {
       screen: Profile,
-      key: 'profileStackNavigatorScreen',
+      key: 'profileScreen',
       navigationOptions: () => ({
-            title: 'Perfil',
-            tabBarIcon: ({tintColor}) => (
-                <Icon
-                    name='user'
-                    color={tintColor}
-                    size={20}
-                />
-            )
-        })
+        key: 'profileScreen',
+        title: 'Perfil',
+        headerTitle: "something",
+        tabBarIcon: ({focused, tintColor}) => (
+          <Icon
+              name='user'
+              color={tintColor}
+              size={20}
+          />
+        )
+      })
     }
   },
 
   {
-    initialRouteName: 'Home',
-    activeTintColor: 'tomato',
-    inactiveTintColor: 'gray',
+    initialRouteName: 'TransferWidget',
     barStyle: { backgroundColor: '#fff' },
-
+    // shifting: true,
+    activeTintColor: '#43b7e8',
+    inactiveTintColor: 'gray',
+    labelStyle: {
+      fontSize: 12,
+    }
   }
 );
 
