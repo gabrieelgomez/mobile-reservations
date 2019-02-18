@@ -45,7 +45,7 @@ class OfflineNotice extends PureComponent {
 
   componentWillUnmount() {
     // console.warn('will unmount')
-    this.connectivityChange();
+    // this.connectivityChange();
   }
 
   render() {
