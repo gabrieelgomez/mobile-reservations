@@ -12,7 +12,6 @@ export default class TransferWidget extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSwitchOn: false,
       isLoading: false,
       refreshing: false,
       locality: [],
@@ -27,7 +26,7 @@ export default class TransferWidget extends Component {
       arrival_name: "",
       flight_origin_picker: "",
       flight_arrival_picker: "",
-      round_trip: "true",
+      round_trip: true,
       quantity_adults: "2",
       quantity_kids: ""
     };
@@ -71,8 +70,8 @@ export default class TransferWidget extends Component {
             updateFormState={this.updateState.bind(this)}
           /> */}
             <Switch
-              value={this.state.isSwitchOn}
-              onValueChange={() => { this.setState({ isSwitchOn: !this.state.isSwitchOn }) }}
+              value={this.state.round_trip}
+              onValueChange={() => { this.setState({ round_trip: !this.state.round_trip }) }}
             />
           </View>
           {/* <View style={styles.item}>

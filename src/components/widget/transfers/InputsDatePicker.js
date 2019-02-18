@@ -7,7 +7,7 @@ import { Button, Divider } from "react-native-paper";
 export default class InputsDatePicker extends Component {
   constructor(props) {
     super(props);
-    this.state = { gone_date: false, return_date: true };
+    this.state = { gone_date: false, return_date: true, fecha_ida: 'Fecha Ida', fecha_vuelta: 'Fecha Vuelta' };
     this.setDateIda = this.setDateIda.bind(this);
     this.setDateVuelta = this.setDateVuelta.bind(this);
   }
@@ -21,7 +21,7 @@ export default class InputsDatePicker extends Component {
           onPress={() => this.setState({ gone_date: true })}
           style={styles.buttonColor}
         >
-          Fecha Ida
+          {this.state.fecha_ida}
         </Button>
         <Divider />
         <Divider />
@@ -52,18 +52,18 @@ export default class InputsDatePicker extends Component {
           />
         </ConfirmDialog>
 
-        {this.props.dataForm.round_trip == "true" && (
+        {this.props.dataForm.round_trip && (
           <Button
             mode="contained"
             icon="date-range"
             onPress={() => this.setState({ return_date_button: true })}
             style={styles.buttonColor}
           >
-            Fecha Vuelta
+            {this.state.fecha_vuelta}
           </Button>
         )}
 
-        {this.props.dataForm.round_trip == "true" && (
+        {this.props.dataForm.round_trip && (
           <ConfirmDialog
             visible={this.state.return_date_button}
             title={this.state.flight_arrival_picker}
