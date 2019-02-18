@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { ActivityIndicator } from "react-native";
+import React, { Component } from 'react';
+import { ActivityIndicator } from 'react-native';
 import SplashScreen from 'react-native-splash-screen'
 
 import {
@@ -7,34 +7,36 @@ import {
   createAppContainer,
   createBottomTabNavigator,
   BottomTabBar
-} from "react-navigation";
+} from 'react-navigation';
 
-import TransferWidget from "./src/screens/TransferWidget";
-import Profile from "./src/screens/Profile";
-import TransferList from "./src/components/transfers/Listing";
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import TransferWidget from './src/screens/TransferWidget';
+import Profile from './src/screens/Profile';
+import TransferList from './src/components/transfers/Listing';
 
 const StackNavigator = createStackNavigator(
   {
     TransferWidget: {
       screen: TransferWidget,
-      key: "transferWidgetScreen",
+      key: 'transferWidgetScreen',
       navigationOptions: {
-        title: "Receptivo Colombia - Traslados"
+        title: 'Receptivo Colombia - Traslados'
       }
     },
     Profile: {
       screen: Profile,
-      key: "profileScreen",
+      key: 'profileScreen',
       navigationOptions: {
-        title: "Perfil"
+        title: 'Perfil'
       }
     },
 
     TransferList: {
       screen: TransferList,
       navigationOptions: {
-        key: "transferListScreen",
-        title: "Lista de Traslados"
+        key: 'transferListScreen',
+        title: 'Lista de Traslados'
       }
     }
   },
@@ -44,26 +46,44 @@ const StackNavigator = createStackNavigator(
   }
 );
 
-const TabNavigator = createBottomTabNavigator(
+const TabNavigator = createMaterialBottomTabNavigator(
   {
     Home: {
       screen: StackNavigator,
-      key: "stackNavigatorScreen",
-      navigationOptions: {
-        title: "Inicio"
-      }
+      key: 'stackNavigatorScreen',
+      navigationOptions: () => ({
+            title: 'Traslados',
+            tabBarIcon: ({tintColor}) => (
+                <Icon
+                    name='car'
+                    color={tintColor}
+                    size={20}
+                />
+            )
+        })
     },
     Profile: {
       screen: Profile,
-      key: "profileStackNavigatorScreen",
-      navigationOptions: {
-        title: "Perfil"
-      }
+      key: 'profileStackNavigatorScreen',
+      navigationOptions: () => ({
+            title: 'Perfil',
+            tabBarIcon: ({tintColor}) => (
+                <Icon
+                    name='user'
+                    color={tintColor}
+                    size={20}
+                />
+            )
+        })
     }
   },
 
   {
-    // other settings
+    initialRouteName: 'Home',
+    activeTintColor: 'tomato',
+    inactiveTintColor: 'gray',
+    barStyle: { backgroundColor: '#fff' },
+
   }
 );
 
