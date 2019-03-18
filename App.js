@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator} from 'react-native';
+import { Image, StyleSheet, View, Text } from "react-native";
 import SplashScreen from 'react-native-splash-screen'
+
+
+import {  } from 'react-native';
 
 import {
   createStackNavigator,
@@ -15,6 +19,24 @@ import TransferWidget from './src/screens/TransferWidget';
 import Profile from './src/screens/Profile';
 import TransferList from './src/components/transfers/Listing';
 
+
+class LogoTitle extends React.Component {
+  render() {
+    return (
+        <Image
+          source={require('./src/images/isotipo-receptivo-colombia.png')}
+          style={{ 
+            width: 30, 
+            height: 30,
+            resizeMode: 'contain'
+          }}
+        />
+    );
+  }
+}
+
+
+
 const StackNavigator = createStackNavigator(
   {
     TransferWidget: {
@@ -22,7 +44,9 @@ const StackNavigator = createStackNavigator(
       key: 'transferWidgetScreen',
       navigationOptions: {
         key: 'transferWidgetScreen',
-        headerTitle: 'Receptivo Colombia - Traslados'
+        headerTitle: <LogoTitle />,
+        headerStyle:{backgroundColor:'#43b7e8'},
+        headerTintColor: '#000000',
       }
     },
     Profile: {
@@ -41,10 +65,6 @@ const StackNavigator = createStackNavigator(
         headerTitle: 'Lista de Traslados'
       }
     }
-  },
-
-  {
-    // other settings
   }
 );
 
