@@ -23,14 +23,18 @@ import TransferList from './src/components/transfers/Listing';
 class LogoTitle extends React.Component {
   render() {
     return (
-        <Image
-          source={require('./src/images/isotipo-receptivo-colombia.png')}
-          style={{ 
-            width: 30, 
-            height: 30,
-            resizeMode: 'contain'
-          }}
-        />
+
+      <View style={styles.container}>
+          <Image
+            style={styles.logo}
+            source={require('./src/images/isotipo-receptivo-colombia.png')}
+            resizeMode="contain"
+          />
+          <Text style={styles.title}>Receptivo Colombia</Text>
+      </View>
+
+
+
     );
   }
 }
@@ -46,7 +50,7 @@ const StackNavigator = createStackNavigator(
         key: 'transferWidgetScreen',
         headerTitle: <LogoTitle />,
         headerStyle:{backgroundColor:'#43b7e8'},
-        headerTintColor: '#000000',
+        headerTintColor: '#ffffff',
       }
     },
     Profile: {
@@ -141,3 +145,27 @@ export default class App extends React.Component {
   render = () =>
     this.state.isLoaded ? this.renderApp() : this.renderLoading();
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "row",
+   //backgroundColor: 'red',
+    paddingHorizontal: 10,
+    alignItems: 'center',
+  },
+  logo: {
+    width: 25,
+    height: 25,
+    resizeMode: "contain",
+    paddingLeft: 20,
+  },
+  title: {
+    paddingLeft: 10,
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 28,
+    marginTop: -5,
+  },
+});
