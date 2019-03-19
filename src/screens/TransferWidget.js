@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { ScrollView, StyleSheet, View, Text, RefreshControl } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Text,
+  RefreshControl
+} from "react-native";
 import InputsGoogleMaps from "../components/widget/transfers/InputsGoogleMaps";
 import RadioButtonFlights from "../components/widget/transfers/RadioButtonFlights";
 import InputsAdultsKids from "../components/widget/transfers/InputsAdultsKids";
@@ -39,7 +45,7 @@ export default class TransferWidget extends Component {
   componentDidMount() {
     this.setState({
       isLoading: false
-    })
+    });
   }
 
   handlePress = () => {
@@ -53,101 +59,66 @@ export default class TransferWidget extends Component {
   };
 
   render() {
-
+    const { isSwitchOn } = this.state;
     return (
-      <View style={styles.container}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }
-        >
-        <View style={styles.box}>
-          <View style={styles.item}>
-            {/* <RadioButtonFlights
-            dataForm={this.state}
-            updateFormState={this.updateState.bind(this)}
-          /> */}
-            <Switch
-              value={this.state.round_trip}
-              onValueChange={() => { this.setState({ round_trip: !this.state.round_trip }) }}
-            />
-          </View>
-          {/* <View style={styles.item}>
-          <InputsGoogleMaps
-            dataForm={this.state}
-            updateFormState={this.updateState.bind(this)}
+      <View
+        style={styles.container}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this._onRefresh}
           />
-        </View> */}
-          <View style={styles.item}>
-            <InputsDatePicker
-              dataForm={this.state}
-              updateFormState={this.updateState.bind(this)}
-            />
-          </View>
+        }
+      >
+        <View style={[styles.boxOne]}>
+          <Text style={[styles.switchTitle]}>IDA/VUELTA</Text>
+          <Switch
+            value={isSwitchOn}
+            color="#43b7e8"
+            onValueChange={() => {
+              this.setState({ isSwitchOn: !isSwitchOn });
+            }}
+          />
+        </View>
 
-          <View style={styles.item}>
-            <InputsAdultsKids
-              dataForm={this.state}
-              updateFormState={this.updateState.bind(this)}
-            />
+        <View style={[styles.boxTwo]}>
+          <View style={[styles.test]}>
+            <View style={[styles.item, styles.inputsGoogleMaps]}>
+              <InputsGoogleMaps
+                dataForm={this.state}
+                updateFormState={this.updateState.bind(this)}
+              />
+            </View>
+
+            <View style={[styles.item, styles.inputsDatePicker]}>
+              <InputsDatePicker
+                dataForm={this.state}
+                updateFormState={this.updateState.bind(this)}
+              />
+            </View>
+
+            <View style={[styles.item, styles.inputsDatePicker]}>
+              <InputsAdultsKids
+                dataForm={this.state}
+                updateFormState={this.updateState.bind(this)}
+              />
+            </View>
           </View>
         </View>
 
-        <View style={styles.item}>
-          <Button
-            icon="search"
-            mode="contained"
-            onPress={this.handlePress}
-            style={styles.buttonColor}
-          >
-            Buscar
-          </Button>
+        <View style={[styles.boxThree]}>
+          <View style={styles.item}>
+            <Button
+              icon="search"
+              mode="contained"
+              onPress={this.handlePress}
+              style={styles.buttonColor}
+            >
+              BUSCAR
+            </Button>
+          </View>
         </View>
       </View>
-
-      // <ScrollView
-      //   refreshControl={
-      //     <RefreshControl
-      //       refreshing={this.state.refreshing}
-      //       onRefresh={this._onRefresh}
-      //     />
-      //   }
-      // >
-      //   <OfflineNotice ref = 'offlineNotice' />
-      //   <View style={{ flex: 1 }}>
-      //     <RadioButtonFlights
-      //       dataForm        = {this.state}
-      //       updateFormState = {this.updateState.bind(this)}
-      //     />
-
-      //     <InputsGoogleMaps
-      //       dataForm        = {this.state}
-      //       updateFormState = {this.updateState.bind(this)}
-      //     />
-
-      //     <InputsAdultsKids
-      //       dataForm        = {this.state}
-      //       updateFormState = {this.updateState.bind(this)}
-      //     />
-
-      //     <InputsDatePicker
-      //       dataForm        = {this.state}
-      //       updateFormState = {this.updateState.bind(this)}
-      //     />
-
-      //     <Text>`Fecha Ida - {this.state.flight_origin_picker}`</Text>
-      //     <Text>`Fecha Vuelta - {this.state.flight_arrival_picker}`</Text>
-
-      //     <Button icon="search" mode="contained" onPress={this.handlePress}>
-      //       Buscar
-      //     </Button>
-
-      //     <ActivityIndicator animating={this.state.isLoading} color={Colors.red800} />
-
-      //   </View>
-      // </ScrollView>
     );
   }
 }
@@ -156,8 +127,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#fff",
     justifyContent: "space-between"
+    //backgroundColor: "red"
   },
   box: {
     paddingHorizontal: 10,
@@ -168,6 +139,79 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent"
   },
   buttonColor: {
-    backgroundColor: "#43b7e8"
+    backgroundColor: "#43b7e8",
+    borderColor: "#43b7e8",
+    borderRadius: 0,
+    paddingVertical: 10,
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  switch: {
+    backgroundColor: "#000000",
+    //marginVertical: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexGrow: 0,
+    flexShrink: 1,
+    flexBasis: "auto"
+  },
+  inputsAdultsKids: {
+    flex: 1
+  },
+  inputsDatePicker: {
+    //marginTop: 60
+    flex: 1
+  },
+  inputsGoogleMaps: {
+    flex: 1
+  },
+  childBox: {
+    backgroundColor: "#000000",
+    flexDirection: "column",
+    flexGrow: 2,
+    flexShrink: 0,
+    flexBasis: "auto"
+  },
+  switchTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#43b7e8"
+  },
+  boxOne: {
+    //backgroundColor: "#eeeeff",
+    flexGrow: 0,
+    flexShrink: 1,
+    flexBasis: "auto",
+    paddingHorizontal: 15,
+    paddingVertical: 20,
+    paddingTop: 38,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  boxTwo: {
+    //backgroundColor: "#000000",
+    flexGrow: 2,
+    flexShrink: 0,
+    flexBasis: "auto",
+    //justifyContent: "space-around",
+
+    //paddingTop: 40,
+    paddingVertical: 80,
+    paddingHorizontal: 18
+  },
+  boxThree: {
+    flexGrow: 0,
+    flexShrink: 1,
+    flexBasis: "auto",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  test: {
+    flex: 1,
+    //backgroundColor: "red",
+    justifyContent: "space-between",
+    paddingVertical: 10
   }
 });

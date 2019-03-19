@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, ScrollView } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+
 
 export default class InputsGoogleMaps extends Component {
   render() {
     return (
-      <View>
+      <ScrollView>
         <View>
           <GooglePlacesAutocomplete
             placeholder="Origen"
@@ -93,6 +94,11 @@ export default class InputsGoogleMaps extends Component {
               },
               predefinedPlacesDescription: {
                 color: "#1faadb"
+              },
+              container: {
+                backgroundColor: "rgba(0,0,0,0)",
+                borderTopWidth: 0,
+                borderBottomWidth: 0
               }
             }}
             // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
@@ -116,7 +122,7 @@ export default class InputsGoogleMaps extends Component {
             debounce={200}
           />
         </View>
-      </View>
+      </ScrollView>
     );
   }
 
