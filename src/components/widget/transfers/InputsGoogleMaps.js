@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, Image, ScrollView } from "react-native";
+import { Text, View, Image, StyleSheet, } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-
 
 export default class InputsGoogleMaps extends Component {
   render() {
     return (
-      <ScrollView>
-        <View>
+      <View style={styles.containerInputGoogle}>
+        <View style={styles.inputGoogle}>
           <GooglePlacesAutocomplete
             placeholder="Origen"
             minLength={2} // minimum length of text to search
@@ -62,8 +61,7 @@ export default class InputsGoogleMaps extends Component {
             debounce={200}
           />
         </View>
-
-        <View>
+        <View style={styles.inputGoogle}>
           <GooglePlacesAutocomplete
             placeholder="Destino"
             minLength={2} // minimum length of text to search
@@ -94,11 +92,6 @@ export default class InputsGoogleMaps extends Component {
               },
               predefinedPlacesDescription: {
                 color: "#1faadb"
-              },
-              container: {
-                backgroundColor: "rgba(0,0,0,0)",
-                borderTopWidth: 0,
-                borderBottomWidth: 0
               }
             }}
             // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
@@ -122,7 +115,7 @@ export default class InputsGoogleMaps extends Component {
             debounce={200}
           />
         </View>
-      </ScrollView>
+      </View>
     );
   }
 
@@ -216,3 +209,14 @@ export default class InputsGoogleMaps extends Component {
     }
   }
 }
+
+
+const styles = StyleSheet.create({
+  containerInputGoogle: {
+    flex:1,
+    flexDirection: "column",
+  },
+  inputGoogle: {
+    flex: 1,
+  }
+});

@@ -82,32 +82,29 @@ export default class TransferWidget extends Component {
         </View>
 
         <View style={[styles.boxTwo]}>
-          <View style={[styles.test]}>
-            <View style={[styles.item, styles.inputsGoogleMaps]}>
-              <InputsGoogleMaps
-                dataForm={this.state}
-                updateFormState={this.updateState.bind(this)}
-              />
-            </View>
+          <View style={[styles.inputsGoogleMaps]}>
+            <InputsGoogleMaps
+              dataForm={this.state}
+              updateFormState={this.updateState.bind(this)}
+            />
+          </View>
 
-            <View style={[styles.item, styles.inputsDatePicker]}>
-              <InputsDatePicker
-                dataForm={this.state}
-                updateFormState={this.updateState.bind(this)}
-              />
-            </View>
+          <View style={[styles.inputsDatePicker]}>
+            <InputsDatePicker
+              dataForm={this.state}
+              updateFormState={this.updateState.bind(this)}
+            />
+          </View>
 
-            <View style={[styles.item, styles.inputsDatePicker]}>
-              <InputsAdultsKids
-                dataForm={this.state}
-                updateFormState={this.updateState.bind(this)}
-              />
-            </View>
+          <View style={[styles.inputsDatePicker]}>
+            <InputsAdultsKids
+              dataForm={this.state}
+              updateFormState={this.updateState.bind(this)}
+            />
           </View>
         </View>
 
         <View style={[styles.boxThree]}>
-          <View style={styles.item}>
             <Button
               icon="search"
               mode="contained"
@@ -116,7 +113,6 @@ export default class TransferWidget extends Component {
             >
               BUSCAR
             </Button>
-          </View>
         </View>
       </View>
     );
@@ -126,17 +122,13 @@ export default class TransferWidget extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-between"
+    flexDirection: "column"
+    //justifyContent: "space-between"
     //backgroundColor: "red"
   },
   box: {
     paddingHorizontal: 10,
     paddingVertical: 10
-  },
-  item: {
-    alignSelf: "stretch",
-    backgroundColor: "transparent"
   },
   buttonColor: {
     backgroundColor: "#43b7e8",
@@ -144,7 +136,8 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     paddingVertical: 10,
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    alignSelf: "stretch",
   },
   switch: {
     backgroundColor: "#000000",
@@ -157,17 +150,22 @@ const styles = StyleSheet.create({
     flexBasis: "auto"
   },
   inputsAdultsKids: {
-    flex: 1
+    flex: 1,
+    alignSelf: "stretch",
   },
   inputsDatePicker: {
-    //marginTop: 60
-    flex: 1
+    flex: 1,
+    alignSelf: "stretch",
   },
   inputsGoogleMaps: {
-    flex: 1
+    flex: 1,
+    alignSelf: "stretch",
+    //backgroundColor: 'purple',
+    paddingTop: 30,
+    minHeight: 100
   },
   childBox: {
-    backgroundColor: "#000000",
+    //backgroundColor: "#000000",
     flexDirection: "column",
     flexGrow: 2,
     flexShrink: 0,
@@ -191,27 +189,22 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   boxTwo: {
-    //backgroundColor: "#000000",
+    //backgroundColor: "gray",
     flexGrow: 2,
     flexShrink: 0,
     flexBasis: "auto",
-    //justifyContent: "space-around",
-
-    //paddingTop: 40,
-    paddingVertical: 80,
-    paddingHorizontal: 18
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingHorizontal: 18,
+    flexDirection: 'column',
+    justifyContent: 'space-around'
   },
   boxThree: {
     flexGrow: 0,
     flexShrink: 1,
     flexBasis: "auto",
     alignItems: "center",
-    justifyContent: "center"
-  },
-  test: {
-    flex: 1,
-    //backgroundColor: "red",
-    justifyContent: "space-between",
-    paddingVertical: 10
+    justifyContent: "center",
+    alignSelf: "stretch",
   }
 });

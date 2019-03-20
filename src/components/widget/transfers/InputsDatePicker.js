@@ -23,10 +23,7 @@ export default class InputsDatePicker extends Component {
         >
           {this.state.fecha_ida}
         </Button>
-        <Divider />
-        <Divider />
-        <Divider />
-        <Divider />
+
 
         <ConfirmDialog
           visible={this.state.gone_date}
@@ -125,7 +122,9 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    alignSelf: 'stretch',
+    //backgroundColor: 'red'
   },
   buttonColor: {
     backgroundColor: "#43b7e8"
