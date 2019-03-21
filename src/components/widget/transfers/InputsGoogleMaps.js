@@ -33,11 +33,45 @@ export default class InputsGoogleMaps extends Component {
               components: "country:col"
             }}
             styles={{
+              container:{
+
+              },
               description: {
                 fontWeight: "bold"
               },
+              textInputContainer:{
+                backgroundColor: '#ffffff',
+                borderBottomColor: '#ffffff',
+                borderTopColor: '#ffffff'
+              },
+              textInput:{
+                backgroundColor:'',
+                borderRadius: 4,
+                borderWidth: 2,
+                borderColor: '#1faadb',
+                margin: 0,
+                minHeight: 58,
+              },
+              loader:{
+
+              },
+              listView:{
+
+              },
               predefinedPlacesDescription: {
                 color: "#1faadb"
+              },
+              poweredContainer:{
+
+              },
+              powered:{
+
+              },
+              separator:{
+
+              },
+              row:{
+
               }
             }}
             // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
@@ -87,11 +121,48 @@ export default class InputsGoogleMaps extends Component {
               components: "country:col"
             }}
             styles={{
+              container:{
+
+              },
               description: {
                 fontWeight: "bold"
               },
+              textInputContainer:{
+                backgroundColor: '#ffffff',
+                borderBottomColor: '#ffffff',
+                borderTopColor: '#ffffff',
+                margin: 0 ,
+                padding: 0,
+                borderWidth: 0,
+              },
+              textInput:{
+                backgroundColor:'',
+                borderRadius: 4,
+                borderWidth: 2,
+                borderColor: '#1faadb',
+                margin: 0,
+                minHeight: 58,
+              },
+              loader:{
+
+              },
+              listView:{
+
+              },
               predefinedPlacesDescription: {
                 color: "#1faadb"
+              },
+              poweredContainer:{
+
+              },
+              powered:{
+
+              },
+              separator:{
+
+              },
+              row:{
+
               }
             }}
             // currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list

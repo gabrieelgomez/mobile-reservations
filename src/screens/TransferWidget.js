@@ -174,7 +174,8 @@ const styles = StyleSheet.create({
   switchTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#43b7e8"
+    color: "#43b7e8",
+    paddingLeft: 12
   },
   boxOne: {
     //backgroundColor: "#eeeeff",
