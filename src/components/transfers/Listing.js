@@ -3,6 +3,9 @@ import { ScrollView, StyleSheet, View, Text, RefreshControl } from 'react-native
 import { Button, Divider, Title, Avatar, Card, Paragraph  } from 'react-native-paper';
 import OfflineNotice from '../offline/OfflineNotice'
 
+import { Font } from '../../utils/Fonts';
+
+
 export default class Listing extends Component {
 
   constructor(props){
@@ -81,33 +84,40 @@ export default class Listing extends Component {
         }
       >
         <OfflineNotice ref = 'offlineNotice' />
-        <Title>{this.state.searching}</Title>
+        <Title style={styles.titleSearch}>{this.state.searching}</Title>
         {
           this.state.dataSource.map((item, i) => (
-            <View key = {i}>
-
-              <Divider />
-              <Divider />
-                <Card>
+            <View 
+            style={styles.container}
+            key = {i}>
+              <Divider/>
+                <Card style={styles.cardMainMobile}>
                   <Card.Cover source = {{ uri: `https://receptivocolombia.com${item.attributes.cover.url}` }} />
-                  <Card.Content>
-                    <Title>
+                  <Card.Content style={styles.cardContentMobile}>
+                    <Title style={styles.titleMainMobile}>
                       {item.attributes.title['es']}
                     </Title>
-                    <Paragraph>
-                      {`Máx de Asientos: ${item.attributes.seat} Personas \n Máx de Maletas: ${item.attributes.kit['quantity']} Piezas (${item.attributes.kit['weight']}kg) \n Precio $ ${item.attributes.price_destination}`}
+                    <Paragraph style={styles.titleSeatMobile}>
+                      {`Máx de Asientos: ${item.attributes.seat} Personas`}
+                    </Paragraph>
+                    <Paragraph style={styles.titleKitMobile}>
+                      {`Máx de Maletas: ${item.attributes.kit['quantity']} Piezas (${item.attributes.kit['weight']}kg)`}
+                    </Paragraph>
+                    <Paragraph style={styles.titlePriceMobile}>
+                      {`Precio $ ${item.attributes.price_destination}`}
                     </Paragraph>
                   </Card.Content>
-
-                  <Card.Actions>
-                    <Button mode = 'outline' onPress = {this.handlePress}>
-                      Seleccionar
+                  <Card.Actions style={styles.cardActionMobile}>
+                    <Button 
+                      style={styles.buttonActionMobile} 
+                      mode = 'text'  
+                      onPress = {this.handlePress} 
+                      >
+                      RESERVAR
                     </Button>
                   </Card.Actions>
                 </Card>
               <Divider />
-              <Divider />
-
             </View>
           ))
         }
@@ -120,5 +130,64 @@ export default class Listing extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingHorizontal: 18,
+    },
+    titleSearch:{
+      paddingVertical: 5,
+      textAlign: 'center',
+      fontWeight: '500',
+      marginBottom: 20,
+      fontFamily: Font.robotoMedium,
+    },
+    cardMainMobile:{
+      marginBottom: 20,
+      borderRadius: 5,
+      fontFamily: Font.robotoBold,
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 4,
+      },
+      shadowOpacity: 0.32,
+      shadowRadius: 5.46,
+      elevation: 9,
+      borderStyle: 'solid',
+      borderTopWidth: 3,
+      borderTopColor: '#9dc107',
+    },
+    cardContentMobile:{
+      paddingHorizontal: 10,
+      paddingVertical: 10,
+    },
+    cardActionMobile:{
+      flex: 1,
+      marginVertical: 0,
+      marginHorizontal: 0,
+      paddingHorizontal: 0,
+      paddingVertical: 0,
+    },
+    buttonActionMobile:{
+      backgroundColor: "#9dc107",
+      borderColor: "#9dc107",
+      borderRadius: 0,
+      paddingVertical: 10,
+      fontSize: 20,
+      fontWeight: "bold",
+      alignSelf: "stretch",
+      flex: 1,
+      color:'#ffffff'
+    },
+    titleMainMobile:{
+      fontFamily: Font.robotoMedium
+    },
+    titleSeatMobile:{
+      fontFamily: Font.robotoLight
+    },
+    titleKitMobile:{
+      fontFamily: Font.robotoLight
+    },
+    titlePriceMobile:{
+      fontFamily: Font.robotoLight
     }
+
 });

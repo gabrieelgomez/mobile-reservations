@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator} from 'react-native';
+import { Image, StyleSheet, View, Text } from "react-native";
 import SplashScreen from 'react-native-splash-screen'
+
+
+import {  } from 'react-native';
 
 import {
   createStackNavigator,
@@ -15,6 +19,39 @@ import TransferWidget from './src/screens/TransferWidget';
 import Profile from './src/screens/Profile';
 import TransferList from './src/components/transfers/Listing';
 
+
+class LogoTitle extends React.Component {
+  render() {
+    return (
+
+      <View style={styles.container}>
+          <Image
+            style={styles.logo}
+            source={require('./src/images/isotipo-receptivo-colombia.png')}
+            resizeMode="contain"
+          />
+          <Text style={styles.title}>Receptivo Colombia</Text>
+      </View>
+
+
+
+    );
+  }
+}
+
+
+class ListTitle extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+          <Text style={styles.titleList}>Resultados de la búsqueda</Text>
+      </View>
+
+    );
+  }
+}
+
+
 const StackNavigator = createStackNavigator(
   {
     TransferWidget: {
@@ -22,7 +59,9 @@ const StackNavigator = createStackNavigator(
       key: 'transferWidgetScreen',
       navigationOptions: {
         key: 'transferWidgetScreen',
-        headerTitle: 'Receptivo Colombia - Traslados'
+        headerTitle: <LogoTitle />,
+        headerStyle:{backgroundColor:'#43b7e8'},
+        headerTintColor: '#ffffff',
       }
     },
     Profile: {
@@ -38,13 +77,11 @@ const StackNavigator = createStackNavigator(
       screen: TransferList,
       navigationOptions: {
         key: 'transferListScreen',
-        headerTitle: 'Lista de Traslados'
+        headerTitle: <ListTitle />,
+        headerStyle:{backgroundColor:'#eb6b0a'},
+        headerTintColor: '#ffffff',
       }
     }
-  },
-
-  {
-    // other settings
   }
 );
 
@@ -121,3 +158,33 @@ export default class App extends React.Component {
   render = () =>
     this.state.isLoaded ? this.renderApp() : this.renderLoading();
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "row",
+   //backgroundColor: 'red',
+    paddingHorizontal: 10,
+    alignItems: 'center',
+  },
+  logo: {
+    width: 25,
+    height: 25,
+    resizeMode: "contain",
+    paddingLeft: 20,
+  },
+  title: {
+    paddingLeft: 10,
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 28,
+    marginTop: -5,
+  },
+  titleList: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginTop: -5,
+  },
+});
