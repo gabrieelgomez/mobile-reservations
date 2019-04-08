@@ -60,7 +60,7 @@ const StackNavigator = createStackNavigator(
       navigationOptions: {
         key: 'transferWidgetScreen',
         headerTitle: <LogoTitle />,
-        headerStyle:{backgroundColor:'#43b7e8'},
+        headerStyle:{backgroundColor:'#9dc107'},
         headerTintColor: '#ffffff',
       }
     },
@@ -78,7 +78,7 @@ const StackNavigator = createStackNavigator(
       navigationOptions: {
         key: 'transferListScreen',
         headerTitle: <ListTitle />,
-        headerStyle:{backgroundColor:'#eb6b0a'},
+        headerStyle:{backgroundColor:'#9dc107'},
         headerTintColor: '#ffffff',
       }
     }

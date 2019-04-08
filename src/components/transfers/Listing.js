@@ -5,7 +5,7 @@ import OfflineNotice from '../offline/OfflineNotice'
 
 import { Font } from '../../utils/Fonts';
 
-
+import Icon from "react-native-vector-icons/Ionicons";
 export default class Listing extends Component {
 
   constructor(props){
@@ -92,25 +92,29 @@ export default class Listing extends Component {
             key = {i}>
               <Divider/>
                 <Card style={styles.cardMainMobile}>
+                  <View style={styles.cardBorderMobile}></View>
                   <Card.Cover source = {{ uri: `https://receptivocolombia.com${item.attributes.cover.url}` }} />
                   <Card.Content style={styles.cardContentMobile}>
                     <Title style={styles.titleMainMobile}>
                       {item.attributes.title['es']}
                     </Title>
-                    <Paragraph style={styles.titleSeatMobile}>
+                    <Paragraph >    
+                      <Text style={styles.titleSeatMobile}>
                       {`Máx de Asientos: ${item.attributes.seat} Personas`}
+                      </Text>
                     </Paragraph>
-                    <Paragraph style={styles.titleKitMobile}>
-                      {`Máx de Maletas: ${item.attributes.kit['quantity']} Piezas (${item.attributes.kit['weight']}kg)`}
+                    <Paragraph >
+
+                      <Text style={styles.titleKitMobile}>{`Máx de Maletas: ${item.attributes.kit['quantity']} Piezas (${item.attributes.kit['weight']}kg)`}</Text>
                     </Paragraph>
-                    <Paragraph style={styles.titlePriceMobile}>
-                      {`Precio $ ${item.attributes.price_destination}`}
+                    <Paragraph >
+                      <Text style={styles.titlePriceMobile}>{`Precio: ${item.attributes.price_destination}`}</Text>
                     </Paragraph>
                   </Card.Content>
                   <Card.Actions style={styles.cardActionMobile}>
                     <Button 
-                      style={styles.buttonActionMobile} 
-                      mode = 'text'  
+                      style={styles.buttonActionMobile}
+                      mode = 'contained'  
                       onPress = {this.handlePress} 
                       >
                       RESERVAR
@@ -138,9 +142,10 @@ const styles = StyleSheet.create({
       fontWeight: '500',
       marginBottom: 20,
       fontFamily: Font.robotoMedium,
+      color: '#4e4e56'
     },
     cardMainMobile:{
-      marginBottom: 20,
+      marginBottom: 25,
       borderRadius: 5,
       fontFamily: Font.robotoBold,
       shadowColor: "#000",
@@ -151,9 +156,8 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.32,
       shadowRadius: 5.46,
       elevation: 9,
-      borderStyle: 'solid',
-      borderTopWidth: 3,
-      borderTopColor: '#9dc107',
+      paddingHorizontal: 0,
+      paddingVertical: 0,
     },
     cardContentMobile:{
       paddingHorizontal: 10,
@@ -170,7 +174,7 @@ const styles = StyleSheet.create({
       backgroundColor: "#9dc107",
       borderColor: "#9dc107",
       borderRadius: 0,
-      paddingVertical: 10,
+      paddingVertical: 5,
       fontSize: 20,
       fontWeight: "bold",
       alignSelf: "stretch",
@@ -178,16 +182,25 @@ const styles = StyleSheet.create({
       color:'#ffffff'
     },
     titleMainMobile:{
-      fontFamily: Font.robotoMedium
+      fontFamily: Font.robotoBold,
+      color:"#4e4e56",
+      fontSize: 22
     },
     titleSeatMobile:{
-      fontFamily: Font.robotoLight
+      fontFamily: Font.robotoBold,
+      color:"#4e4e56",
     },
     titleKitMobile:{
-      fontFamily: Font.robotoLight
+      fontFamily: Font.robotoBold,
+      color:"#4e4e56",
     },
     titlePriceMobile:{
-      fontFamily: Font.robotoLight
+      fontFamily: Font.robotoBold,
+      color:"#4e4e56",
+    },
+    cardBorderMobile:{
+      borderStyle: 'solid',
+      borderTopWidth: 4,
+      borderTopColor: '#9dc107',
     }
-
 });

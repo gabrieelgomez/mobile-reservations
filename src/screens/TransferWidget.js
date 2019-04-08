@@ -6,6 +6,7 @@ import {
   Text,
   RefreshControl
 } from "react-native";
+
 import InputsGoogleMaps from "../components/widget/transfers/InputsGoogleMaps";
 import RadioButtonFlights from "../components/widget/transfers/RadioButtonFlights";
 import InputsAdultsKids from "../components/widget/transfers/InputsAdultsKids";
