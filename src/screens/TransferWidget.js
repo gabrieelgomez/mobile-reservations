@@ -75,7 +75,7 @@ export default class TransferWidget extends Component {
           <Text style={[styles.switchTitle]}>IDA/VUELTA</Text>
           <Switch
             value={isSwitchOn}
-            color="#43b7e8"
+            color="#9dc107"
             onValueChange={() => {
               this.setState({ isSwitchOn: !isSwitchOn });
             }}
@@ -132,8 +132,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   buttonColor: {
-    backgroundColor: "#43b7e8",
-    borderColor: "#43b7e8",
+    backgroundColor: "#9dc107",
+    borderColor: "#9dc107",
     borderRadius: 0,
     paddingVertical: 10,
     fontSize: 20,
@@ -142,7 +142,6 @@ const styles = StyleSheet.create({
   },
   switch: {
     backgroundColor: "#000000",
-    //marginVertical: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -161,12 +160,10 @@ const styles = StyleSheet.create({
   inputsGoogleMaps: {
     flex: 1,
     alignSelf: "stretch",
-    //backgroundColor: 'purple',
     paddingTop: 30,
     minHeight: 100
   },
   childBox: {
-    //backgroundColor: "#000000",
     flexDirection: "column",
     flexGrow: 2,
     flexShrink: 0,
@@ -175,7 +172,7 @@ const styles = StyleSheet.create({
   switchTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#43b7e8",
+    color: "#9dc107",
     paddingLeft: 12
   },
   boxOne: {
@@ -191,7 +188,6 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   boxTwo: {
-    //backgroundColor: "gray",
     flexGrow: 2,
     flexShrink: 0,
     flexBasis: "auto",

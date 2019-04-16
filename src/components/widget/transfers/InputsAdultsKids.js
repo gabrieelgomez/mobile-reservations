@@ -15,7 +15,7 @@ export default class InputsAdultsKids extends Component {
             onChangeText={text =>
               this.props.updateFormState("quantity_adults", text)
             }
-            theme={{ colors: { primary: '#43b7e8'}}}
+            theme={{ colors: { primary: '#9dc107'}}}
           />
            <View style={styles.separator}></View>
           <TextInput
@@ -27,7 +27,7 @@ export default class InputsAdultsKids extends Component {
             onChangeText={text =>
               this.props.updateFormState("quantity_kids", text)
             }
-            theme={{ colors: { primary: '#43b7e8'}}}
+            theme={{ colors: { primary: '#9dc107'}}}
           />
       </View>
     );

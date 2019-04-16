@@ -17,6 +17,7 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TransferWidget from './src/screens/TransferWidget';
 import Profile from './src/screens/Profile';
+import Login from './src/screens/Login';
 import TransferList from './src/components/transfers/Listing';
 
 
@@ -82,6 +83,7 @@ const StackNavigator = createStackNavigator(
         headerTintColor: '#ffffff',
       }
     }
+
   }
 );
 
@@ -118,7 +120,25 @@ const TabNavigator = createMaterialBottomTabNavigator(
           />
         )
       })
+    },
+
+    Login: {
+      screen: Login,
+      key: 'LoginScreen',
+      navigationOptions: () => ({
+        key: 'LoginScreen',
+        title: 'Login',
+        headerTitle: "something",
+        tabBarIcon: ({focused, tintColor}) => (
+          <Icon
+              name='user'
+              color={tintColor}
+              size={20}
+          />
+        )
+      })
     }
+
   },
 
   {

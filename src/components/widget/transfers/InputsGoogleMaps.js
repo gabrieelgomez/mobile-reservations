@@ -45,10 +45,9 @@ export default class InputsGoogleMaps extends Component {
                 borderTopColor: '#ffffff'
               },
               textInput:{
-                backgroundColor:'',
                 borderRadius: 4,
                 borderWidth: 2,
-                borderColor: '#1faadb',
+                borderColor: '#9dc107',
                 margin: 0,
                 minHeight: 58,
               },
@@ -59,7 +58,7 @@ export default class InputsGoogleMaps extends Component {
 
               },
               predefinedPlacesDescription: {
-                color: "#1faadb"
+                color: "#9dc107"
               },
               poweredContainer:{
 
@@ -136,10 +135,9 @@ export default class InputsGoogleMaps extends Component {
                 borderWidth: 0,
               },
               textInput:{
-                backgroundColor:'',
                 borderRadius: 4,
                 borderWidth: 2,
-                borderColor: '#1faadb',
+                borderColor: '#9dc107',
                 margin: 0,
                 minHeight: 58,
               },
@@ -150,7 +148,7 @@ export default class InputsGoogleMaps extends Component {
 
               },
               predefinedPlacesDescription: {
-                color: "#1faadb"
+                color: "#9dc107"
               },
               poweredContainer:{
 

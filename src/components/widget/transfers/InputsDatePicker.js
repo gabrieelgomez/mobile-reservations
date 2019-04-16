@@ -123,10 +123,9 @@ const styles = StyleSheet.create({
   buttons: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignSelf: 'stretch',
-    //backgroundColor: 'red'
+    alignSelf: 'stretch'
   },
   buttonColor: {
-    backgroundColor: "#43b7e8"
+    backgroundColor: "#9dc107"
   }
 });
