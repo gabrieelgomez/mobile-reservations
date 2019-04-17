@@ -17,8 +17,9 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TransferWidget from './src/screens/TransferWidget';
 import Profile from './src/screens/Profile';
-import Login from './src/screens/Login';
 import TransferList from './src/components/transfers/Listing';
+import Login from './src/screens/Login';
+import CreateAccount from './src/screens/CreateAccount';
 
 
 class LogoTitle extends React.Component {
@@ -128,6 +129,23 @@ const TabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: () => ({
         key: 'LoginScreen',
         title: 'Login',
+        headerTitle: "something",
+        tabBarIcon: ({focused, tintColor}) => (
+          <Icon
+              name='user'
+              color={tintColor}
+              size={20}
+          />
+        )
+      })
+    },
+
+    CreateAccount: {
+      screen: CreateAccount,
+      key: 'CreateAccountScreen',
+      navigationOptions: () => ({
+        key: 'CreateAccountScreen',
+        title: 'CreateAccount',
         headerTitle: "something",
         tabBarIcon: ({focused, tintColor}) => (
           <Icon

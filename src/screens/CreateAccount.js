@@ -5,7 +5,7 @@ import { Switch } from "react-native-paper";
 import { Font } from '../utils/Fonts';
 
 
-export default class Login extends Component {
+export default class CreateAccount extends Component {
   constructor(props) {
     super(props);
 		this.state = { 
@@ -26,15 +26,19 @@ export default class Login extends Component {
 								resizeMode="contain"
 							/>
 					</View>
-					<View style={styles.loginSwitch}>
-						<Text style={styles.loginSwitchTitle} >¿Eres agencia?</Text>
-						<Switch
-							value={this.state.isHidden}
-							color="#9dc107"
-							onValueChange={value => this.setState({ isHidden: value })}
-						/>
+					<View style={styles.loginTitle}>
+						<Text style={styles.loginItemTitle} >Create Account</Text>
 					</View>
 					<View style={styles.loginInputs}>
+						<TextInput
+							style={styles.inputLogin}
+							mode="outlined"
+							label='Name'
+							value={this.state.text}
+							onChangeText={text => this.setState({ text })}
+							theme={{ colors: { primary: '#9dc107'}}}
+						/>
+						<Divider style={styles.loginSeparator}></Divider>
 						<TextInput
 							style={styles.inputLogin}
 							mode="outlined"
@@ -53,11 +57,14 @@ export default class Login extends Component {
 							theme={{ colors: { primary: '#9dc107'}}}
 						/>
 						<Divider style={styles.loginSeparator}></Divider>
-						<View>
-						{
-							this.state.isHidden ? <TextInput style={styles.inputLogin} mode="outlined" label='Code Agency' value={this.state.text} onChangeText={text => this.setState({ text })} theme={{ colors: { primary: '#9dc107'}}} /> : null
-						}
-						</View>
+						<TextInput
+							style={styles.inputLogin}
+							mode="outlined"
+							label='Password Confirmation'
+							value={this.state.text}
+							onChangeText={text => this.setState({ text })}
+							theme={{ colors: { primary: '#9dc107'}}}
+						/>
 					</View>
 					<Divider style={styles.loginSeparator}></Divider>
 					<Divider style={styles.loginSeparator}></Divider>
@@ -67,12 +74,8 @@ export default class Login extends Component {
 							style={styles.loginButton}
 							onPress={() => console.log('Pressed')}
 							>
-								Sign In
+								Create Account
 						</Button>
-					</View>
-					<View style={styles.loginItems}>
-						<Text style={styles.loginItemsTitle}>Create Account</Text>
-						<Text style={styles.loginItemsTitle}>Forgot Password</Text>
 					</View>
 					<View style={styles.loginCopyright}>
 						<Text style={styles.loginCopyrightTitle}>Receptivo Colombia © | 2019</Text>
@@ -151,14 +154,14 @@ const styles = StyleSheet.create({
 		backgroundColor: "#9dc107",
     borderColor: "#9dc107",
 	},
-	loginSwitch:{
+	loginTitle:{
 		paddingVertical: 10,
 		flexDirection: 'row',
-		justifyContent: 'space-between',
+		justifyContent: 'center',
 		alignItems: 'center',
 		
 	},
-	loginSwitchTitle:{
+	loginItemTitle:{
 		fontFamily: Font.robotoMedium,
 		color:"#9dc107",
 		fontSize:  15
@@ -182,7 +185,7 @@ const styles = StyleSheet.create({
 	loginCopyright:{
 		flexDirection: 'row',
 		justifyContent: 'center',
-		paddingHorizontal: 10,
+		paddingHorizontal: 15,
 	},
 	loginCopyrightTitle:{
 		fontFamily: Font.robotoBold,
