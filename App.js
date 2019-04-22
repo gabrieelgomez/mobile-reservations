@@ -20,6 +20,8 @@ import Profile from './src/screens/Profile';
 import TransferList from './src/components/transfers/Listing';
 import Login from './src/screens/Login';
 import CreateAccount from './src/screens/CreateAccount';
+import FormStepOne from './src/screens/FormStepOne';
+import FormStepTwo from './src/screens/FormStepTwo';
 
 
 class LogoTitle extends React.Component {
@@ -155,7 +157,42 @@ const TabNavigator = createMaterialBottomTabNavigator(
           />
         )
       })
-    }
+    },
+
+    FormStepOne: {
+      screen: FormStepOne,
+      key: 'FormStepOneScreen',
+      navigationOptions: () => ({
+        key: 'FormStepOneScreen',
+        title: 'FormStepOne',
+        headerTitle: "something",
+        tabBarIcon: ({focused, tintColor}) => (
+          <Icon
+              name='user'
+              color={tintColor}
+              size={20}
+          />
+        )
+      })
+    },
+
+    FormStepTwo: {
+      screen: FormStepTwo,
+      key: 'FormStepTwoScreen',
+      navigationOptions: () => ({
+        key: 'FormStepTwoScreen',
+        title: 'FormStepTwo',
+        headerTitle: "something",
+        tabBarIcon: ({focused, tintColor}) => (
+          <Icon
+              name='user'
+              color={tintColor}
+              size={20}
+          />
+        )
+      })
+    },
+
 
   },
 
