@@ -1,31 +1,39 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Image, ImageBackground } from "react-native";
 import { TextInput, Button, Divider } from "react-native-paper";
-import { Switch, RadioButton } from "react-native-paper";
+import { Switch } from "react-native-paper";
 import { Font } from '../utils/Fonts';
 
 
-export default class FormStepTwo extends Component {
+export default class ProfileAccount extends Component {
   constructor(props) {
     super(props);
 		this.state = { 
-			checked: 'first',
+			text: '',
+			isHidden: false,
 		}
   }
   render() {
-		const { checked } = this.state;
     return (
 		<ImageBackground source={require('../images/backgroundLogin.jpg')} style={styles.backgroundImage}>
 			<View style={styles.backgroundForm}>
+
 				<View style={styles.loginInput}>
+					<View style={styles.loginLogo}>
+						<Image
+								style={styles.logo}
+								source={require("../images/login_new.png")}
+								resizeMode="contain"
+							/>
+					</View>
 					<View style={styles.loginTitle}>
-						<Text style={styles.loginItemTitle} >Datos de Reserva</Text>
+						<Text style={styles.loginItemTitle} >Crear Cuenta</Text>
 					</View>
 					<View style={styles.loginInputs}>
 						<TextInput
 							style={styles.inputLogin}
 							mode="outlined"
-							label='Fecha Origen'
+							label='Nombre'
 							value={this.state.text}
 							onChangeText={text => this.setState({ text })}
 							theme={{ colors: { primary: '#9dc107'}}}
@@ -34,7 +42,7 @@ export default class FormStepTwo extends Component {
 						<TextInput
 							style={styles.inputLogin}
 							mode="outlined"
-							label='Fecha Destino'
+							label='Correo'
 							value={this.state.text}
 							onChangeText={text => this.setState({ text })}
 							theme={{ colors: { primary: '#9dc107'}}}
@@ -43,7 +51,7 @@ export default class FormStepTwo extends Component {
 						<TextInput
 							style={styles.inputLogin}
 							mode="outlined"
-							label='Hora Origen'
+							label='Contraseña'
 							value={this.state.text}
 							onChangeText={text => this.setState({ text })}
 							theme={{ colors: { primary: '#9dc107'}}}
@@ -52,30 +60,13 @@ export default class FormStepTwo extends Component {
 						<TextInput
 							style={styles.inputLogin}
 							mode="outlined"
-							label='Hora Destino'
+							label='Confirmar Contraseña'
 							value={this.state.text}
 							onChangeText={text => this.setState({ text })}
 							theme={{ colors: { primary: '#9dc107'}}}
 						/>
-						<Divider style={styles.loginSeparator}></Divider>
-						<TextInput
-							style={styles.inputLogin}
-							mode="outlined"
-							label='Cantidad de Equipaje'
-							value={this.state.text}
-							onChangeText={text => this.setState({ text })}
-							theme={{ colors: { primary: '#9dc107'}}}
-						/>
+					</View>
 					<Divider style={styles.loginSeparator}></Divider>
-					<View style={styles.loginSwitch}>
-							<Text style={styles.loginSwitchTitle} >¿Traslado desde el aeropuerto?</Text>
-							<Switch
-									value={this.state.isHidden}
-									color="#9dc107"
-									onValueChange={value => this.setState({ isHidden: value })}
-							/>
-					</View>
-					</View>
 					<Divider style={styles.loginSeparator}></Divider>
 					<View style={styles.loginButtonSubmit}>
 						<Button 
@@ -83,8 +74,11 @@ export default class FormStepTwo extends Component {
 							style={styles.loginButton}
 							onPress={() => console.log('Pressed')}
 							>
-								Next
+								Crear Cuenta
 						</Button>
+					</View>
+					<View style={styles.loginCopyright}>
+						<Text style={styles.loginCopyrightTitle}>Receptivo Colombia © | 2019</Text>
 					</View>
 				</View>
 			</View>
@@ -116,7 +110,7 @@ const styles = StyleSheet.create({
 			alignItems: 'center',
 			justifyContent: 'center',
 	},
-	loginInput:{
+  loginInput:{
 		alignItems: 'stretch',
 		backgroundColor: '#ffffff',
 		paddingTop: 15,
@@ -145,10 +139,10 @@ const styles = StyleSheet.create({
 	buttonLogin:{
 		marginTop: 5,
 	},
-	logo: {
-		width: 500,
-		height: 60,
-		resizeMode: "contain"
+  logo: {
+    width: 500,
+    height: 60,
+    resizeMode: "contain"
 	},
 	loginLogo: {
 		flexDirection: 'row',
@@ -158,16 +152,16 @@ const styles = StyleSheet.create({
 	},
 	loginButton:{
 		backgroundColor: "#9dc107",
-		borderColor: "#9dc107",
+    borderColor: "#9dc107",
 	},
-	loginSwitch:{
+	loginTitle:{
 		paddingVertical: 10,
 		flexDirection: 'row',
-		justifyContent: 'space-between',
+		justifyContent: 'center',
 		alignItems: 'center',
-
+		
 	},
-	loginSwitchTitle:{
+	loginItemTitle:{
 		fontFamily: Font.robotoMedium,
 		color:"#9dc107",
 		fontSize:  15
@@ -191,19 +185,12 @@ const styles = StyleSheet.create({
 	loginCopyright:{
 		flexDirection: 'row',
 		justifyContent: 'center',
-		paddingHorizontal: 10,
+		paddingHorizontal: 15,
 	},
 	loginCopyrightTitle:{
 		fontFamily: Font.robotoBold,
 		color:"#9dc107",
 		fontSize:  15
-	},
-	error: {
-		color: 'red',
-		paddingTop: 10
-	},
-	success: {
-		color: '#13cc00',
-		paddingTop: 10
 	}
 });
+
