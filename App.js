@@ -17,14 +17,11 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TransferWidget from './src/screens/TransferWidget';
 import TourWidget from './src/screens/TourWidget';
-import Profile from './src/screens/Profile';
+import CircuitWidget from './src/screens/CircuitWidget';
+import MultidestinationWidget from './src/screens/MultidestinationWidget';
 import TransferList from './src/components/transfers/Listing';
 import Login from './src/screens/Login';
 import CreateAccount from './src/screens/CreateAccount';
-// import FormStepOne from './src/screens/FormStepOne';
-// import FormStepTwo from './src/screens/FormStepTwo';
-// import FormStepThree from './src/screens/FormStepThree';
-
 
 class LogoTitle extends React.Component {
   render() {
@@ -38,9 +35,6 @@ class LogoTitle extends React.Component {
           />
           <Text style={styles.title}>Receptivo Colombia</Text>
       </View>
-
-
-
     );
   }
 }
@@ -72,14 +66,14 @@ const StackNavigator = createStackNavigator(
     },
 
 
-    Profile: {
-      screen: Profile,
-      key: 'profileScreen',
-      navigationOptions: () => ({
-        key: 'profileScreen',
-        headerTitle: "Perfil"
-      })
-    },
+    // Profile: {
+    //   screen: Profile,
+    //   key: 'profileScreen',
+    //   navigationOptions: () => ({
+    //     key: 'profileScreen',
+    //     headerTitle: "Perfil"
+    //   })
+    // },
 
     TransferList: {
       screen: TransferList,
@@ -89,8 +83,17 @@ const StackNavigator = createStackNavigator(
         headerStyle:{backgroundColor:'#9dc107'},
         headerTintColor: '#ffffff',
       }
-    }
-
+    },
+    CreateAccount: {
+      screen: CreateAccount,
+      key: 'CreateAccountScreen',
+      navigationOptions: () => ({
+        key: 'CreateAccountScreen',
+        headerTitle: "Crear Cuenta",
+        headerStyle:{backgroundColor:'#9dc107'},
+        headerTintColor: '#ffffff',
+      })
+    },
   }
 );
 
@@ -111,24 +114,54 @@ const TabNavigator = createMaterialBottomTabNavigator(
         )
       })
     },
-
-    // Profile: {
-    //   screen: Profile,
-    //   key: 'profileScreen',
-    //   navigationOptions: () => ({
-    //     key: 'profileScreen',
-    //     title: 'Perfil',
-    //     headerTitle: "something",
-    //     tabBarIcon: ({focused, tintColor}) => (
-    //       <Icon
-    //           name='user'
-    //           color={tintColor}
-    //           size={20}
-    //       />
-    //     )
-    //   })
-    // },
-
+    TourWidget: {
+      screen: TourWidget,
+      key: 'TourWidgetScreen',
+      navigationOptions: () => ({
+        key: 'TourWidgetScreen',
+        title: 'Tours',
+        headerTitle: "something",
+        tabBarIcon: ({focused, tintColor}) => (
+          <Icon
+              name='map-o'
+              color={tintColor}
+              size={20}
+          />
+        )
+      })
+    },
+    CircuitWidget: {
+      screen: CircuitWidget,
+      key: 'CircuitWidgetScreen',
+      navigationOptions: () => ({
+        key: 'CircuitWidgetScreen',
+        title: 'Circuitos',
+        headerTitle: "something",
+        tabBarIcon: ({focused, tintColor}) => (
+          <Icon
+              name='train'
+              color={tintColor}
+              size={20}
+          />
+        )
+      })
+    },
+    MultidestinationWidget: {
+      screen: MultidestinationWidget,
+      key: 'MultidestinationWidgetScreen',
+      navigationOptions: () => ({
+        key: 'MultidestinationWidgetScreen',
+        title: 'Multidestinos',
+        headerTitle: "something",
+        tabBarIcon: ({focused, tintColor}) => (
+          <Icon
+              name='plane'
+              color={tintColor}
+              size={20}
+          />
+        )
+      })
+    },
     Login: {
       screen: Login,
       key: 'LoginScreen',
@@ -145,44 +178,23 @@ const TabNavigator = createMaterialBottomTabNavigator(
         )
       })
     },
-
-    CreateAccount: {
-      screen: CreateAccount,
-      key: 'CreateAccountScreen',
-      navigationOptions: () => ({
-        key: 'CreateAccountScreen',
-        title: 'CreateAccount',
-        headerTitle: "something",
-        tabBarIcon: ({focused, tintColor}) => (
-          <Icon
-              name='user'
-              color={tintColor}
-              size={20}
-          />
-        )
-      })
-    },
-
-    TourWidget: {
-      screen: TourWidget,
-      key: 'TourWidgetScreen',
-      navigationOptions: () => ({
-        key: 'TourWidgetScreen',
-        title: 'TourWidget',
-        headerTitle: "something",
-        tabBarIcon: ({focused, tintColor}) => (
-          <Icon
-              name='user'
-              color={tintColor}
-              size={20}
-          />
-        )
-      })
-    },
-
-
+    // CreateAccount: {
+    //   screen: CreateAccount,
+    //   key: 'LoginScreen',
+    //   navigationOptions: () => ({
+    //     key: 'LoginScreen',
+    //     title: 'Login',
+    //     headerTitle: "something",
+    //     tabBarIcon: ({focused, tintColor}) => (
+    //       <Icon
+    //           name='user'
+    //           color={tintColor}
+    //           size={20}
+    //       />
+    //     )
+    //   })
+    // },
   },
-
   {
     initialRouteName: 'TransferWidget',
     barStyle: { backgroundColor: '#fff' },

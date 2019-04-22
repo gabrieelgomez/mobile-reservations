@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Font } from '../utils/Fonts';
-
-export default class Profile extends Component {
+export default class TourWidget extends Component {
   handlePress = () => {
     this.props.navigation.navigate("TransferWidget");
   };
@@ -11,7 +10,7 @@ export default class Profile extends Component {
     return (
       <View style={styles.container}>
         <View>
-       
+            <Text style={styles.title}>¡Módulo no disponible!</Text>
         </View>
       </View>
     );
@@ -30,5 +29,11 @@ const styles = StyleSheet.create({
     width: 500,
     height: 60,
     resizeMode: "contain"
+  },
+  title:{
+    textAlign: 'center',
+    fontFamily: Font.robotoMedium,
+    color: '#ffffff',
+    fontSize: 20
   }
 });

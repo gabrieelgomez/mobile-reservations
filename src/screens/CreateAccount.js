@@ -27,13 +27,13 @@ export default class CreateAccount extends Component {
 							/>
 					</View>
 					<View style={styles.loginTitle}>
-						<Text style={styles.loginItemTitle} >Create Account</Text>
+						<Text style={styles.loginItemTitle} >Crear Cuenta</Text>
 					</View>
 					<View style={styles.loginInputs}>
 						<TextInput
 							style={styles.inputLogin}
 							mode="outlined"
-							label='Name'
+							label='Nombre'
 							value={this.state.text}
 							onChangeText={text => this.setState({ text })}
 							theme={{ colors: { primary: '#9dc107'}}}
@@ -42,7 +42,7 @@ export default class CreateAccount extends Component {
 						<TextInput
 							style={styles.inputLogin}
 							mode="outlined"
-							label='Email'
+							label='Correo'
 							value={this.state.text}
 							onChangeText={text => this.setState({ text })}
 							theme={{ colors: { primary: '#9dc107'}}}
@@ -51,7 +51,7 @@ export default class CreateAccount extends Component {
 						<TextInput
 							style={styles.inputLogin}
 							mode="outlined"
-							label='Password'
+							label='Contraseña'
 							value={this.state.text}
 							onChangeText={text => this.setState({ text })}
 							theme={{ colors: { primary: '#9dc107'}}}
@@ -60,7 +60,7 @@ export default class CreateAccount extends Component {
 						<TextInput
 							style={styles.inputLogin}
 							mode="outlined"
-							label='Password Confirmation'
+							label='Confirmar Contraseña'
 							value={this.state.text}
 							onChangeText={text => this.setState({ text })}
 							theme={{ colors: { primary: '#9dc107'}}}
@@ -74,7 +74,7 @@ export default class CreateAccount extends Component {
 							style={styles.loginButton}
 							onPress={() => console.log('Pressed')}
 							>
-								Create Account
+								Crear Cuenta
 						</Button>
 					</View>
 					<View style={styles.loginCopyright}>

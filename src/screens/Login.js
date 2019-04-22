@@ -140,6 +140,10 @@ export default class Login extends Component {
 		this.getItemKey('uid')
 	}
 
+  onCreateAccount = () => {
+    this.props.navigation.navigate('CreateAccount');
+  }
+
 	render() {
 		return (
 		<ImageBackground source={require('../images/backgroundLogin.jpg')} style={styles.backgroundImage}>
@@ -168,7 +172,7 @@ export default class Login extends Component {
 								<TextInput
 									style={styles.inputLogin}
 									mode="outlined"
-									label='Email'
+									label='Correo'
 									value={this.state.email}
 									onChangeText={email => this.setState({ email })}
 									theme={{ colors: { primary: '#9dc107'}}}
@@ -177,7 +181,7 @@ export default class Login extends Component {
 								<TextInput
 									style={styles.inputLogin}
 									mode="outlined"
-									label='Password'
+									label='Contraseña'
 									secureTextEntry={true}
 									value={this.state.password}
 									onChangeText={password => this.setState({ password })}
@@ -186,7 +190,7 @@ export default class Login extends Component {
 								<Divider style={styles.loginSeparator}></Divider>
 								<View>
 								{
-									this.state.isHidden ? <TextInput style={styles.inputLogin} mode="outlined" label='Code Agency' value={this.state.agencyCode} onChangeText={agencyCode => this.setState({ agencyCode })} theme={{ colors: { primary: '#9dc107'}}} /> : null
+									this.state.isHidden ? <TextInput style={styles.inputLogin} mode="outlined" label='Código Agencia' value={this.state.agencyCode} onChangeText={agencyCode => this.setState({ agencyCode })} theme={{ colors: { primary: '#9dc107'}}} /> : null
 								}
 								</View>
 							</View>
@@ -207,8 +211,8 @@ export default class Login extends Component {
 
 							</View>
 							<View style={styles.loginItems}>
-								<Text style={styles.loginItemsTitle}>Create Account</Text>
-								<Text style={styles.loginItemsTitle}>Forgot Password</Text>
+								<Text style={styles.loginItemsTitle} onPress={this.onCreateAccount}>Crear Cuenta</Text>
+								<Text style={styles.loginItemsTitle}>Recuperar Contraseña</Text>
 							</View>
 							<View style={styles.loginCopyright}>
 								<Text style={styles.loginCopyrightTitle}>Receptivo Colombia © | 2019</Text>
@@ -218,8 +222,19 @@ export default class Login extends Component {
 
 					{this.state.currentUser && (
 						<View>
-							<Text style={styles.loginSwitchTitle} >{'¡Bienvenido, ' + this.state.userEmail + '!'}</Text>
+							<Text style={styles.titleWelcome}>¡Bienvenido!</Text> 
 
+							<Text style={styles.emailWelcome}>{this.state.userEmail}</Text>
+
+							<View style={styles.loginButtonSubmit}>
+								<Button
+									mode="contained"
+									style={styles.loginButton}
+									onPress={this.signOut.bind(this)}
+									>
+										Mi Perfil
+								</Button>
+							</View>
 							<View style={styles.loginButtonSubmit}>
 								<Button
 									mode="contained"
@@ -351,5 +366,18 @@ const styles = StyleSheet.create({
 	success: {
 		color: '#13cc00',
 		paddingTop: 10
-	}
+	},
+	titleWelcome:{
+    textAlign: 'center',
+    fontFamily: Font.robotoMedium,
+    color: '#4e4e56',
+    fontSize: 20
+	},
+	emailWelcome:{
+    textAlign: 'center',
+    fontFamily: Font.robotoMedium,
+    color: '#4e4e56',
+		fontSize: 15,
+		paddingVertical: 20
+  }
 });

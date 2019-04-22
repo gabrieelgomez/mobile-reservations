@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
-
-export default class Profile extends Component {
+import { Font } from '../utils/Fonts';
+export default class CircuitWidget extends Component {
   handlePress = () => {
     this.props.navigation.navigate("TransferWidget");
   };
@@ -10,11 +10,7 @@ export default class Profile extends Component {
     return (
       <View style={styles.container}>
         <View>
-          <Image
-            style={styles.logo}
-            source={require("../images/receptivo_col.png")}
-            resizeMode="contain"
-          />
+            <Text style={styles.title}>¡Módulo no disponible!</Text>
         </View>
       </View>
     );
@@ -24,7 +20,7 @@ export default class Profile extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#43b7e8",
+    backgroundColor: "#4e4e56",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center"
@@ -33,14 +29,11 @@ const styles = StyleSheet.create({
     width: 500,
     height: 60,
     resizeMode: "contain"
+  },
+  title:{
+    textAlign: 'center',
+    fontFamily: Font.robotoMedium,
+    color: '#ffffff',
+    fontSize: 20
   }
 });
-
-//Brand - Corporate colors
-// $color-blue:#43b7e8;
-// $color-yellow: #ffc600;
-// $color-red:#e53124;
-// $color-orange:#eb6b0a;
-// $color-green: #9dc107;
-// $color-gray:#4e4e56;
-// $color-white:#ffffff;
