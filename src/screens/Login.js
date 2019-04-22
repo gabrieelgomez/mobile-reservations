@@ -21,19 +21,6 @@ export default class Login extends Component {
 		}
 	}
 
-
-	storeToken(key, value){
-		// AsyncStorage.setItem(ACCESS_TOKEN, responseData, (err)=> {
-		// 	if(err){
-		// 		console.log("an error");
-		// 		throw err;
-		// 	}
-		// 	console.log("success");
-		// }).catch((err)=> {
-		// 		console.log("error is: " + err);
-		// });
-	}
-
 	storeData = async (key, value) => {
 		try {
 			await AsyncStorage.setItem(key, value);
@@ -53,8 +40,26 @@ export default class Login extends Component {
 		}
 	}
 
+	getItemKey(key){
+		AsyncStorage.getItem(key).then((value) => {
+			console.log(value)
+			if (key == 'uid' && value != null){
+				this.setState({currentUser: true, userEmail: value});
+			}
+		})
+	}
+
+	async removeItemKey(key) {
+    try {
+      await AsyncStorage.removeItem(key);
+      return true;
+    }
+    catch(exception) {
+      return false;
+    }
+  }
+
 	async onLoginPressed() {
-		// destroy_v1_user_session GET /v1/auth/sign_out(.:format) devise_token_auth/sessions#destroy
 		this.setState({showProgress: true})
 		return fetch('https://receptivocolombia.com/v1/auth/sign_in', {
 														method: 'POST',
@@ -67,14 +72,20 @@ export default class Login extends Component {
 															password: this.state.password,
 														})
 													})
-
 					.then((response) => {
 						if (response.status >= 200 && response.status < 300) {
 							console.log(response);
-							let accessToken = response.status;
-							this.storeData('access-token', response.headers.get('access-token'));
-							this.storeData('client', response.headers.get('client'));
-							this.storeData('uid', response.headers.get('uid'));
+							let accessToken = response.headers.get('access-token')
+							let client      = response.headers.get('client')
+							let uid         = response.headers.get('uid')
+							this.storeData('access-token', accessToken);
+							this.storeData('client', client);
+							this.storeData('uid', uid);
+							this.setState({
+								userAccessToken: accessToken,
+								userClient: client,
+								userEmail: uid
+							})
 						}
 						return response;
 					})
@@ -83,68 +94,50 @@ export default class Login extends Component {
 							if (responseJson == undefined){
 								console.log('json undefined')
 							} else if (responseJson.errors){
-								this.setState({error: responseJson.errors[0]});
 								console.log("error " + responseJson.errors[0]);
-								this.setState({showProgress: false});
+								this.setState({showProgress: false, error: responseJson.errors[0]});
 							} else if (responseJson.data){
 								console.log(responseJson.data)
-								this.setState({currentUser: true, error: '', userEmail: responseJson.data.email});
+								this.setState({currentUser: true, error: ''});
 							}
 							else {
 								console.log(responseJson)
 							}
 						});
-						// .catch((error) => {
-						// 	this.setState({error: error});
-						// 	console.log("error " + error);
-						// 	this.setState({showProgress: false});
-						// });
+	}
 
+	async signOut(){
+		// return fetch('https://receptivocolombia.com/v1/auth/sign_out', {
+		// 												method: 'GET',
+		// 												headers: {
+		// 													'Accept': 'application/json',
+		// 													'Content-Type': 'application/json',
+		// 												}
+		// 											})
+		// 			// .then((response) => {
+		// 			// 	if (response.status >= 200 && response.status < 300) {
+		// 			// 		console.log(response);
+		// 			// 		let accessToken = response.status;
+		// 			// 		this.storeData('access-token', response.headers.get('access-token'));
+		// 			// 		this.storeData('client', response.headers.get('client'));
+		// 			// 		this.storeData('uid', response.headers.get('uid'));
+		// 			// 	}
+		// 			// 	return response;
+		// 			// })
+		// 			.then((response) => response.json())
+		// 				.then((responseJson) => {
+		// 					debugger
+		// 				});
+		this.removeItemKey('uid')
+		this.removeItemKey('client')
+		this.removeItemKey('access-token')
+		this.setState({currentUser: false, userEmail: ''})
+	}
 
-		// try {
-		// 	let response = await fetch('https://receptivocolombia.com/v1/auth/sign_in', {
-		// 													method: 'POST',
-		// 													headers: {
-		// 														'Accept': 'application/json',
-		// 														'Content-Type': 'application/json',
-		// 													},
-		// 													body: JSON.stringify({
-		// 														email: this.state.email,
-		// 														password: this.state.password,
-		// 													})
-		// 												})
-		// 												.then((response) => response.json())
-		// 													.then((responseJson) => {
-		// 														if (responseJson == undefined){
-		// 															console.log('json undefined')
-		// 														} else {
-		// 															console.log(resp)
-		// 														}
-		// 													})
-		//
-		// 	// let res = await response.text();
-		// 	// if (response.status >= 200 && response.status < 300) {
-		// 	// 	console.log(response);
-		// 	// 	let accessToken = response.status;
-		// 	// 	this.storeData('access-token', response.headers.get('access-token'));
-		// 	// 	this.storeData('client', response.headers.get('client'));
-		// 	// 	this.storeData('uid', response.headers.get('uid'));
-		// 	// 	debugger
-		// 	// } else {
-		// 	// 	//Handle error
-		// 	// 	let error = res;
-		// 	// 	throw error;
-		// 	// }
-		// } catch(error) {
-		// 	if(error == 'TypeError: Network request failed'){
-		// 		console.warn('Error de internet')
-		// 	} else {
-		// 		this.setState({error: error});
-		// 		console.log("error " + error);
-		// 		this.setState({showProgress: false});
-		// 	}
-		// }
-
+	componentWillMount(){
+		this.getItemKey('access-token')
+		this.getItemKey('client')
+		this.getItemKey('uid')
 	}
 
 	render() {
@@ -205,7 +198,7 @@ export default class Login extends Component {
 									style={styles.loginButton}
 									onPress={this.onLoginPressed.bind(this)}
 									>
-										Sign In
+										Iniciar Sesión
 								</Button>
 
 								<Text style={styles.error}>
@@ -226,6 +219,17 @@ export default class Login extends Component {
 					{this.state.currentUser && (
 						<View>
 							<Text style={styles.loginSwitchTitle} >{'¡Bienvenido, ' + this.state.userEmail + '!'}</Text>
+
+							<View style={styles.loginButtonSubmit}>
+								<Button
+									mode="contained"
+									style={styles.loginButton}
+									onPress={this.signOut.bind(this)}
+									>
+										Cerrar Sesión
+								</Button>
+							</View>
+
 						</View>
 					)}
 				</View>
