@@ -16,12 +16,14 @@ import {
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TransferWidget from './src/screens/TransferWidget';
+import TourWidget from './src/screens/TourWidget';
 import Profile from './src/screens/Profile';
 import TransferList from './src/components/transfers/Listing';
 import Login from './src/screens/Login';
 import CreateAccount from './src/screens/CreateAccount';
-import FormStepOne from './src/screens/FormStepOne';
-import FormStepTwo from './src/screens/FormStepTwo';
+// import FormStepOne from './src/screens/FormStepOne';
+// import FormStepTwo from './src/screens/FormStepTwo';
+// import FormStepThree from './src/screens/FormStepThree';
 
 
 class LogoTitle extends React.Component {
@@ -68,6 +70,8 @@ const StackNavigator = createStackNavigator(
         headerTintColor: '#ffffff',
       }
     },
+
+
     Profile: {
       screen: Profile,
       key: 'profileScreen',
@@ -108,22 +112,22 @@ const TabNavigator = createMaterialBottomTabNavigator(
       })
     },
 
-    Profile: {
-      screen: Profile,
-      key: 'profileScreen',
-      navigationOptions: () => ({
-        key: 'profileScreen',
-        title: 'Perfil',
-        headerTitle: "something",
-        tabBarIcon: ({focused, tintColor}) => (
-          <Icon
-              name='user'
-              color={tintColor}
-              size={20}
-          />
-        )
-      })
-    },
+    // Profile: {
+    //   screen: Profile,
+    //   key: 'profileScreen',
+    //   navigationOptions: () => ({
+    //     key: 'profileScreen',
+    //     title: 'Perfil',
+    //     headerTitle: "something",
+    //     tabBarIcon: ({focused, tintColor}) => (
+    //       <Icon
+    //           name='user'
+    //           color={tintColor}
+    //           size={20}
+    //       />
+    //     )
+    //   })
+    // },
 
     Login: {
       screen: Login,
@@ -159,29 +163,12 @@ const TabNavigator = createMaterialBottomTabNavigator(
       })
     },
 
-    FormStepOne: {
-      screen: FormStepOne,
-      key: 'FormStepOneScreen',
+    TourWidget: {
+      screen: TourWidget,
+      key: 'TourWidgetScreen',
       navigationOptions: () => ({
-        key: 'FormStepOneScreen',
-        title: 'FormStepOne',
-        headerTitle: "something",
-        tabBarIcon: ({focused, tintColor}) => (
-          <Icon
-              name='user'
-              color={tintColor}
-              size={20}
-          />
-        )
-      })
-    },
-
-    FormStepTwo: {
-      screen: FormStepTwo,
-      key: 'FormStepTwoScreen',
-      navigationOptions: () => ({
-        key: 'FormStepTwoScreen',
-        title: 'FormStepTwo',
+        key: 'TourWidgetScreen',
+        title: 'TourWidget',
         headerTitle: "something",
         tabBarIcon: ({focused, tintColor}) => (
           <Icon

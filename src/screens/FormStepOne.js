@@ -68,15 +68,6 @@ export default class FormStepOne extends Component {
 						/>
 					</View>
 					<Divider style={styles.loginSeparator}></Divider>
-					<View style={styles.loginSwitch}>
-								<Text style={styles.loginSwitchTitle} >IDA/VUELTA</Text>
-								<RadioButton
-									value="first"
-									color="#9dc107"
-									status={checked === 'first' ? 'checked' : 'unchecked'}
-									onPress={() => { this.setState({ checked: 'first' }); }}
-								/>
-					</View>
 					<Divider style={styles.loginSeparator}></Divider>
 					<View style={styles.loginButtonSubmit}>
 						<Button 

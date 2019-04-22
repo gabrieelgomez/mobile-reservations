@@ -9,7 +9,7 @@ export default class FormStepTwo extends Component {
   constructor(props) {
     super(props);
 		this.state = { 
-			checked: 'first',
+            isHidden: false,
 		}
   }
   render() {
@@ -21,52 +21,9 @@ export default class FormStepTwo extends Component {
 					<View style={styles.loginTitle}>
 						<Text style={styles.loginItemTitle} >Datos de Reserva</Text>
 					</View>
+
 					<View style={styles.loginInputs}>
-						<TextInput
-							style={styles.inputLogin}
-							mode="outlined"
-							label='Fecha Origen'
-							value={this.state.text}
-							onChangeText={text => this.setState({ text })}
-							theme={{ colors: { primary: '#9dc107'}}}
-						/>
-						<Divider style={styles.loginSeparator}></Divider>
-						<TextInput
-							style={styles.inputLogin}
-							mode="outlined"
-							label='Fecha Destino'
-							value={this.state.text}
-							onChangeText={text => this.setState({ text })}
-							theme={{ colors: { primary: '#9dc107'}}}
-						/>
-						<Divider style={styles.loginSeparator}></Divider>
-						<TextInput
-							style={styles.inputLogin}
-							mode="outlined"
-							label='Hora Origen'
-							value={this.state.text}
-							onChangeText={text => this.setState({ text })}
-							theme={{ colors: { primary: '#9dc107'}}}
-						/>
-						<Divider style={styles.loginSeparator}></Divider>
-						<TextInput
-							style={styles.inputLogin}
-							mode="outlined"
-							label='Hora Destino'
-							value={this.state.text}
-							onChangeText={text => this.setState({ text })}
-							theme={{ colors: { primary: '#9dc107'}}}
-						/>
-						<Divider style={styles.loginSeparator}></Divider>
-						<TextInput
-							style={styles.inputLogin}
-							mode="outlined"
-							label='Cantidad de Equipaje'
-							value={this.state.text}
-							onChangeText={text => this.setState({ text })}
-							theme={{ colors: { primary: '#9dc107'}}}
-						/>
-                        <Divider style={styles.loginSeparator}></Divider>
+
                         <View style={styles.loginSwitch}>
                             <Text style={styles.loginSwitchTitle} >¿Traslado desde el aeropuerto?</Text>
                             <Switch
@@ -75,6 +32,53 @@ export default class FormStepTwo extends Component {
                                 onValueChange={value => this.setState({ isHidden: value })}
                             />
                         </View>
+                        <Divider style={styles.loginSeparator}></Divider>
+						<TextInput
+							style={styles.inputLogin}
+							mode="outlined"
+							label='Aerolinea'
+							value={this.state.text}
+							onChangeText={text => this.setState({ text })}
+							theme={{ colors: { primary: '#9dc107'}}}
+						/>
+						<Divider style={styles.loginSeparator}></Divider>
+						<TextInput
+							style={styles.inputLogin}
+							mode="outlined"
+							label='Número de Vuelo'
+							value={this.state.text}
+							onChangeText={text => this.setState({ text })}
+							theme={{ colors: { primary: '#9dc107'}}}
+						/>
+                        <Divider style={styles.loginSeparator}></Divider>
+                        <View style={styles.loginSwitch}>
+                            <Text style={styles.loginSwitchTitle} >¿Traslado al aeropuerto?</Text>
+                            <Switch
+                                value={this.state.isHidden}
+                                color="#9dc107"
+                                onValueChange={value => this.setState({ isHidden: value })}
+                            />
+                        </View>
+                        <Divider style={styles.loginSeparator}></Divider>
+						<TextInput
+							style={styles.inputLogin}
+							mode="outlined"
+							label='Aerolinea'
+							value={this.state.text}
+							onChangeText={text => this.setState({ text })}
+							theme={{ colors: { primary: '#9dc107'}}}
+						/>
+						<Divider style={styles.loginSeparator}></Divider>
+						<TextInput
+							style={styles.inputLogin}
+							mode="outlined"
+							label='Número de Vuelo'
+							value={this.state.text}
+							onChangeText={text => this.setState({ text })}
+							theme={{ colors: { primary: '#9dc107'}}}
+						/>
+
+	
 
 
 
