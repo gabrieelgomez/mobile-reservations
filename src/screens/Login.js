@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, Image, ImageBackground, ActivityIndicator, AsyncStorage } from "react-native";
+import { StyleSheet, Text, View, Image, ImageBackground, ActivityIndicator, AsyncStorage, ToastAndroid } from "react-native";
 import { TextInput, Button, Divider } from "react-native-paper";
 import { Switch } from "react-native-paper";
 import { Font } from '../utils/Fonts';
-
-const ACCESS_TOKEN = 'access_token';
 
 export default class Login extends Component {
 	constructor(props) {
@@ -29,27 +27,25 @@ export default class Login extends Component {
 		}
 	}
 
-	getData = async (key) => {
-		try {
-			const value = await AsyncStorage.getItem(key)
-			if(value !== null) {
-			 console.log(value)
-			}
-		} catch(e) {
-			console.warn('Error al consultar registro')
-		}
-	}
-
-	getItemKey(key){
+	getData(key){
 		AsyncStorage.getItem(key).then((value) => {
 			console.log(value)
 			if (key == 'uid' && value != null){
 				this.setState({currentUser: true, userEmail: value});
 			}
+
+			if (key == 'access-token' && value != null){
+				this.setState({userAccessToken: value});
+			}
+
+			if (key == 'client' && value != null){
+				this.setState({userClient: value});
+			}
+
 		})
 	}
 
-	async removeItemKey(key) {
+	async removeData(key) {
     try {
       await AsyncStorage.removeItem(key);
       return true;
@@ -98,6 +94,7 @@ export default class Login extends Component {
 								this.setState({showProgress: false, error: responseJson.errors[0]});
 							} else if (responseJson.data){
 								console.log(responseJson.data)
+								this.storeData('userData', JSON.stringify(responseJson.data));
 								this.setState({currentUser: true, error: ''});
 							}
 							else {
@@ -107,37 +104,40 @@ export default class Login extends Component {
 	}
 
 	async signOut(){
-		// return fetch('https://receptivocolombia.com/v1/auth/sign_out', {
-		// 												method: 'GET',
-		// 												headers: {
-		// 													'Accept': 'application/json',
-		// 													'Content-Type': 'application/json',
-		// 												}
-		// 											})
-		// 			// .then((response) => {
-		// 			// 	if (response.status >= 200 && response.status < 300) {
-		// 			// 		console.log(response);
-		// 			// 		let accessToken = response.status;
-		// 			// 		this.storeData('access-token', response.headers.get('access-token'));
-		// 			// 		this.storeData('client', response.headers.get('client'));
-		// 			// 		this.storeData('uid', response.headers.get('uid'));
-		// 			// 	}
-		// 			// 	return response;
-		// 			// })
-		// 			.then((response) => response.json())
-		// 				.then((responseJson) => {
-		// 					debugger
-		// 				});
-		this.removeItemKey('uid')
-		this.removeItemKey('client')
-		this.removeItemKey('access-token')
+		this.removeData('uid')
+		this.removeData('client')
+		this.removeData('access-token')
 		this.setState({currentUser: false, userEmail: ''})
+		return fetch('https://receptivocolombia.com/v1/auth/sign_out', {
+														method: 'DELETE',
+														headers: {
+															'Accept': 'application/json',
+															'Content-Type': 'application/json',
+															'access-token': this.state.userAccessToken,
+															'client': this.state.userClient,
+															'uid': this.state.userEmail
+														}
+													})
+					.then((response) => response.json())
+						.then((responseJson) => {
+							// debugger
+							if (responseJson.success){
+								this.removeData('uid')
+								this.removeData('client')
+								this.removeData('access-token')
+								this.setState({currentUser: false, userEmail: ''})
+								ToastAndroid.show('¡Hasta Luego!', ToastAndroid.SHORT);
+							} else {
+								ToastAndroid.show('Error al cerrar sesión, intente de nuevo.', ToastAndroid.SHORT);
+							}
+						});
 	}
 
 	componentWillMount(){
-		this.getItemKey('access-token')
-		this.getItemKey('client')
-		this.getItemKey('uid')
+		this.getData('access-token')
+		this.getData('client')
+		this.getData('uid')
+		this.getData('userData')
 	}
 
   onCreateAccount = () => {
