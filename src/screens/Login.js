@@ -14,7 +14,7 @@ export default class Login extends Component {
 			error: '',
 			success: '',
 			isHidden: false,
-			showProgress: false,
+			showProgress: true,
 			currentUser: false
 		}
 	}
@@ -31,7 +31,9 @@ export default class Login extends Component {
 		AsyncStorage.getItem(key).then((value) => {
 			console.log(value)
 			if (key == 'uid' && value != null){
-				this.setState({currentUser: true, userEmail: value});
+				this.setState({showProgress: false, currentUser: true, userEmail: value});
+			} else{
+				this.setState({showProgress: false})
 			}
 
 			if (key == 'access-token' && value != null){
@@ -91,23 +93,28 @@ export default class Login extends Component {
 								console.log('json undefined')
 							} else if (responseJson.errors){
 								console.log("error " + responseJson.errors[0]);
+								ToastAndroid.show(responseJson.errors[0], ToastAndroid.SHORT);
 								this.setState({showProgress: false, error: responseJson.errors[0]});
 							} else if (responseJson.data){
 								console.log(responseJson.data)
 								this.storeData('userData', JSON.stringify(responseJson.data));
-								this.setState({currentUser: true, error: ''});
+								this.setState({showProgress: false, currentUser: true, error: ''});
 							}
 							else {
 								console.log(responseJson)
 							}
-						});
+						})
+					.catch((error) =>{
+						if(error == 'TypeError: Network request failed'){
+							ToastAndroid.show('No hay conexión a internet. Intente más tarde.', ToastAndroid.SHORT);
+						}
+						this.setState({showProgress: false})
+						// console.error(error);
+					});
 	}
 
 	async signOut(){
-		this.removeData('uid')
-		this.removeData('client')
-		this.removeData('access-token')
-		this.setState({currentUser: false, userEmail: ''})
+		this.setState({showProgress: true})
 		return fetch('https://receptivocolombia.com/v1/auth/sign_out', {
 														method: 'DELETE',
 														headers: {
@@ -120,7 +127,7 @@ export default class Login extends Component {
 													})
 					.then((response) => response.json())
 						.then((responseJson) => {
-							// debugger
+							this.setState({showProgress: false})
 							if (responseJson.success){
 								this.removeData('uid')
 								this.removeData('client')
@@ -130,125 +137,150 @@ export default class Login extends Component {
 							} else {
 								ToastAndroid.show('Error al cerrar sesión, intente de nuevo.', ToastAndroid.SHORT);
 							}
+						})
+						.catch((error) =>{
+							if(error == 'TypeError: Network request failed'){
+								ToastAndroid.show('No hay conexión a internet. Intente más tarde.', ToastAndroid.SHORT);
+							}
+							this.setState({showProgress: false})
+							// console.error(error);
 						});
 	}
 
-	componentWillMount(){
+	componentDidMount(){
 		this.getData('access-token')
 		this.getData('client')
 		this.getData('uid')
 		this.getData('userData')
 	}
 
-  onCreateAccount = () => {
+	// componentWillUnmount(){
+	// 	this.setState({showProgress: true})
+	// }
+
+  toCreateAccount = () => {
     this.props.navigation.navigate('CreateAccount');
+  }
+
+	toProfile = () => {
+    this.props.navigation.navigate('Profile');
   }
 
 	render() {
 		return (
 		<ImageBackground source={require('../images/backgroundLogin.jpg')} style={styles.backgroundImage}>
-			<View style={styles.backgroundForm}>
+			{this.state.showProgress && (
+				<View style={[styles.container_indicator, styles.horizontal_indicator]}>
+					<ActivityIndicator size="large" color="#0000ff" />
+				</View>
+			)}
 
-				<View style={styles.loginInput}>
-					<View style={styles.loginLogo}>
-						<Image
-								style={styles.logo}
-								source={require("../images/login_new.png")}
-								resizeMode="contain"
-							/>
-					</View>
+			{this.state.showProgress == false && (
 
-					{this.state.currentUser == false && (
-						<View>
-							<View style={styles.loginSwitch}>
-								<Text style={styles.loginSwitchTitle} >¿Eres agencia?</Text>
-								<Switch
-									value={this.state.isHidden}
-									color="#9dc107"
-									onValueChange={value => this.setState({ isHidden: value })}
+				<View style={styles.backgroundForm}>
+
+					<View style={styles.loginInput}>
+						<View style={styles.loginLogo}>
+							<Image
+									style={styles.logo}
+									source={require("../images/login_new.png")}
+									resizeMode="contain"
 								/>
-							</View>
-							<View style={styles.loginInputs}>
-								<TextInput
-									style={styles.inputLogin}
-									mode="outlined"
-									label='Correo'
-									value={this.state.email}
-									onChangeText={email => this.setState({ email })}
-									theme={{ colors: { primary: '#9dc107'}}}
-								/>
+						</View>
+
+						{this.state.currentUser == false && (
+							<View>
+								<View style={styles.loginSwitch}>
+									<Text style={styles.loginSwitchTitle} >¿Eres agencia?</Text>
+									<Switch
+										value={this.state.isHidden}
+										color="#9dc107"
+										onValueChange={value => this.setState({ isHidden: value })}
+									/>
+								</View>
+								<View style={styles.loginInputs}>
+									<TextInput
+										style={styles.inputLogin}
+										mode="outlined"
+										label='Correo'
+										value={this.state.email}
+										onChangeText={email => this.setState({ email })}
+										theme={{ colors: { primary: '#9dc107'}}}
+									/>
+									<Divider style={styles.loginSeparator}></Divider>
+									<TextInput
+										style={styles.inputLogin}
+										mode="outlined"
+										label='Contraseña'
+										secureTextEntry={true}
+										value={this.state.password}
+										onChangeText={password => this.setState({ password })}
+										theme={{ colors: { primary: '#9dc107'}}}
+									/>
+									<Divider style={styles.loginSeparator}></Divider>
+									<View>
+									{
+										this.state.isHidden ? <TextInput style={styles.inputLogin} mode="outlined" label='Código Agencia' value={this.state.agencyCode} onChangeText={agencyCode => this.setState({ agencyCode })} theme={{ colors: { primary: '#9dc107'}}} /> : null
+									}
+									</View>
+								</View>
 								<Divider style={styles.loginSeparator}></Divider>
-								<TextInput
-									style={styles.inputLogin}
-									mode="outlined"
-									label='Contraseña'
-									secureTextEntry={true}
-									value={this.state.password}
-									onChangeText={password => this.setState({ password })}
-									theme={{ colors: { primary: '#9dc107'}}}
-								/>
 								<Divider style={styles.loginSeparator}></Divider>
-								<View>
-								{
-									this.state.isHidden ? <TextInput style={styles.inputLogin} mode="outlined" label='Código Agencia' value={this.state.agencyCode} onChangeText={agencyCode => this.setState({ agencyCode })} theme={{ colors: { primary: '#9dc107'}}} /> : null
-								}
+								<View style={styles.loginButtonSubmit}>
+									<Button
+										mode="contained"
+										style={styles.loginButton}
+										onPress={this.onLoginPressed.bind(this)}
+										>
+											Iniciar Sesión
+									</Button>
+
+									<Text style={styles.error}>
+										{this.state.error}
+									</Text>
+
+								</View>
+								<View style={styles.loginItems}>
+									<Text style={styles.loginItemsTitle} onPress={this.toCreateAccount}>Crear Cuenta</Text>
+									<Text style={styles.loginItemsTitle}>Recuperar Contraseña</Text>
+								</View>
+								<View style={styles.loginCopyright}>
+									<Text style={styles.loginCopyrightTitle}>Receptivo Colombia © | 2019</Text>
 								</View>
 							</View>
-							<Divider style={styles.loginSeparator}></Divider>
-							<Divider style={styles.loginSeparator}></Divider>
-							<View style={styles.loginButtonSubmit}>
-								<Button
-									mode="contained"
-									style={styles.loginButton}
-									onPress={this.onLoginPressed.bind(this)}
-									>
-										Iniciar Sesión
-								</Button>
+						)}
 
-								<Text style={styles.error}>
-									{this.state.error}
-								</Text>
+						{this.state.currentUser && (
+							<View>
+								<Text style={styles.titleWelcome}>¡Bienvenido!</Text>
+
+								<Text style={styles.emailWelcome}>{this.state.userEmail}</Text>
+
+								<View style={styles.loginButtonSubmit}>
+									<Button
+										mode="contained"
+										style={styles.loginButton}
+										onPress={this.toProfile.bind(this)}
+										>
+											Mi Perfil
+									</Button>
+								</View>
+								<View style={styles.loginButtonSubmit}>
+									<Button
+										mode="contained"
+										style={styles.loginButton}
+										onPress={this.signOut.bind(this)}
+										>
+											Cerrar Sesión
+									</Button>
+								</View>
 
 							</View>
-							<View style={styles.loginItems}>
-								<Text style={styles.loginItemsTitle} onPress={this.onCreateAccount}>Crear Cuenta</Text>
-								<Text style={styles.loginItemsTitle}>Recuperar Contraseña</Text>
-							</View>
-							<View style={styles.loginCopyright}>
-								<Text style={styles.loginCopyrightTitle}>Receptivo Colombia © | 2019</Text>
-							</View>
-						</View>
-					)}
-
-					{this.state.currentUser && (
-						<View>
-							<Text style={styles.titleWelcome}>¡Bienvenido!</Text> 
-
-							<Text style={styles.emailWelcome}>{this.state.userEmail}</Text>
-
-							<View style={styles.loginButtonSubmit}>
-								<Button
-									mode="contained"
-									style={styles.loginButton}
-									onPress={this.signOut.bind(this)}
-									>
-										Mi Perfil
-								</Button>
-							</View>
-							<View style={styles.loginButtonSubmit}>
-								<Button
-									mode="contained"
-									style={styles.loginButton}
-									onPress={this.signOut.bind(this)}
-									>
-										Cerrar Sesión
-								</Button>
-							</View>
-
-						</View>
-					)}
+						)}
+					</View>
 				</View>
-			</View>
+
+			)}
 		</ImageBackground>
 		);
 	}
@@ -258,6 +290,15 @@ export default class Login extends Component {
 
 
 const styles = StyleSheet.create({
+	container_indicator: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  horizontal_indicator: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
+  },
 	backgroundImage: {
 			flex: 1,
 			resizeMode: 'stretch', // or 'stretch',

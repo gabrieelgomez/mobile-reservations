@@ -21,6 +21,7 @@ import CircuitWidget from './src/screens/CircuitWidget';
 import MultidestinationWidget from './src/screens/MultidestinationWidget';
 import TransferList from './src/components/transfers/Listing';
 import Login from './src/screens/Login';
+import Profile from './src/screens/Profile';
 import CreateAccount from './src/screens/CreateAccount';
 //import FormStepOne from './src/screens/FormStepOne';
 class LogoTitle extends React.Component {
@@ -66,14 +67,14 @@ const StackNavigator = createStackNavigator(
     },
 
 
-    // Profile: {
-    //   screen: Profile,
-    //   key: 'profileScreen',
-    //   navigationOptions: () => ({
-    //     key: 'profileScreen',
-    //     headerTitle: "Perfil"
-    //   })
-    // },
+    Profile: {
+      screen: Profile,
+      key: 'profileScreen',
+      navigationOptions: () => ({
+        key: 'profileScreen',
+        headerTitle: "Perfil"
+      })
+    },
 
     TransferList: {
       screen: TransferList,
