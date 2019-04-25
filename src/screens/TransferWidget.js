@@ -7,7 +7,8 @@ import {
   RefreshControl
 } from "react-native";
 
-import InputsGoogleMaps from "../components/widget/transfers/InputsGoogleMaps";
+import InputOriginGoogleMaps from "../components/widget/transfers/InputOriginGoogleMaps";
+import InputArrivalGoogleMaps from "../components/widget/transfers/InputArrivalGoogleMaps";
 import RadioButtonFlights from "../components/widget/transfers/RadioButtonFlights";
 import InputsAdultsKids from "../components/widget/transfers/InputsAdultsKids";
 import InputsDatePicker from "../components/widget/transfers/InputsDatePicker";
@@ -71,6 +72,11 @@ export default class TransferWidget extends Component {
           />
         }
       >
+
+      <View style={[styles.boxOne]}>
+        <Text style={[styles.switchTitle]}>Reservación de Traslado</Text>
+      </View>
+
         <View style={[styles.boxOne]}>
           <Text style={[styles.switchTitle]}>IDA/VUELTA</Text>
           <Switch
@@ -84,7 +90,14 @@ export default class TransferWidget extends Component {
 
         <View style={[styles.boxTwo]}>
           <View style={[styles.inputsGoogleMaps]}>
-            <InputsGoogleMaps
+            <InputOriginGoogleMaps
+              dataForm={this.state}
+              updateFormState={this.updateState.bind(this)}
+            />
+          </View>
+
+          <View style={[styles.inputsGoogleMaps]}>
+            <InputArrivalGoogleMaps
               dataForm={this.state}
               updateFormState={this.updateState.bind(this)}
             />
@@ -160,8 +173,8 @@ const styles = StyleSheet.create({
   inputsGoogleMaps: {
     flex: 1,
     alignSelf: "stretch",
-    paddingTop: 30,
-    minHeight: 100
+    paddingTop: 0,
+    minHeight: 25
   },
   childBox: {
     flexDirection: "column",
@@ -175,6 +188,18 @@ const styles = StyleSheet.create({
     color: "#9dc107",
     paddingLeft: 12
   },
+  boxTitle: {
+    //backgroundColor: "#eeeeff",
+    flexGrow: 0,
+    flexShrink: 1,
+    flexBasis: "auto",
+    paddingHorizontal: 15,
+    paddingVertical: 20,
+    paddingTop: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
   boxOne: {
     //backgroundColor: "#eeeeff",
     flexGrow: 0,
@@ -182,7 +207,7 @@ const styles = StyleSheet.create({
     flexBasis: "auto",
     paddingHorizontal: 15,
     paddingVertical: 20,
-    paddingTop: 38,
+    paddingTop: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center"

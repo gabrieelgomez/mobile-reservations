@@ -123,7 +123,8 @@ const styles = StyleSheet.create({
   buttons: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignSelf: 'stretch'
+    alignSelf: 'stretch',
+    zIndex: -1
   },
   buttonColor: {
     backgroundColor: "#9dc107"
