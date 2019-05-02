@@ -4,7 +4,8 @@ import {
   StyleSheet,
   View,
   Text,
-  RefreshControl
+  RefreshControl,
+  Dimensions
 } from "react-native";
 
 import InputOriginGoogleMaps from "../components/widget/transfers/InputOriginGoogleMaps";
@@ -63,72 +64,76 @@ export default class TransferWidget extends Component {
   render() {
     const { isSwitchOn } = this.state;
     return (
-      <View
-        style={styles.container}
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.refreshing}
-            onRefresh={this._onRefresh}
-          />
-        }
-      >
+      <ScrollView>
 
-      <View style={[styles.boxOne]}>
-        <Text style={[styles.switchTitle]}>Reservación de Traslado</Text>
-      </View>
+        <View
+          style={styles.container}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+        >
 
         <View style={[styles.boxOne]}>
-          <Text style={[styles.switchTitle]}>IDA/VUELTA</Text>
-          <Switch
-            value={isSwitchOn}
-            color="#9dc107"
-            onValueChange={() => {
-              this.setState({ isSwitchOn: !isSwitchOn });
-            }}
-          />
+          <Text style={[styles.switchTitle]}>Reservación de Traslado</Text>
         </View>
 
-        <View style={[styles.boxTwo]}>
-          <View style={[styles.inputsGoogleMaps]}>
-            <InputOriginGoogleMaps
-              dataForm={this.state}
-              updateFormState={this.updateState.bind(this)}
+          <View style={[styles.boxOne]}>
+            <Text style={[styles.switchTitle]}>IDA/VUELTA</Text>
+            <Switch
+              value={isSwitchOn}
+              color="#9dc107"
+              onValueChange={() => {
+                this.setState({ isSwitchOn: !isSwitchOn });
+              }}
             />
           </View>
 
-          <View style={[styles.inputsGoogleMaps]}>
-            <InputArrivalGoogleMaps
-              dataForm={this.state}
-              updateFormState={this.updateState.bind(this)}
-            />
+          <View style={[styles.boxTwo]}>
+            <View style={[styles.inputsOrigin]}>
+              <InputOriginGoogleMaps
+                dataForm={this.state}
+                updateFormState={this.updateState.bind(this)}
+              />
+            </View>
+
+            <View style={[styles.inputsArrival]}>
+              <InputArrivalGoogleMaps
+                dataForm={this.state}
+                updateFormState={this.updateState.bind(this)}
+              />
+            </View>
+
+            <View style={[styles.inputsDateOrigin]}>
+              <InputsDatePicker
+                dataForm={this.state}
+                updateFormState={this.updateState.bind(this)}
+              />
+            </View>
+
+            <View style={[styles.inputsDateArrival]}>
+              <InputsAdultsKids
+                dataForm={this.state}
+                updateFormState={this.updateState.bind(this)}
+              />
+            </View>
           </View>
 
-          <View style={[styles.inputsDatePicker]}>
-            <InputsDatePicker
-              dataForm={this.state}
-              updateFormState={this.updateState.bind(this)}
-            />
-          </View>
-
-          <View style={[styles.inputsDatePicker]}>
-            <InputsAdultsKids
-              dataForm={this.state}
-              updateFormState={this.updateState.bind(this)}
-            />
+          <View style={[styles.boxThree]}>
+              <Button
+                icon="search"
+                mode="contained"
+                onPress={this.handlePress}
+                style={styles.buttonColor}
+              >
+                BUSCAR
+              </Button>
           </View>
         </View>
 
-        <View style={[styles.boxThree]}>
-            <Button
-              icon="search"
-              mode="contained"
-              onPress={this.handlePress}
-              style={styles.buttonColor}
-            >
-              BUSCAR
-            </Button>
-        </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -176,6 +181,21 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     minHeight: 25
   },
+  inputsOrigin: {
+    padding: 5,
+  },
+  inputsArrival: {
+    padding: 5,
+  },
+  inputsDateOrigin: {
+    padding: 5,
+    marginTop: 20
+  },
+  inputsDateArrival: {
+    padding: 5,
+    marginTop: 20
+
+  },
   childBox: {
     flexDirection: "column",
     flexGrow: 2,
@@ -216,7 +236,7 @@ const styles = StyleSheet.create({
     flexGrow: 2,
     flexShrink: 0,
     flexBasis: "auto",
-    paddingTop: 20,
+    paddingTop: 5,
     paddingBottom: 20,
     paddingHorizontal: 18,
     flexDirection: 'column',
@@ -229,5 +249,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "stretch",
+    marginTop: Dimensions.get('window').height / 25
   }
 });

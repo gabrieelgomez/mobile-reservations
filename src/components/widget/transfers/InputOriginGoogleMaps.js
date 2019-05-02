@@ -7,7 +7,7 @@ import {
   ScrollView,
   Keyboard
 } from "react-native";
-import { TextInput, Button, Divider } from "react-native-paper";
+import { TextInput, Button, Divider, Avatar } from "react-native-paper";
 import _ from "lodash";
 
 //Show map... select location to go to
@@ -24,6 +24,9 @@ export default class Passenger extends Component {
       error: "",
       latitude: 0,
       longitude: 0,
+      searching: false,
+      boxPredictions: false,
+      notFoundDestinations: false,
       locationPredictions: []
     };
     this.onChangeDestinationDebounced = _.debounce(
@@ -53,8 +56,17 @@ export default class Passenger extends Component {
     const result = await fetch(apiUrl);
     const jsonResult = await result.json();
     this.setState({
+      searching: false,
+      boxPredictions: true,
       locationPredictions: jsonResult.predictions
     });
+
+    if (jsonResult.predictions == ''){
+      this.setState({
+        notFoundDestinations: true,
+      });
+    }
+
     console.log(jsonResult);
   }
 
@@ -86,12 +98,13 @@ export default class Passenger extends Component {
       <View style={styles.container}>
         <TextInput
           style={styles.inputLogin}
+          selectTextOnFocus
           placeholder="Escribe un destino"
           mode="outlined"
           label='Origen'
           value={this.state.destination}
           onChangeText={destination => {
-            this.setState({ destination });
+            this.setState({ destination: destination, searching: true, boxPredictions: false, notFoundDestinations: false });
             this.onChangeDestinationDebounced(destination);
           }}
           theme={{ colors: { primary: '#9dc107'}}}
@@ -99,11 +112,26 @@ export default class Passenger extends Component {
         <ScrollView
           style={styles.scrollView}
         >
-          <View
-            style={styles.boxPredictions}
-          >
-            {locationPredictions}
-          </View>
+          {
+            this.state.searching &&
+            <Button loading='true' mode='text' onPress={() => console.log('Pressed')}>
+            Buscando Destinos...
+            </Button>
+          }
+
+          {
+            this.state.notFoundDestinations &&
+            <Text>Sin resultados que coincidan</Text>
+          }
+
+          {
+            this.state.boxPredictions &&
+            <View
+              style={styles.boxPredictions}
+            >
+              {locationPredictions}
+            </View>
+          }
         </ScrollView>
       </View>
     );
