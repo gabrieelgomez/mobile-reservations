@@ -28,10 +28,10 @@ class LogoTitle extends React.Component {
   render() {
     return (
 
-      <View style={styles.container}>
+      <View style={styles.container_logo}>
           <Image
             style={styles.logo}
-            source={require('./src/images/isotipo-receptivo-colombia.png')}
+            source={require('./src/images/isotipo-yellow.png')}
             resizeMode="contain"
           />
           <Text style={styles.title}>Receptivo Colombia</Text>
@@ -44,7 +44,7 @@ class LogoTitle extends React.Component {
 class ListTitle extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.container_logo}>
           <Text style={styles.titleList}>Resultados de la búsqueda</Text>
       </View>
 
@@ -61,8 +61,8 @@ const StackNavigator = createStackNavigator(
       navigationOptions: {
         key: 'transferWidgetScreen',
         headerTitle: <LogoTitle />,
-        headerStyle:{backgroundColor:'#9dc107'},
-        headerTintColor: '#ffffff',
+        // headerStyle:{backgroundColor:'#9dc107'},
+        // headerTintColor: '#ffffff',
       }
     },
 
@@ -241,6 +241,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
    //backgroundColor: 'red',
     paddingHorizontal: 10,
+    alignItems: 'center',
+  },
+  container_logo:{
+    flex: 1,
+    flexDirection: "row",
+   //backgroundColor: 'red',
+    paddingHorizontal: 22,
     alignItems: 'center',
   },
   logo: {

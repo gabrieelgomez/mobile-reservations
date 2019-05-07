@@ -17,6 +17,10 @@ import { Button, Divider, ActivityIndicator, Colors } from "react-native-paper";
 import OfflineNotice from "../components/offline/OfflineNotice";
 import { Switch } from "react-native-paper";
 
+import { TextField } from 'react-native-material-textfield';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { ButtonGroup } from 'react-native-elements';
+
 export default class TransferWidget extends Component {
   constructor(props) {
     super(props);
@@ -37,8 +41,14 @@ export default class TransferWidget extends Component {
       flight_arrival_picker: "",
       round_trip: true,
       quantity_adults: "2",
+      selectedIndex: 0,
       quantity_kids: ""
     };
+    this.updateIndex = this.updateIndex.bind(this)
+  }
+
+  updateIndex (selectedIndex) {
+    this.setState({selectedIndex})
   }
 
   updateState(key, value) {
@@ -63,9 +73,11 @@ export default class TransferWidget extends Component {
 
   render() {
     const { isSwitchOn } = this.state;
+    const buttons = ['IDA/VUELTA', 'SÓLO IDA'];
+    const { selectedIndex } = this.state;
+
     return (
       <ScrollView>
-
         <View
           style={styles.container}
           refreshControl={
@@ -76,61 +88,81 @@ export default class TransferWidget extends Component {
           }
         >
 
-        <View style={[styles.boxOne]}>
-          <Text style={[styles.switchTitle]}>Reservación de Traslado</Text>
+        <View style={styles.boxOne}>
+          <Text style={styles.title}>Reservación de Traslado</Text>
+          <Text style={styles.subtitle}>¡Reserva el traslado de tu preferencia, y viaja a donde quieras!</Text>
         </View>
 
-          <View style={[styles.boxOne]}>
-            <Text style={[styles.switchTitle]}>IDA/VUELTA</Text>
-            <Switch
-              value={isSwitchOn}
-              color="#9dc107"
-              onValueChange={() => {
-                this.setState({ isSwitchOn: !isSwitchOn });
-              }}
+        <View style={[styles.boxInputsGoogle]}>
+          <View style={[styles.inputsOrigin]}>
+            <TextField
+              labelTextStyle={styles.fontFamily}
+              tintColor='#9dc107'
+              label='Origen'
+            />
+
+            <TextField
+              labelTextStyle={styles.fontFamily}
+              tintColor='#9dc107'
+              label='Destino'
             />
           </View>
+        </View>
 
-          <View style={[styles.boxTwo]}>
-            <View style={[styles.inputsOrigin]}>
-              <InputOriginGoogleMaps
-                dataForm={this.state}
-                updateFormState={this.updateState.bind(this)}
-              />
-            </View>
+        <View style={[styles.buttonsGroup]}>
+          <ButtonGroup
+            onPress={this.updateIndex}
+            selectedIndex={selectedIndex}
+            buttons={buttons}
+            containerStyle={styles.containerButtonsGroup}
+            textStyle={styles.textButtonGroup}
+            selectedButtonStyle={styles.selectedButtonGroup}
+          />
+        </View>
 
-            <View style={[styles.inputsArrival]}>
-              <InputArrivalGoogleMaps
-                dataForm={this.state}
-                updateFormState={this.updateState.bind(this)}
-              />
-            </View>
+        <View style={[styles.boxInputsDatePicker]}>
+          <TextField
+            labelTextStyle={styles.fontFamily}
+            containerStyle={[styles.containerInputDatePicker, styles.inputRoundTrip]}
+            tintColor='#9dc107'
+            label='Fecha Ida'
+          />
 
-            <View style={[styles.inputsDateOrigin]}>
-              <InputsDatePicker
-                dataForm={this.state}
-                updateFormState={this.updateState.bind(this)}
-              />
-            </View>
+          <TextField
+            labelTextStyle={styles.fontFamily}
+            containerStyle={[styles.containerInputDatePicker, styles.inputOneWay]}
+            tintColor='#9dc107'
+            label='Fecha Vuelta'
+          />
+        </View>
 
-            <View style={[styles.inputsDateArrival]}>
-              <InputsAdultsKids
-                dataForm={this.state}
-                updateFormState={this.updateState.bind(this)}
-              />
-            </View>
-          </View>
+        <View style={[styles.boxInputsAdultsKids]}>
+          <TextField
+            labelTextStyle={styles.fontFamily}
+            containerStyle={[styles.containerInputDatePicker, styles.inputRoundTrip]}
+            tintColor='#9dc107'
+            label='Adultos'
+          />
 
-          <View style={[styles.boxThree]}>
-              <Button
-                icon="search"
-                mode="contained"
-                onPress={this.handlePress}
-                style={styles.buttonColor}
-              >
-                BUSCAR
-              </Button>
-          </View>
+          <TextField
+            labelTextStyle={styles.fontFamily}
+            containerStyle={[styles.containerInputDatePicker, styles.inputOneWay]}
+            tintColor='#9dc107'
+            label='Niños'
+          />
+        </View>
+
+        <View style={[styles.boxThree]}>
+            <Button
+              icon="search"
+              mode="contained"
+              onPress={this.handlePress}
+              style={styles.buttonSend}
+            >
+              BUSCAR
+            </Button>
+        </View>
+
         </View>
 
       </ScrollView>
@@ -149,14 +181,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10
   },
-  buttonColor: {
+  buttonSend: {
     backgroundColor: "#9dc107",
     borderColor: "#9dc107",
-    borderRadius: 0,
-    paddingVertical: 10,
+    borderRadius: 5,
+    padding: 10,
     fontSize: 20,
     fontWeight: "bold",
-    alignSelf: "stretch",
+    width: 360
   },
   switch: {
     backgroundColor: "#000000",
@@ -180,9 +212,6 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     paddingTop: 0,
     minHeight: 25
-  },
-  inputsOrigin: {
-    padding: 5,
   },
   inputsArrival: {
     padding: 5,
@@ -225,22 +254,83 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     flexShrink: 1,
     flexBasis: "auto",
-    paddingHorizontal: 15,
-    paddingVertical: 20,
-    paddingTop: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
+    paddingHorizontal: 25,
+    paddingTop: 25,
   },
-  boxTwo: {
+  boxDatePicker:{
+    marginTop: -25,
+    // flexGrow: 2,
+    // flexShrink: 0,
+    // flexBasis: "auto",
+    paddingTop: 0,
+    paddingBottom: 20,
+    paddingHorizontal: 25,
+    // flexDirection: 'column',
+    // justifyContent: 'space-around'
+  },
+  title:{
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 20,
+    color: 'black'
+  },
+  subtitle:{
+    fontFamily: 'Poppins-Medium',
+    // fontSize: 20,
+    // color: 'black'
+  },
+  fontFamily:{
+    fontFamily: 'Poppins-Light',
+  },
+  buttonsGroup: {
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingHorizontal: 15
+  },
+  containerButtonsGroup: {
+    height: 40,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+  },
+  textButtonGroup: {
+    fontFamily: 'Poppins-Regular',
+  },
+  selectedButtonGroup: {
+    backgroundColor: "#9dc107",
+  },
+  boxInputsGoogle: {
     flexGrow: 2,
     flexShrink: 0,
     flexBasis: "auto",
-    paddingTop: 5,
-    paddingBottom: 20,
-    paddingHorizontal: 18,
+    paddingTop: 0,
+    paddingBottom: 15,
+    paddingHorizontal: 25,
     flexDirection: 'column',
     justifyContent: 'space-around'
+  },
+  boxInputsDatePicker: {
+    paddingTop: 0,
+    paddingBottom: 5,
+    paddingHorizontal: 28,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignSelf: 'stretch',
+  },
+  containerInputDatePicker:{
+    flex: 1,
+  },
+  inputRoundTrip:{
+    paddingRight: 20
+  },
+  inputOneWay:{
+    paddingLeft: 20
+  },
+  boxInputsAdultsKids: {
+    paddingTop: 0,
+    paddingBottom: 25,
+    paddingHorizontal: 28,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignSelf: 'stretch',
   },
   boxThree: {
     flexGrow: 0,
@@ -249,6 +339,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "stretch",
-    marginTop: Dimensions.get('window').height / 25
   }
 });
