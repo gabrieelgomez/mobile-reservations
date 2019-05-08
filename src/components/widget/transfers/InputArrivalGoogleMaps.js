@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,9 +6,10 @@ import {
   TouchableHighlight,
   ScrollView,
   Keyboard
-} from "react-native";
-import { TextInput, Button, Divider, Avatar } from "react-native-paper";
-import _ from "lodash";
+} from 'react-native';
+import { TextInput, Button, Divider, Avatar } from 'react-native-paper';
+import _ from 'lodash';
+import { TextField } from 'react-native-material-textfield';
 
 //Show map... select location to go to
 //Get location route with Google Location API
@@ -21,7 +22,7 @@ export default class Passenger extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: "",
+      error: '',
       latitude: 0,
       longitude: 0,
       searching: false,
@@ -96,19 +97,18 @@ export default class Passenger extends Component {
 
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.inputLogin}
+        <TextField
+          labelTextStyle={styles.fontFamily}
+          tintColor='#9dc107'
           selectTextOnFocus
-          placeholder="Escribe un destino"
-          mode="outlined"
           label='Destino'
           value={this.state.destination}
           onChangeText={destination => {
             this.setState({ destination: destination, searching: true, boxPredictions: false, notFoundDestinations: false });
             this.onChangeDestinationDebounced(destination);
           }}
-          theme={{ colors: { primary: '#9dc107'}}}
         />
+
         <ScrollView
           style={styles.scrollView}
         >
@@ -140,25 +140,25 @@ export default class Passenger extends Component {
 
 const styles = StyleSheet.create({
   locationSuggestion: {
-    // backgroundColor: "white",
+    // backgroundColor: 'white',
     padding: 5,
     fontSize: 18,
     borderWidth: 0.5,
     borderColor: '#9dc107'
   },
   scrollView:{
-    backgroundColor: "white",
+    backgroundColor: 'white',
     zIndex: 2,
     // position: 'absolute'
   },
   boxPredictions:{
     // zIndex: 2,
-    // alignSelf: "stretch"
-    // backgroundColor: "red",
+    // alignSelf: 'stretch'
+    // backgroundColor: 'red',
   },
   contentContainer: {
     // position: 'absolute',
     zIndex: 2,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   }
 });
