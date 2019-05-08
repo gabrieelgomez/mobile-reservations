@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import { Text, View, Image, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+import { ButtonGroup } from 'react-native-elements';
+import { TextField } from 'react-native-material-textfield';
 // import { Dialog, ConfirmDialog } from "react-native-simple-dialogs";
 // import { Calendar } from "react-native-calendars";
 // import { Button, Divider } from "react-native-paper";
-import { ButtonGroup } from 'react-native-elements';
-import { TextField } from 'react-native-material-textfield';
-
 
 export default class InputsDatePicker extends Component {
   constructor(props) {

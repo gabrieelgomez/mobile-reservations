@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { Text, View, Image, StyleSheet } from "react-native";
-import { TextInput } from "react-native-paper";
+import { View, StyleSheet } from "react-native";
 import { TextField } from 'react-native-material-textfield';
-
 
 export default class InputsAdultsKids extends Component {
   render() {

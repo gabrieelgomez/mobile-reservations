@@ -7,9 +7,9 @@ import {
   ScrollView,
   Keyboard
 } from 'react-native';
-import { TextInput, Button, Divider, Avatar } from 'react-native-paper';
-import _ from 'lodash';
+import { Button } from 'react-native-paper';
 import { TextField } from 'react-native-material-textfield';
+import _ from 'lodash';
 
 //Show map... select location to go to
 //Get location route with Google Location API
