@@ -4,8 +4,10 @@ import InputOriginGoogleMaps from "../components/widget/transfers/InputOriginGoo
 import InputArrivalGoogleMaps from "../components/widget/transfers/InputArrivalGoogleMaps";
 import InputsDatePicker from "../components/widget/transfers/InputsDatePicker";
 import InputsAdultsKids from "../components/widget/transfers/InputsAdultsKids";
-import { Button } from "react-native-paper";
+// import { Button } from "react-native-paper";
 import OfflineNotice from "../components/offline/OfflineNotice";
+import { Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class TransferWidget extends Component {
   constructor(props) {
@@ -96,15 +98,25 @@ export default class TransferWidget extends Component {
         </View>
 
         <View style={[styles.boxBottonSend]}>
-            <Button
-              icon="search"
-              mode="contained"
-              onPress={this.handlePress}
-              style={styles.buttonSend}
-            >
-              BUSCAR
-            </Button>
+          <Button
+            title='BUSCAR'
+            type='outline'
+            icon={
+              <Icon
+                name='search'
+                size={15}
+                color='white'
+                iconContainerStyle={styles.iconContainerStyle}
+              />
+            }
+            raised={true}
+            buttonStyle={styles.buttonSend}
+            titleStyle={styles.buttonTitleStyle}
+            onPress={this.handlePress}
+          />
         </View>
+
+
 
         </View>
 
@@ -156,8 +168,14 @@ const styles = StyleSheet.create({
     borderColor: "#9dc107",
     borderRadius: 5,
     padding: 10,
-    fontSize: 20,
-    fontWeight: "bold",
     width: 360
+  },
+  buttonTitleStyle: {
+    fontFamily: 'Poppins-Regular',
+    color: '#fff',
+    marginLeft: 20,
+  },
+  iconContainer:{
+    paddingRight: 20
   }
 });

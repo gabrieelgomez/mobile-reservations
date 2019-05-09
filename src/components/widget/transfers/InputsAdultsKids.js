@@ -52,4 +52,7 @@ const styles = StyleSheet.create({
   inputKids:{
     paddingLeft: 20
   },
+  fontFamily:{
+    fontFamily: 'Poppins-Light',
+  },
 });

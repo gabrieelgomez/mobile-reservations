@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import { TextField } from 'react-native-material-textfield';
+import { ListItem } from 'react-native-elements'
 import _ from 'lodash';
 
 //Show map... select location to go to
@@ -84,14 +85,26 @@ export default class Passenger extends Component {
   render() {
     const locationPredictions = this.state.locationPredictions.map(
       prediction => (
-        <TouchableHighlight
+        /*<TouchableHighlight
           key={prediction.id}
           onPress={() => this.pressedPrediction(prediction)}
         >
           <Text style={styles.locationSuggestion}>
             {prediction.description}
           </Text>
-        </TouchableHighlight>
+        </TouchableHighlight>*/
+
+        <ListItem
+          key={prediction.id}
+          onPress={() => this.pressedPrediction(prediction)}
+          title={prediction.description}
+          titleStyle={styles.titleBoxPredictions}
+          leftAvatar={{ source: { uri: 'https://cdn4.iconfinder.com/data/icons/peppyicons/512/660011-location-512.png' } }}
+          topDivider={true}
+          bottomDivider={true}
+          chevron={true}
+        />
+
       )
     );
 
@@ -100,8 +113,8 @@ export default class Passenger extends Component {
         <TextField
           labelTextStyle={styles.fontFamily}
           tintColor='#9dc107'
-          selectTextOnFocus
           label='Destino'
+          selectTextOnFocus
           value={this.state.destination}
           onChangeText={destination => {
             this.setState({ destination: destination, searching: true, boxPredictions: false, notFoundDestinations: false });
@@ -114,7 +127,7 @@ export default class Passenger extends Component {
         >
           {
             this.state.searching &&
-            <Button loading='true' mode='text' onPress={() => console.log('Pressed')}>
+            <Button color='#053eca' loading='true' mode='text' onPress={() => console.log('Pressed')}>
             Buscando Destinos...
             </Button>
           }
@@ -160,5 +173,12 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     zIndex: 2,
     backgroundColor: 'white',
+  },
+  fontFamily:{
+    fontFamily: 'Poppins-Light',
+  },
+  titleBoxPredictions:{
+    fontFamily: 'Poppins-Light',
+    fontSize: 14
   }
 });
