@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
 import { TextField } from 'react-native-material-textfield';
-// import { DatePicker } from './native-base';
 import { DatePicker } from '../../../utils/DatePicker';
 
 export default class InputsDatePicker extends Component {
@@ -10,24 +9,19 @@ export default class InputsDatePicker extends Component {
     super(props);
     this.state = {
       selectedIndex: 0,
-      // gone_date: false,
-      round_trip: true,
+      roundTrip: true,
       dateOrigin: new Date(),
       dateArrival: new Date()
     };
     this.setDateOrigin = this.setDateOrigin.bind(this);
     this.setDateArrival = this.setDateArrival.bind(this);
     this.updateIndex = this.updateIndex.bind(this)
-    //this.setDate = this.setDate.bind(this);
   }
 
   updateIndex (selectedIndex) {
-    this.setState({selectedIndex})
+    roundTrip = selectedIndex == 0 ? true : false
+    this.setState({selectedIndex: selectedIndex, roundTrip: roundTrip})
   }
-
-  /*setDate(dateOrigin) {
-    this.setState({ dateOrigin: dateOrigin });
-  }*/
 
   render() {
     const buttons = ['IDA/VUELTA', 'SÓLO IDA'];
@@ -67,25 +61,30 @@ export default class InputsDatePicker extends Component {
             />
           </View>
 
-          <View style={{flex:1}}>
-            <DatePicker
-              defaultDate={new Date(2018, 4, 4)}
-              minimumDate={new Date(2018, 1, 1)}
-              maximumDate={new Date(2018, 12, 31)}
-              locale={'en'}
-              timeZoneOffsetInMinutes={undefined}
-              modalTransparent={true}
-              animationType={'fade'}
-              androidMode={'calendar'}
-              onDateChange={this.setDateOrigin}
-              disabled={false}
-              hidden={true}
-              // placeHolderText='Seleccionar Fecha'
-              textStyle={styles.titleSelectDates}
-              placeHolderTextStyle={styles.titleSelectDates}
-              titleInput='Fecha Vuelta'
-            />
-          </View>
+          {
+            this.state.roundTrip && (
+              <View style={{flex:1}}>
+                <DatePicker
+                  defaultDate={new Date(2018, 4, 4)}
+                  minimumDate={new Date(2018, 1, 1)}
+                  maximumDate={new Date(2018, 12, 31)}
+                  locale={'en'}
+                  timeZoneOffsetInMinutes={undefined}
+                  modalTransparent={true}
+                  animationType={'fade'}
+                  androidMode={'calendar'}
+                  onDateChange={this.setDateOrigin}
+                  disabled={false}
+                  hidden={true}
+                  // placeHolderText='Seleccionar Fecha'
+                  textStyle={styles.titleSelectDates}
+                  placeHolderTextStyle={styles.titleSelectDates}
+                  titleInput='Fecha Vuelta'
+                />
+              </View>
+            )
+          }
+
         </View>
       </View>
     );

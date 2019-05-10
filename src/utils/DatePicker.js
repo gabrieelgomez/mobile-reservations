@@ -21,7 +21,7 @@ export class DatePicker extends React.Component {
     this.state = {
       modalVisible: false,
       defaultDate: props.defaultDate ? props.defaultDate : new Date(),
-      chosenDate: !props.placeHolderText && props.defaultDate ? props.defaultDate : undefined
+      chosenDate: !props.placeHolderText && props.defaultDate ? props.defaultDate : new Date()
     };
   }
 
@@ -86,6 +86,7 @@ export class DatePicker extends React.Component {
             containerStyle={[styles.containerInputDatePicker, styles.inputRoundTrip]}
             tintColor='#9dc107'
             label={this.props.titleInput}
+            value={this.state.chosenDate.toString().substr(4, 12)}
             onFocus={ !this.props.disabled ? this.showDatePicker.bind(this) : undefined }
           />
           <View>
