@@ -116,8 +116,6 @@ export default class TransferWidget extends Component {
           />
         </View>
 
-
-
         </View>
 
       </ScrollView>
@@ -144,6 +142,7 @@ const styles = StyleSheet.create({
   },
   subtitle:{
     fontFamily: 'Poppins-Medium',
+    fontSize: 12,
   },
   boxInputsGoogle: {
     flexGrow: 2,
