@@ -80,9 +80,9 @@ const StackNavigator = createStackNavigator(
       screen: TransferList,
       navigationOptions: {
         key: 'transferListScreen',
-        headerTitle: <ListTitle />,
-        headerStyle:{backgroundColor:'#9dc107'},
-        headerTintColor: '#ffffff',
+        // headerTitle: '<ListTitle />',
+        headerStyle:{backgroundColor:'#fff'},
+        // headerTintColor: '#ffffff',
       }
     },
     CreateAccount: {

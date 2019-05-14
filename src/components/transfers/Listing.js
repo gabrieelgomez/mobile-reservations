@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View, Text, RefreshControl } from 'react-native';
-import { Button, Divider, Title, Avatar, Card, Paragraph  } from 'react-native-paper';
+import { Divider, Title, Avatar, Paragraph  } from 'react-native-paper';
 import OfflineNotice from '../offline/OfflineNotice'
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
 
-import { Font } from '../../utils/Fonts';
-
-import Icon from "react-native-vector-icons/Ionicons";
 export default class Listing extends Component {
 
   constructor(props){
@@ -49,7 +47,7 @@ export default class Listing extends Component {
               refreshing: false
             })
           } else {
-            this.setState({ refreshing: false, searching: 'Se encontraron los siguientes vehículos', dataSource: responseJson.data })
+            this.setState({ refreshing: false, searching: 'Escoge el vehículo que se adapte a tus necesidades.', dataSource: responseJson.data })
           }
         })
           .catch((error) => {
@@ -83,48 +81,55 @@ export default class Listing extends Component {
           />
         }
       >
-        <OfflineNotice ref = 'offlineNotice' />
-        <Title style={styles.titleSearch}>{this.state.searching}</Title>
-        {
-          this.state.dataSource.map((item, i) => (
-            <View 
-            style={styles.container}
-            key = {i}>
-              <Divider/>
-                <Card style={styles.cardMainMobile}>
-                  <View style={styles.cardBorderMobile}></View>
-                  <Card.Cover source = {{ uri: `https://receptivocolombia.com${item.attributes.cover.url}` }} />
-                  <Card.Content style={styles.cardContentMobile}>
-                    <Title style={styles.titleMainMobile}>
-                      {item.attributes.title['es']}
-                    </Title>
-                    <Paragraph >    
-                      <Text style={styles.titleSeatMobile}>
-                      {`Máx de Asientos: ${item.attributes.seat} Personas`}
-                      </Text>
-                    </Paragraph>
-                    <Paragraph >
+        <View style={styles.container}>
+          <View style={styles.boxTitles}>
+            <Text style={styles.title}>Vehículos Disponibles</Text>
+            <Text style={styles.subtitle}>{this.state.searching}</Text>
+          </View>
 
-                      <Text style={styles.titleKitMobile}>{`Máx de Maletas: ${item.attributes.kit['quantity']} Piezas (${item.attributes.kit['weight']}kg)`}</Text>
-                    </Paragraph>
-                    <Paragraph >
-                      <Text style={styles.titlePriceMobile}>{`Precio: ${item.attributes.price_destination}`}</Text>
-                    </Paragraph>
-                  </Card.Content>
-                  <Card.Actions style={styles.cardActionMobile}>
-                    <Button 
-                      style={styles.buttonActionMobile}
-                      mode = 'contained'  
-                      onPress = {this.handlePress} 
-                      >
-                      RESERVAR
-                    </Button>
-                  </Card.Actions>
+          <OfflineNotice ref = 'offlineNotice' />
+          {
+            this.state.dataSource.map((item, i) => (
+              <View
+                style={[styles.containerCards]}
+                key = {i}
+              >
+                <Card
+                  containerStyle={styles.containerStyle}
+                  imageStyle={styles.imageStyle}
+                  image={{ uri: `https://receptivocolombia.com/uploads/keppler_travel/vehicle/cover/2/Hyundai_Receptivo_Colombia.jpg` }}
+                >
+                  <Text style={[styles.titleCard]}>
+                    {item.attributes.title['es']}
+                  </Text>
+
+                  <View style={[styles.boxDetails]}>
+                    <View>
+                      <Text style={[styles.titleDetails]}>Máx. Cantidad de Pasajeros</Text>
+                      <Text style={[styles.subtitle]}>{`${item.attributes.seat} Pasajeros`}</Text>
+                      <Text style={[styles.titleDetails]}>Máx. Cantidad Maletas</Text>
+                      <Text style={[styles.subtitle]}>{`${item.attributes.kit['quantity']} pzas. (${item.attributes.kit['weight']}kg)`}</Text>
+                    </View>
+                    <View>
+                      <Text style={[styles.titlePrice]}>$ 99.000.000 COP</Text>
+                    </View>
+                  </View>
+
+                  <Button
+                    title='RESERVAR'
+                    type='outline'
+                    raised={false}
+                    buttonStyle={styles.buttonReservation}
+                    titleStyle={styles.buttonTitleStyle}
+                    // onPress={this.handlePress}
+                  />
                 </Card>
-              <Divider />
-            </View>
-          ))
-        }
+              </View>
+
+            ))
+          }
+        </View>
+
       </ScrollView>
     );
   }
@@ -132,75 +137,77 @@ export default class Listing extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingHorizontal: 18,
-    },
-    titleSearch:{
-      paddingVertical: 5,
-      textAlign: 'center',
-      fontWeight: '500',
-      marginBottom: 20,
-      fontFamily: Font.robotoMedium,
-      color: '#4e4e56'
-    },
-    cardMainMobile:{
-      marginBottom: 25,
-      borderRadius: 5,
-      fontFamily: Font.robotoBold,
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 4,
-      },
-      shadowOpacity: 0.32,
-      shadowRadius: 5.46,
-      elevation: 9,
-      paddingHorizontal: 0,
-      paddingVertical: 0,
-    },
-    cardContentMobile:{
-      paddingHorizontal: 10,
-      paddingVertical: 10,
-    },
-    cardActionMobile:{
-      flex: 1,
-      marginVertical: 0,
-      marginHorizontal: 0,
-      paddingHorizontal: 0,
-      paddingVertical: 0,
-    },
-    buttonActionMobile:{
-      backgroundColor: "#9dc107",
-      borderColor: "#9dc107",
-      borderRadius: 0,
-      paddingVertical: 5,
-      fontSize: 20,
-      fontWeight: "bold",
-      alignSelf: "stretch",
-      flex: 1,
-      color:'#ffffff'
-    },
-    titleMainMobile:{
-      fontFamily: Font.robotoBold,
-      color:"#4e4e56",
-      fontSize: 22
-    },
-    titleSeatMobile:{
-      fontFamily: Font.robotoBold,
-      color:"#4e4e56",
-    },
-    titleKitMobile:{
-      fontFamily: Font.robotoBold,
-      color:"#4e4e56",
-    },
-    titlePriceMobile:{
-      fontFamily: Font.robotoBold,
-      color:"#4e4e56",
-    },
-    cardBorderMobile:{
-      borderStyle: 'solid',
-      borderTopWidth: 4,
-      borderTopColor: '#9dc107',
-    }
+  container: {
+    flex: 1,
+    flexDirection: 'column'
+  },
+  boxTitles: {
+    flexGrow: 0,
+    flexShrink: 1,
+    flexBasis: 'auto',
+    paddingHorizontal: 25,
+    paddingTop: 25,
+  },
+  title:{
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 20,
+    color: 'black'
+  },
+  subtitle:{
+    fontFamily: 'Poppins-Medium',
+    fontSize: 12,
+    marginBottom: 10
+  },
+  containerCards: {
+    flexGrow: 2,
+    flexShrink: 0,
+    flexBasis: 'auto',
+    paddingTop: 0,
+    paddingBottom: 15,
+    paddingHorizontal: 10,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  containerStyle:{
+    borderRadius: 5
+  },
+  boxDetails:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'stretch',
+  },
+  titleCard: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 15,
+    color: 'black',
+    marginBottom: 10
+  },
+  titleDetails:{
+    fontFamily: 'Poppins-Medium',
+    fontSize: 12,
+    color: '#000'
+  },
+  titlePrice:{
+    fontFamily: 'Poppins-Bold',
+    fontSize: 15,
+    color: 'green',
+    marginTop: 32
+  },
+  imageStyle: {
+    height: 200,
+    borderBottomColor: '#d6d7da',
+    borderBottomWidth: 1
+  },
+  buttonReservation: {
+    backgroundColor: '#9dc107',
+    borderColor: '#9dc107',
+    borderRadius: 5,
+    padding: 10,
+    width: 340
+  },
+  buttonTitleStyle: {
+    fontFamily: 'Poppins-Regular',
+    color: '#fff',
+    marginLeft: 20,
+  },
 });
