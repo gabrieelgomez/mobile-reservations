@@ -66,16 +66,6 @@ const StackNavigator = createStackNavigator(
       }
     },
 
-
-    Profile: {
-      screen: Profile,
-      key: 'profileScreen',
-      navigationOptions: () => ({
-        key: 'profileScreen',
-        headerTitle: "Perfil"
-      })
-    },
-
     TransferList: {
       screen: TransferList,
       navigationOptions: {
