@@ -23,7 +23,7 @@ import TransferList from './src/components/transfers/Listing';
 import Login from './src/screens/Login';
 import Profile from './src/screens/Profile';
 import CreateAccount from './src/screens/CreateAccount';
-//import FormStepOne from './src/screens/FormStepOne';
+
 class LogoTitle extends React.Component {
   render() {
     return (
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-   //backgroundColor: 'red',
+   // backgroundColor: 'red',
     paddingHorizontal: 10,
     alignItems: 'center',
   },

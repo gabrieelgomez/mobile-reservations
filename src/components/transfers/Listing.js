@@ -37,7 +37,7 @@ export default class Listing extends Component {
     quantity_kids =         data.quantity_kids
 
     const query = `round_trip=${round_trip}&origin_name=${origin_name}&origin_location=${origin_location}&origin_locality=${origin_locality}&origin_departament=${origin_departament}&flight_origin_picker=${flight_origin_picker}&arrival_name=${arrival_name}&arrival_location=${arrival_location}&arrival_locality=${arrival_locality}&arrival_departament=${arrival_departament}&flight_arrival_picker=${flight_arrival_picker}&quantity_adults=${quantity_adults}&quantity_kids=${quantity_kids}`
-
+    console.log(query)
     return fetch(`https://receptivocolombia.com/es/usd/vehicles.json?${query}`)
       .then((response) => response.json())
         .then((responseJson) => {
@@ -169,7 +169,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   containerStyle:{
-    borderRadius: 5
+    borderRadius: 5,
+    borderColor: '#868686'
   },
   boxDetails:{
     flexDirection: 'row',
