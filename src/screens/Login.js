@@ -326,7 +326,7 @@ export default class TransferWidget extends Component {
 						          <ListItem
 						            key={i}
 						            title={item.title}
-												titleStyle={[styles.fontCurrent, styles.fontSize]}
+												titleStyle={[styles.fontCurrent, styles.fontSize, styles.titleBtn]}
 						            chevron={true}
 						            topDivider={true}
 						            bottomDivider={true}
@@ -338,11 +338,13 @@ export default class TransferWidget extends Component {
 						      <ListItem
 						        key={6}
 						        title='Cerrar Sesión'
-										titleStyle={[styles.fontCurrent, styles.fontSize, styles.btnLogout]}
+										containerStyle={[styles.btnLogout]}
+										titleStyle={[styles.fontCurrent, styles.fontSize, styles.titleBtn, styles.btnLogout]}
 						        chevron={true}
 						        topDivider={true}
 						        bottomDivider={true}
-						        onPress={this.signOut.bind(this)}
+										leftIcon={{ name: 'exit-to-app' }}
+						        // onPress={this.signOut.bind(this)}
 						      />
 
 						    </View>
@@ -380,6 +382,9 @@ const styles = StyleSheet.create({
 	},
 	btnLogout:{
 		color: 'red'
+	},
+	titleBtn:{
+		marginTop: 5,
 	},
 	fontSize: {
 		fontSize: 15
