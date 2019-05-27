@@ -343,8 +343,8 @@ export default class TransferWidget extends Component {
 						        chevron={true}
 						        topDivider={true}
 						        bottomDivider={true}
-										leftIcon={{ name: 'exit-to-app' }}
-						        // onPress={this.signOut.bind(this)}
+										leftIcon={{ name: 'exit-to-app', color: 'red' }}
+						        onPress={this.signOut.bind(this)}
 						      />
 
 						    </View>
