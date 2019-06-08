@@ -20,6 +20,8 @@ import TourWidget from './src/screens/TourWidget';
 import CircuitWidget from './src/screens/CircuitWidget';
 import MultidestinationWidget from './src/screens/MultidestinationWidget';
 import TransferList from './src/components/transfers/Listing';
+import TransferReservation from './src/components/transfers/reservations/Reservation';
+
 import Login from './src/screens/Login';
 import Profile from './src/screens/Profile';
 import CreateAccount from './src/screens/CreateAccount';
@@ -75,6 +77,17 @@ const StackNavigator = createStackNavigator(
         // headerTintColor: '#ffffff',
       }
     },
+
+    TransferReservation: {
+      screen: TransferReservation,
+      navigationOptions: {
+        key: 'TransferReservationScreen',
+        // headerTitle: '<ListTitle />',
+        headerStyle:{backgroundColor:'#fff'},
+        // headerTintColor: '#ffffff',
+      }
+    },
+
     CreateAccount: {
       screen: CreateAccount,
       key: 'CreateAccountScreen',

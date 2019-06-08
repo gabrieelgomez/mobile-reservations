@@ -24,7 +24,7 @@ class OfflineNotice extends PureComponent {
         this.setState({
           isConnected: true,
         });
-        ToastAndroid.show('Si hay conexión a internet.', ToastAndroid.SHORT);
+        // ToastAndroid.show('Si hay conexión a internet.', ToastAndroid.SHORT);
       })
       .catch((error) =>{
         if(error == 'TypeError: Network request failed'){

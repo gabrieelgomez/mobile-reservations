@@ -12,10 +12,12 @@ export default class Listing extends Component {
   }
 
   componentDidMount(){
+    dataReservation = this.props.navigation.state.params
     this.setState({
-      isLoading: false
+      isLoading: false,
+      dataReservation: dataReservation
     });
-    this.requestVehicleApi(this.props.navigation.state.params)
+    this.requestVehicleApi(dataReservation)
   }
 
   requestVehicleApi(params) {
@@ -47,7 +49,7 @@ export default class Listing extends Component {
               refreshing: false
             })
           } else {
-            this.setState({ refreshing: false, searching: 'Escoge el vehículo que se adapte a tus necesidades.', dataSource: responseJson.data })
+            this.setState({ refreshing: false, searching: 'Escoge el vehículo que se adapte a tus necesidades.', dataSource: responseJson.data.reverse() })
           }
         })
           .catch((error) => {
@@ -60,10 +62,6 @@ export default class Listing extends Component {
             // console.error(error);
           });
 
-  }
-
-  handlePress = () => {
-    this.props.navigation.navigate('TransferWidget');
   }
 
   _onRefresh = () => {
@@ -92,7 +90,7 @@ export default class Listing extends Component {
             this.state.dataSource.map((item, i) => (
               <View
                 style={[styles.containerCards]}
-                key = {i}
+                key = {item.id}
               >
                 <Card
                   containerStyle={styles.containerStyle}
@@ -111,7 +109,7 @@ export default class Listing extends Component {
                       <Text style={[styles.subtitle]}>{`${item.attributes.kit['quantity']} pzas. (${item.attributes.kit['weight']}kg)`}</Text>
                     </View>
                     <View>
-                      <Text style={[styles.titlePrice]}>$ 99.000.000 COP</Text>
+                      <Text style={[styles.titlePrice]}>{`$ ${item.attributes.price_destination} ${item.attributes.currency.toUpperCase()}`}</Text>
                     </View>
                   </View>
 
@@ -121,7 +119,14 @@ export default class Listing extends Component {
                     raised={false}
                     buttonStyle={styles.buttonReservation}
                     titleStyle={styles.buttonTitleStyle}
-                    // onPress={this.handlePress}
+                    onPress={(event) => {
+                        // debugger
+                        this.props.navigation.navigate('TransferReservation', {
+                          dataVehicle: item,
+                          dataReservation: this.state.dataReservation
+                        })
+                      }
+                    }
                   />
                 </Card>
               </View>
