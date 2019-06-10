@@ -81,6 +81,7 @@ export default class TransferWidget extends Component {
 														body: JSON.stringify({
 															email: this.state.email,
 															password: this.state.password,
+															agency_code: this.state.agencyCode
 														})
 													})
 					.then((response) => {
