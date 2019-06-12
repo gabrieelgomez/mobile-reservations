@@ -68,7 +68,7 @@ export default class Arrival extends Component {
         notFoundDestinations: true,
       });
     }
-
+    this.refs.inputArrival.blur();
     console.log(jsonResult);
   }
 
@@ -116,6 +116,7 @@ export default class Arrival extends Component {
           tintColor='#9dc107'
           label='Destino'
           selectTextOnFocus
+          ref= 'inputArrival'
           value={this.state.destination}
           onChangeText={destination => {
             this.setState({ destination: destination, searching: true, boxPredictions: false, notFoundDestinations: false });

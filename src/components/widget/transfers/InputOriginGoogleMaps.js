@@ -68,7 +68,7 @@ export default class Origin extends Component {
         notFoundDestinations: true,
       });
     }
-
+    this.refs.inputOrigin.blur();
     console.log(jsonResult);
   }
 
@@ -116,6 +116,7 @@ export default class Origin extends Component {
           tintColor='#9dc107'
           label='Origen'
           selectTextOnFocus
+          ref= 'inputOrigin'
           value={this.state.destination}
           onChangeText={destination => {
             this.setState({ destination: destination, searching: true, boxPredictions: false, notFoundDestinations: false });
