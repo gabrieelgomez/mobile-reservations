@@ -19,7 +19,7 @@ import _ from 'lodash';
 //Get picked up by driver
 //Let driver drive to location
 
-export default class Passenger extends Component {
+export default class Arrival extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -99,7 +99,8 @@ export default class Passenger extends Component {
           onPress={() => this.pressedPrediction(prediction)}
           title={prediction.description}
           titleStyle={styles.titleBoxPredictions}
-          leftAvatar={{ source: { uri: 'https://cdn4.iconfinder.com/data/icons/peppyicons/512/660011-location-512.png' } }}
+          leftIcon={{ name: 'place', color: '#c31717de' }}
+          // leftAvatar={{ source: { uri: 'https://cdn4.iconfinder.com/data/icons/peppyicons/512/660011-location-512.png' } }}
           topDivider={true}
           bottomDivider={true}
           chevron={true}
