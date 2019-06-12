@@ -12,6 +12,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export default class TransferWidget extends Component {
   constructor(props) {
     super(props);
+    today    = new Date();
+    nextDay  = new Date().setDate(today.getDate()+1);
     this.state = {
       isLoading: false,
       refreshing: false,
@@ -25,15 +27,17 @@ export default class TransferWidget extends Component {
       origin_name: "",
       arrival_location: [],
       arrival_name: "",
-      flight_origin_picker: "",
-      flight_arrival_picker: "",
+      flight_origin_picker: today.toLocaleDateString('en-GB'),
+      flight_arrival_picker: new Date(nextDay).toLocaleDateString('en-GB'),
       round_trip: true,
       quantity_adults: "2",
       quantity_kids: ""
     };
+    console.log(this.state)
   }
 
   updateState(key, value) {
+    console.log(key, value)
     this.setState({ [key]: value });
   }
 

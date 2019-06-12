@@ -7,11 +7,14 @@ import { DatePicker } from '../../../utils/DatePicker';
 export default class InputsDatePicker extends Component {
   constructor(props) {
     super(props);
+    today    = new Date();
+    nextDay  = new Date().setDate(today.getDate()+1);
     this.state = {
       selectedIndex: 0,
       roundTrip: true,
       dateOrigin: new Date(),
-      dateArrival: new Date()
+      dateArrival: new Date(),
+      minimumArrival: new Date(nextDay)
     };
     this.setDateOrigin = this.setDateOrigin.bind(this);
     this.setDateArrival = this.setDateArrival.bind(this);
@@ -43,9 +46,9 @@ export default class InputsDatePicker extends Component {
         <View style={[styles.boxInputsDatePicker]}>
           <View style={{flex:1}}>
             <DatePicker
-              defaultDate={new Date(2018, 4, 4)}
-              minimumDate={new Date(2018, 1, 1)}
-              maximumDate={new Date(2018, 12, 31)}
+              defaultDate={new Date()}
+              minimumDate={new Date()}
+              maximumDate={this.state.maximumOrigin}
               locale={'en'}
               timeZoneOffsetInMinutes={undefined}
               modalTransparent={true}
@@ -65,15 +68,15 @@ export default class InputsDatePicker extends Component {
             this.state.roundTrip && (
               <View style={{flex:1}}>
                 <DatePicker
-                  defaultDate={new Date(2018, 4, 4)}
-                  minimumDate={new Date(2018, 1, 1)}
-                  maximumDate={new Date(2018, 12, 31)}
+                  defaultDate={this.state.minimumArrival}
+                  minimumDate={this.state.minimumArrival}
+                  changedMinimumDate={this.state.minimumArrival}
                   locale={'en'}
                   timeZoneOffsetInMinutes={undefined}
                   modalTransparent={true}
                   animationType={'fade'}
                   androidMode={'calendar'}
-                  onDateChange={this.setDateOrigin}
+                  onDateChange={this.setDateArrival}
                   disabled={false}
                   hidden={true}
                   // placeHolderText='Seleccionar Fecha'
@@ -92,16 +95,27 @@ export default class InputsDatePicker extends Component {
 
   setDateOrigin(day) {
     // console.warn('fecha ida', day);
-    this.props.updateFormState('flight_origin_picker', day);
+    nextDay  = new Date().setDate(day.getDate()+1)
+    dayString = day.toLocaleDateString('en-GB')
+    this.props.updateFormState('flight_origin_picker', dayString);
+    debugger
+
+    if (dayString == this.state.dateArrival.toLocaleDateString('en-GB')){
+      this.props.updateFormState('flight_arrival_picker', dayString);
+    }
+
+
     this.setState({
+      minimumArrival: new Date(nextDay),
       dateOrigin: day
     });
   }
 
   setDateArrival(day) {
     // console.warn('fecha vuelta', day);
-    this.props.updateFormState('flight_arrival_picker', day);
+    this.props.updateFormState('flight_arrival_picker', day.toLocaleDateString('en-GB'));
     this.setState({
+      maximumOrigin: new Date(day),
       dateArrival: day
     });
   }

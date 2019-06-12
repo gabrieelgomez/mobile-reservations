@@ -25,6 +25,12 @@ export class DatePicker extends React.Component {
     };
   }
 
+  componentWillReceiveProps(newProps) {
+    if (newProps.changedMinimumDate){
+      // this.setState({ chosenDate: newProps.changedMinimumDate });
+    }
+  }
+
   setDate(date) {
     this.setState({ chosenDate: new Date(date) });
     if (this.props.onDateChange) {
@@ -54,7 +60,7 @@ export class DatePicker extends React.Component {
       const { action, year, month, day } = newDate;
       if (action === "dateSetAction") {
         let selectedDate = new Date(year, month, day);
-        this.setState({ chosenDate: selectedDate });
+        this.setState({ changedMinimumDate: selectedDate, chosenDate: selectedDate });
         this.props.onDateChange(selectedDate);
       }
     } catch ({ code, message }) {
