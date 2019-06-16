@@ -20,7 +20,6 @@ export default class Reservation extends Component {
 
   _onRefresh = () => {
     this.setState({refreshing: true})
-    this.requestVehicleApi(this.props.navigation.state.params);
   }
 
   render() {
@@ -45,8 +44,8 @@ export default class Reservation extends Component {
             {
               this.state.dataReservation && (
                 <View>
-                  <Text style={styles.subtitle}> <Text style={styles.strong}>Desde:  </Text>{this.state.dataReservation.origin_locality}</Text>
-                  <Text style={styles.subtitle}> <Text style={styles.strong}>Hasta:  </Text>{this.state.dataReservation.arrival_locality}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Desde:  </Text>{this.state.dataReservation.origin_name}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Hasta:  </Text>{this.state.dataReservation.arrival_name}</Text>
 
                   <View style={[styles.boxInputFlexTwo]}>
                     <TextField

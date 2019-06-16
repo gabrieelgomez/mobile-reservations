@@ -45,7 +45,7 @@ export default class Listing extends Component {
         .then((responseJson) => {
           if (responseJson == undefined){
             this.setState({
-              searching: 'Oops..! Algún dato está mal escrito, vaya hacia atrás.',
+              searching: 'Oops..! Sin resultados disponibles.',
               refreshing: false
             })
           } else {
@@ -95,7 +95,7 @@ export default class Listing extends Component {
                 <Card
                   containerStyle={styles.containerStyle}
                   imageStyle={styles.imageStyle}
-                  image={{ uri: `https://receptivocolombia.com/uploads/keppler_travel/vehicle/cover/2/Hyundai_Receptivo_Colombia.jpg` }}
+                  image={{ uri: `https://receptivocolombia.com${item.attributes.cover.url}` }}
                 >
                   <Text style={[styles.titleCard]}>
                     {item.attributes.title['es']}

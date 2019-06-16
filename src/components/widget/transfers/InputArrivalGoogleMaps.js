@@ -12,13 +12,6 @@ import { TextField } from 'react-native-material-textfield';
 import { ListItem } from 'react-native-elements'
 import _ from 'lodash';
 
-//Show map... select location to go to
-//Get location route with Google Location API
-//Send driver request
-//Wait for driver to arrive
-//Get picked up by driver
-//Let driver drive to location
-
 export default class Arrival extends Component {
   constructor(props) {
     super(props);
@@ -72,8 +65,30 @@ export default class Arrival extends Component {
     console.log(jsonResult);
   }
 
+  updatePropsState (name, locality, departament){
+    this.props.updateFormState('arrival_departament', departament);
+    this.props.updateFormState('arrival_locality', locality);
+    // this.props.updateFormState('arrival_location', [latitude, latitude]);
+    this.props.updateFormState('arrival_name', name);
+  }
+
+  validateExceptions(exception) {
+    switch (exception) {
+      case 'Bogotá':
+      exception = 'Cundinamarca';
+      break;
+    }
+    return exception;
+  }
+
   pressedPrediction(prediction) {
     console.log(prediction);
+    name        = prediction.description
+    locality    = prediction.terms[0]['value'];
+    exception   = prediction.terms[1]['value'];
+    departament = this.validateExceptions(exception);
+    this.updatePropsState(name, locality, departament)
+
     Keyboard.dismiss();
     this.setState({
       locationPredictions: [],
