@@ -4,7 +4,6 @@ import InputOriginGoogleMaps from "../components/widget/transfers/InputOriginGoo
 import InputArrivalGoogleMaps from "../components/widget/transfers/InputArrivalGoogleMaps";
 import InputsDatePicker from "../components/widget/transfers/InputsDatePicker";
 import InputsAdultsKids from "../components/widget/transfers/InputsAdultsKids";
-// import { Button } from "react-native-paper";
 import OfflineNotice from "../components/offline/OfflineNotice";
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -31,14 +30,26 @@ export default class TransferWidget extends Component {
       flight_arrival_picker: new Date(nextDay).toLocaleDateString('en-GB'),
       round_trip: true,
       quantity_adults: "2",
-      quantity_kids: ""
+      quantity_kids: "",
+      sendDisabled: true
     };
     console.log(this.state)
   }
 
   updateState(key, value) {
     console.log(key, value)
-    this.setState({ [key]: value });
+    this.setState({ [key]: value }, () => {
+      var {origin_locality, arrival_locality, origin_departament, arrival_departament, flight_origin_picker, flight_arrival_picker, quantity_adults} = this.state;
+      quantity_adults = parseInt(quantity_adults);
+      if (isNaN(quantity_adults)){
+        quantity_adults = 0
+        this.setState({ sendDisabled: true});
+      }
+
+      if (origin_locality && arrival_locality && origin_departament && arrival_departament && flight_origin_picker && flight_arrival_picker && quantity_adults>0){
+        this.setState({ sendDisabled: false});
+      }
+    });
   }
 
   componentDidMount() {
@@ -117,6 +128,9 @@ export default class TransferWidget extends Component {
             buttonStyle={styles.buttonSend}
             titleStyle={styles.buttonTitleStyle}
             onPress={this.handlePress}
+            disabled={this.state.sendDisabled}
+            disabledStyle={styles.buttonSendDisabled}
+            disabledTitleStyle={styles.buttonTitleStyleDisabled}
           />
         </View>
 
@@ -174,6 +188,18 @@ const styles = StyleSheet.create({
     width: 360
   },
   buttonTitleStyle: {
+    fontFamily: 'Poppins-Regular',
+    color: '#fff',
+    marginLeft: 20,
+  },
+  buttonSendDisabled: {
+    backgroundColor: "#70727363",
+    // borderColor: "#24292e",
+    borderRadius: 5,
+    padding: 10,
+    width: 360
+  },
+  buttonTitleStyleDisabled: {
     fontFamily: 'Poppins-Regular',
     color: '#fff',
     marginLeft: 20,

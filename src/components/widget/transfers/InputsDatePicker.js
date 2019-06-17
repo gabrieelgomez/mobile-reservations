@@ -24,6 +24,7 @@ export default class InputsDatePicker extends Component {
   updateIndex (selectedIndex) {
     roundTrip = selectedIndex == 0 ? true : false
     this.setState({selectedIndex: selectedIndex, roundTrip: roundTrip})
+    this.props.updateFormState('round_trip', roundTrip);
   }
 
   render() {
