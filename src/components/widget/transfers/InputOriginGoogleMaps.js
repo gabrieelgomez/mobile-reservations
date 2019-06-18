@@ -46,7 +46,7 @@ export default class Origin extends Component {
 
   async onChangeDestination(destination) {
     this.setState({ destination });
-    apiKey = 'AIzaSyCacNPxPoRu76Fzv4cG342duUgYpLVNetc'
+    apiKey = 'AIzaSyDaNTVWfKoSrUtonUqoZh0sS2fN6gUlMrM'
     const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?key=${apiKey}&input={${destination}}&language=es&components=country:col`;
     const result = await fetch(apiUrl);
     const jsonResult = await result.json();
