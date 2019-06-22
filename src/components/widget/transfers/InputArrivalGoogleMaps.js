@@ -22,25 +22,12 @@ export default class Arrival extends Component {
       searching: false,
       boxPredictions: false,
       notFoundDestinations: false,
+      placeIdDestiny: false,
       locationPredictions: []
     };
     this.onChangeDestinationDebounced = _.debounce(
       this.onChangeDestination,
       1000
-    );
-  }
-
-  componentDidMount() {
-    //Get current location and set initial region to this
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        });
-      },
-      error => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 }
     );
   }
 
@@ -65,57 +52,120 @@ export default class Arrival extends Component {
     console.log(jsonResult);
   }
 
-  updatePropsState (name, locality, departament){
+  updatePropsState (name, locality, departament, latitude, longitude){
+    this.props.updateFormState('arrival_name', name);
+    this.props.updateFormState('arrival_location', [latitude, latitude]);
     this.props.updateFormState('arrival_departament', departament);
     this.props.updateFormState('arrival_locality', locality);
-    // this.props.updateFormState('arrival_location', [latitude, latitude]);
-    this.props.updateFormState('arrival_name', name);
   }
 
   validateExceptions(exception) {
     switch (exception) {
       case 'Bogotá':
-      exception = 'Cundinamarca';
-      break;
+        exception = 'Cundinamarca';
+        break;
+      case 'Bogota':
+        exception = 'Cundinamarca';
+        break;
     }
     return exception;
   }
 
-  pressedPrediction(prediction) {
-    console.log(prediction);
-    name        = prediction.description
-    locality    = prediction.terms[0]['value'];
-    exception   = prediction.terms[1]['value'];
-    departament = this.validateExceptions(exception);
-    this.updatePropsState(name, locality, departament)
+  validateAccent(exception) {
+    switch (exception) {
+      case 'Bogota':
+        exception = 'Bogotá';
+        break;
+    }
+    return exception;
+  }
 
-    Keyboard.dismiss();
+  parsedDestination(data, prediction){
+    var place     = data.result;
+    var latitude  = place.geometry.location.lat;
+    var longitude = place.geometry.location.lng;
+    var name      = prediction.description;
+    var locality;
+    var departament;
+
+    // For each address administrative_area_level_1 in hash
+    for (var i = 0; i < place.address_components.length; i++) {
+      let addressType = place.address_components[i].types;
+      if (addressType.includes('administrative_area_level_1')) {
+        departament   = place.address_components[i].long_name;
+        var exception = this.validateExceptions(departament);
+        departament   = exception
+        break;
+      }
+    }
+
+    // For each address locality in hash
+    for (var i = 0; i < place.address_components.length; i++) {
+      let addressType = place.address_components[i].types;
+      if (addressType.includes('locality') && (place.address_components[i].long_name != 'Colombia')) {
+        locality = place.address_components[i].long_name;
+        var locality   = this.validateAccent(locality);
+        console.log(`Desde: Departamento, ${departament}, Localidad, ${locality}`)
+        break;
+      }
+    }
+
+    // For each administrative_area_level_1 in hash
+    if (!locality) {
+      for (var i = 0; i < place.address_components.length; i++) {
+        var addressType = place.address_components[i].types;
+        if (addressType.includes('administrative_area_level_1') && (place.address_components[i].long_name != 'Colombia')) {
+          locality = place.address_components[i].long_name;
+          var locality   = this.validateAccent(locality);
+          console.log(`Desde: Departamento, ${departament}, Localidad, ${locality}`)
+          break;
+        }
+      }
+    }
+
+    // For each address political in hash
+    if (!locality) {
+      for (var i = 0; i < place.address_components.length; i++) {
+        var addressType = place.address_components[i].types;
+        if (addressType.includes('political') && (place.address_components[i].long_name != 'Colombia')) {
+          locality = place.address_components[i].long_name;
+          var locality   = this.validateAccent(locality);
+          console.log(`Desde: Departamento, ${departament}, Localidad, ${locality}`)
+          break;
+        }
+      }
+    }
+
+    this.updatePropsState(name, locality, departament, latitude, longitude)
+  }
+
+  async pressedPrediction(prediction) {
     this.setState({
       locationPredictions: [],
-      destination: prediction.description
-    });
+      destination: prediction.description,
+      placeIdDestiny: true
+    })
+    apiKey = 'AIzaSyDaNTVWfKoSrUtonUqoZh0sS2fN6gUlMrM';
+    placeId = prediction.place_id;
+    Keyboard.dismiss();
+    const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=${apiKey}`;
+    const result = await fetch(apiUrl);
+    const jsonResult = await result.json();
+    console.log(jsonResult);
+    this.parsedDestination(jsonResult, prediction);
+    this.setState({placeIdDestiny: false})
     Keyboard;
   }
 
   render() {
     const locationPredictions = this.state.locationPredictions.map(
       prediction => (
-        /*<TouchableHighlight
-          key={prediction.id}
-          onPress={() => this.pressedPrediction(prediction)}
-        >
-          <Text style={styles.locationSuggestion}>
-            {prediction.description}
-          </Text>
-        </TouchableHighlight>*/
-
         <ListItem
           key={prediction.id}
           onPress={() => this.pressedPrediction(prediction)}
           title={prediction.description}
           titleStyle={styles.titleBoxPredictions}
           leftIcon={{ name: 'place', color: '#c31717de' }}
-          // leftAvatar={{ source: { uri: 'https://cdn4.iconfinder.com/data/icons/peppyicons/512/660011-location-512.png' } }}
           topDivider={true}
           bottomDivider={true}
           chevron={true}
@@ -146,6 +196,13 @@ export default class Arrival extends Component {
             this.state.searching &&
             <Button color='#053eca' loading='true' mode='text' onPress={() => console.log('Pressed')}>
             Buscando Destinos...
+            </Button>
+          }
+
+          {
+            this.state.placeIdDestiny &&
+            <Button color='#053eca' loading='true' mode='text' onPress={() => console.log('Pressed')}>
+            Guardando Destino...
             </Button>
           }
 
