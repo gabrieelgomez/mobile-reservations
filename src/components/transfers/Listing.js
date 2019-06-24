@@ -59,7 +59,6 @@ export default class Listing extends Component {
                 refreshing: false
               })
             }
-            // console.error(error);
           });
 
   }
@@ -120,7 +119,6 @@ export default class Listing extends Component {
                     buttonStyle={styles.buttonReservation}
                     titleStyle={styles.buttonTitleStyle}
                     onPress={(event) => {
-                        // debugger
                         this.props.navigation.navigate('TransferReservation', {
                           dataVehicle: item,
                           dataReservation: this.state.dataReservation

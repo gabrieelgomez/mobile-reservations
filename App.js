@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import { ActivityIndicator} from 'react-native';
 import { Image, StyleSheet, View, Text } from "react-native";
 import SplashScreen from 'react-native-splash-screen'
-
-
-import {  } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {
   createStackNavigator,
@@ -14,14 +12,19 @@ import {
 } from 'react-navigation';
 
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-import Icon from 'react-native-vector-icons/FontAwesome';
+
+// Transfers Components
 import TransferWidget from './src/screens/TransferWidget';
+import TransferList from './src/components/transfers/Listing';
+import TransferReservation from './src/components/transfers/reservations/Reservation';
+import TransferCheckout from './src/components/transfers/checkout/Checkout';
+
+// Others Widgets Components
 import TourWidget from './src/screens/TourWidget';
 import CircuitWidget from './src/screens/CircuitWidget';
 import MultidestinationWidget from './src/screens/MultidestinationWidget';
-import TransferList from './src/components/transfers/Listing';
-import TransferReservation from './src/components/transfers/reservations/Reservation';
 
+// Profile - User Components
 import Login from './src/screens/Login';
 import Profile from './src/screens/Profile';
 import CreateAccount from './src/screens/CreateAccount';
@@ -54,8 +57,8 @@ class ListTitle extends React.Component {
   }
 }
 
-
-const StackNavigator = createStackNavigator(
+// REALIZAR UN STACKNAVIGATOR PARA OBJETO DEL BOTTON NAVIGATOR, ES DECIR, UN STACK PARA TRANSFERWIDGET Y OTRO PARA TOURWIDGET EN BOTTON NAVIGATOR
+const StackTransferNavigator = createStackNavigator(
   {
     TransferWidget: {
       screen: TransferWidget,
@@ -88,15 +91,14 @@ const StackNavigator = createStackNavigator(
       }
     },
 
-    CreateAccount: {
-      screen: CreateAccount,
-      key: 'CreateAccountScreen',
-      navigationOptions: () => ({
-        key: 'CreateAccountScreen',
-        headerTitle: "Crear Cuenta",
-        headerStyle:{backgroundColor:'#9dc107'},
-        headerTintColor: '#ffffff',
-      })
+    TransferCheckout: {
+      screen: TransferCheckout,
+      navigationOptions: {
+        key: 'TransferCheckoutScreen',
+        // headerTitle: '<ListTitle />',
+        headerStyle:{backgroundColor:'#fff'},
+        // headerTintColor: '#ffffff',
+      }
     },
   }
 );
@@ -104,7 +106,7 @@ const StackNavigator = createStackNavigator(
 const TabNavigator = createMaterialBottomTabNavigator(
   {
     TransferWidget: {
-      screen: StackNavigator,
+      screen: StackTransferNavigator,
       key: 'transferWidgetScreen',
       navigationOptions: () => ({
         key: 'transferWidgetScreen',
@@ -182,22 +184,6 @@ const TabNavigator = createMaterialBottomTabNavigator(
         )
       })
     },
-    // CreateAccount: {
-    //   screen: CreateAccount,
-    //   key: 'LoginScreen',
-    //   navigationOptions: () => ({
-    //     key: 'LoginScreen',
-    //     title: 'Login',
-    //     headerTitle: "something",
-    //     tabBarIcon: ({focused, tintColor}) => (
-    //       <Icon
-    //           name='user'
-    //           color={tintColor}
-    //           size={20}
-    //       />
-    //     )
-    //   })
-    // },
   },
   {
     initialRouteName: 'TransferWidget',
@@ -211,7 +197,7 @@ const TabNavigator = createMaterialBottomTabNavigator(
   }
 );
 
-const Stack = createAppContainer(StackNavigator);
+const Stack = createAppContainer(StackTransferNavigator);
 const BottomTab = createAppContainer(TabNavigator);
 
 // export default BottomTab;

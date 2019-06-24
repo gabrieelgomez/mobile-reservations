@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Text, RefreshControl } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, RefreshControl, ToastAndroid } from 'react-native';
 import { Button, Divider } from 'react-native-elements'
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,7 +9,28 @@ export default class Reservation extends Component {
   constructor(props){
     super(props);
     navigate = props = this.props.navigation.state.params
-    this.state ={ isLoading: true, refreshing: false, vehicleTitle: 'Vehículo...', dataVehicle: navigate.dataVehicle, dataReservation: navigate.dataReservation}
+
+    this.onFocus      = this.onFocus.bind(this);
+    this.onSubmit     = this.onSubmit.bind(this);
+    this.onChangeText = this.onChangeText.bind(this);
+
+    this.quantitySeatRef      = this.updateRef.bind(this, 'quantity_seat');
+    this.hourOriginPickerRef  = this.updateRef.bind(this, 'hour_origin_picker');
+    this.hourArrivalPickerRef = this.updateRef.bind(this, 'hour_arrival_picker');
+    this.userDniRef           = this.updateRef.bind(this, 'user_dni');
+    this.userNameRef          = this.updateRef.bind(this, 'user_name');
+    this.userPhoneRef         = this.updateRef.bind(this, 'user_phone');
+    this.userEmailRef         = this.updateRef.bind(this, 'user_email');
+    this.userAddressRef       = this.updateRef.bind(this, 'user_address');
+
+
+    this.state = {
+      isLoading:       true,
+      refreshing:      false,
+      vehicleTitle:    'Vehículo...',
+      dataVehicle:     navigate.dataVehicle,
+      dataReservation: navigate.dataReservation
+    }
   }
 
   componentDidMount(){
@@ -18,11 +39,82 @@ export default class Reservation extends Component {
     });
   }
 
+  onFocus() {
+    let { errors = {} } = this.state;
+
+    for (let name in errors) {
+      let ref = this[name];
+
+      if (ref) {
+        delete errors[name];
+      }
+    }
+
+    this.setState({ errors });
+  }
+
+  onChangeText(text) {
+    ['quantity_seat', 'hour_origin_picker', 'hour_arrival_picker', 'user_dni', 'user_name', 'user_phone', 'user_email', 'user_address']
+      .map((name) => ({ name, ref: this[name] }))
+      .forEach(({ name, ref }) => {
+          if (ref.isFocused()) {
+            this.setState({ [name]: text });
+          }
+      });
+  }
+
+  onSubmit() {
+    var dataVehicle = this.state.dataVehicle;
+    var quantitySeatVehicle = dataVehicle.attributes.kit.quantity;
+
+    let errors = {};
+    var validates = 0;
+    ['quantity_seat', 'hour_origin_picker', 'hour_arrival_picker', 'user_dni', 'user_name', 'user_phone', 'user_email', 'user_address']
+      .forEach((name) => {
+        let value = this[name].value();
+
+        if (!value) {
+          errors[name] = 'No puede ser vacío';
+          validates++;
+        } else {
+          // Custom Validates
+          switch (name) {
+            case 'quantity_seat':
+              if (parseInt(value) > parseInt(quantitySeatVehicle)){
+                errors[name] = `Máximo equipaje es de ${quantitySeatVehicle}`;
+                validates++;
+              };
+          }
+        }
+      });
+
+    this.setState({ errors });
+    if (validates > 0){
+      ToastAndroid.show('No pueden existir campos vacíos. Por favor revisa tu formulario.', ToastAndroid.SHORT);
+    } else if (validates == 0){
+      ToastAndroid.show('El formulario está terminado.', ToastAndroid.SHORT);
+
+      this.props.navigation.navigate('TransferCheckout', {
+        dataVehicle: this.state.dataVehicle,
+        dataWidgetReservation: this.state.dataReservation,
+        dataReservation: this.state
+      })
+
+    }
+  }
+
+  updateRef(name, ref) {
+    this[name] = ref;
+  }
+
   _onRefresh = () => {
     this.setState({refreshing: true})
+    this.setState({refreshing: false})
   }
 
   render() {
+    let { errors = {}, ...data } = this.state;
+
     return (
       <ScrollView
         refreshControl={
@@ -54,10 +146,13 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='Cantidad de Equipaje'
                       keyboardType = 'numeric'
-                      // value={this.props.dataForm.quantity_adults}
-                      onChangeText={text =>
-                        console.log(text)
-                      }
+
+                      ref={this.quantitySeatRef}
+                      enablesReturnKeyAutomatically={true}
+                      onFocus={this.onFocus}
+                      onChangeText={this.onChangeText}
+                      returnKeyType='next'
+                      error={errors.quantity_seat}
                     />
 
                     <TextField
@@ -66,10 +161,7 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='Tipo de Traslado'
                       disabled
-                      value={this.state.dataReservation.round_trip.toString()}
-                      onChangeText={text =>
-                        console.log(text)
-                      }
+                      value={this.state.dataReservation.round_trip ? 'Ida/Vuelta' : 'Sólo Ida'}
                     />
 
                   </View>
@@ -81,10 +173,13 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='Hora Origen'
                       keyboardType = 'numeric'
-                      // value={this.props.dataForm.quantity_adults}
-                      onChangeText={text =>
-                        console.log(text)
-                      }
+
+                      ref={this.hourOriginPickerRef}
+                      enablesReturnKeyAutomatically={true}
+                      onFocus={this.onFocus}
+                      onChangeText={this.onChangeText}
+                      returnKeyType='next'
+                      error={errors.hour_origin_picker}
                     />
 
                     <TextField
@@ -93,10 +188,13 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='Hora Destino'
                       keyboardType = 'numeric'
-                      // value={this.props.dataForm.quantity_kids}
-                      onChangeText={text =>
-                        console.log(text)
-                      }
+
+                      ref={this.hourArrivalPickerRef}
+                      enablesReturnKeyAutomatically={true}
+                      onFocus={this.onFocus}
+                      onChangeText={this.onChangeText}
+                      returnKeyType='next'
+                      error={errors.hour_arrival_picker}
                     />
 
                   </View>
@@ -122,7 +220,6 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='Identificación'
                       keyboardType = 'numeric'
-                      // value={this.props.dataForm.quantity_adults}
                       onChangeText={text =>
                         console.log(text)
                       }
@@ -133,7 +230,6 @@ export default class Reservation extends Component {
                       containerStyle={[styles.containerInput, styles.inputRight]}
                       tintColor='#9dc107'
                       label='Nombre y Apellido'
-                      // value={this.props.dataForm.quantity_kids}
                       onChangeText={text =>
                         console.log(text)
                       }
@@ -149,7 +245,6 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='Identificación'
                       keyboardType = 'numeric'
-                      // value={this.props.dataForm.quantity_adults}
                       onChangeText={text =>
                         console.log(text)
                       }
@@ -160,7 +255,6 @@ export default class Reservation extends Component {
                       containerStyle={[styles.containerInput, styles.inputRight]}
                       tintColor='#9dc107'
                       label='Nombre y Apellido'
-                      // value={this.props.dataForm.quantity_kids}
                       onChangeText={text =>
                         console.log(text)
                       }
@@ -188,10 +282,13 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='Identificación'
                       keyboardType = 'numeric'
-                      // value={this.props.dataForm.quantity_adults}
-                      onChangeText={text =>
-                        console.log(text)
-                      }
+
+                      ref={this.userDniRef}
+                      enablesReturnKeyAutomatically={true}
+                      onFocus={this.onFocus}
+                      onChangeText={this.onChangeText}
+                      returnKeyType='next'
+                      error={errors.user_dni}
                     />
 
                     <TextField
@@ -199,10 +296,14 @@ export default class Reservation extends Component {
                       containerStyle={[styles.containerInput, styles.inputRight]}
                       tintColor='#9dc107'
                       label='Nombre y Apellido'
-                      // value={this.props.dataForm.quantity_kids}
-                      onChangeText={text =>
-                        console.log(text)
-                      }
+
+                      ref={this.userNameRef}
+                      autoCorrect={true}
+                      enablesReturnKeyAutomatically={true}
+                      onFocus={this.onFocus}
+                      onChangeText={this.onChangeText}
+                      returnKeyType='next'
+                      error={errors.user_name}
                     />
 
                   </View>
@@ -214,10 +315,13 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='Teléfono'
                       keyboardType = 'phone-pad'
-                      // value={this.props.dataForm.quantity_adults}
-                      onChangeText={text =>
-                        console.log(text)
-                      }
+
+                      ref={this.userPhoneRef}
+                      enablesReturnKeyAutomatically={true}
+                      onFocus={this.onFocus}
+                      onChangeText={this.onChangeText}
+                      returnKeyType='next'
+                      error={errors.user_phone}
                     />
 
                     <TextField
@@ -226,10 +330,14 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='E-mail'
                       keyboardType = 'email-address'
-                      // value={this.props.dataForm.quantity_kids}
-                      onChangeText={text =>
-                        console.log(text)
-                      }
+
+                      ref={this.userEmailRef}
+                      autoCorrect={true}
+                      enablesReturnKeyAutomatically={true}
+                      onFocus={this.onFocus}
+                      onChangeText={this.onChangeText}
+                      returnKeyType='next'
+                      error={errors.user_email}
                     />
 
                   </View>
@@ -241,10 +349,14 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       multiline={true}
                       label='Dirección de Factura'
-                      // value={this.props.dataForm.quantity_adults}
-                      onChangeText={text =>
-                        console.log(text)
-                      }
+
+                      ref={this.userAddressRef}
+                      autoCorrect={true}
+                      enablesReturnKeyAutomatically={true}
+                      onFocus={this.onFocus}
+                      onChangeText={this.onChangeText}
+                      returnKeyType='next'
+                      error={errors.user_address}
                     />
                   </View>
 
@@ -257,18 +369,10 @@ export default class Reservation extends Component {
             <Button
               title='CONFIRMAR'
               type='outline'
-              // icon={
-              //   <Icon
-              //     name='search'
-              //     size={15}
-              //     color='white'
-              //     iconContainerStyle={styles.iconContainerStyle}
-              //   />
-              // }
               raised={true}
               buttonStyle={styles.buttonSend}
               titleStyle={styles.buttonTitleStyle}
-              // onPress={this.handlePress}
+              onPress={this.onSubmit}
             />
           </View>
 

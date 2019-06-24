@@ -58,7 +58,6 @@ export default class InputsDatePicker extends Component {
               onDateChange={this.setDateOrigin}
               disabled={false}
               hidden={true}
-              // placeHolderText='Seleccionar Fecha'
               textStyle={styles.titleSelectDates}
               placeHolderTextStyle={styles.titleSelectDates}
               titleInput='Fecha Ida'
@@ -80,7 +79,6 @@ export default class InputsDatePicker extends Component {
                   onDateChange={this.setDateArrival}
                   disabled={false}
                   hidden={true}
-                  // placeHolderText='Seleccionar Fecha'
                   textStyle={styles.titleSelectDates}
                   placeHolderTextStyle={styles.titleSelectDates}
                   titleInput='Fecha Vuelta'
@@ -95,16 +93,13 @@ export default class InputsDatePicker extends Component {
   }
 
   setDateOrigin(day) {
-    // console.warn('fecha ida', day);
     nextDay  = new Date().setDate(day.getDate()+1)
     dayString = day.toLocaleDateString('en-GB')
     this.props.updateFormState('flight_origin_picker', dayString);
-    debugger
 
     if (dayString == this.state.dateArrival.toLocaleDateString('en-GB')){
       this.props.updateFormState('flight_arrival_picker', dayString);
     }
-
 
     this.setState({
       minimumArrival: new Date(nextDay),
@@ -113,7 +108,6 @@ export default class InputsDatePicker extends Component {
   }
 
   setDateArrival(day) {
-    // console.warn('fecha vuelta', day);
     this.props.updateFormState('flight_arrival_picker', day.toLocaleDateString('en-GB'));
     this.setState({
       maximumOrigin: new Date(day),
@@ -152,14 +146,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 28,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // alignSelf: 'stretch',
-  },
-  boxSelectDates:{
-    // marginTop: 10,
-    // marginBottom: -20,
-    // paddingHorizontal: 17,
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
   },
   titleSelectDates:{
     fontFamily: 'Poppins-Light',
