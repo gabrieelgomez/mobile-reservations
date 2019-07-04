@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Text, RefreshControl, ToastAndroid } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, RefreshControl, ToastAndroid, AsyncStorage } from 'react-native';
 import { Button, Divider } from 'react-native-elements'
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,10 +9,13 @@ export default class Checkout extends Component {
   constructor(props){
     super(props);
     navigate = this.props.navigation.state.params
-    console.log(navigate)
     this.state = {
       isLoading:       true,
       refreshing:      false,
+      vehicleTitle:    'Vehículo...',
+      dataVehicle: navigate.dataVehicle,
+      dataWidgetReservation: navigate.dataWidgetReservation,
+      dataReservation: navigate.dataReservation
     }
   }
 
@@ -20,7 +23,16 @@ export default class Checkout extends Component {
     this.setState({
       isLoading: false,
     });
+    this.getData('userData')
   }
+
+  getData(key){
+		AsyncStorage.getItem(key).then((value) => {
+			if (key == 'userData' && value != null){
+				this.setState({userData: JSON.parse(value)});
+			}
+		})
+	}
 
   _onRefresh = () => {
     this.setState({refreshing: true})
@@ -28,6 +40,56 @@ export default class Checkout extends Component {
   }
 
   render() {
+    let { errors = {}, ...data } = this.state;
+    dataReservation = this.state.dataReservation;
+    dataWidgetReservation = this.state.dataWidgetReservation;
+    dataVehicle = this.state.dataVehicle.attributes;
+
+    if (dataReservation.user_name){
+      var {
+        user_dni,
+        user_name,
+        user_phone,
+        user_email
+      } = dataReservation;
+    } else {
+      var user_dni   = dataReservation.userData.dni;
+      var user_name  = dataReservation.userData.name;
+      var user_phone = dataReservation.userData.phone;
+      var user_email = dataReservation.userData.email;
+    }
+
+    var {
+      quantity_seat,
+      hour_origin_picker,
+      hour_arrival_picker,
+      user_address
+    } = dataReservation
+
+    var {
+      origin_locality,
+      arrival_locality,
+      departament,
+      origin_departament,
+      arrival_departament,
+      origin_location,
+      origin_name,
+      arrival_location,
+      arrival_name,
+      flight_origin_picker,
+      flight_arrival_picker,
+      round_trip,
+      quantity_adults,
+      quantity_kids,
+    } = dataWidgetReservation
+
+    var {
+      price_destination,
+      cover,
+      currency,
+      title
+    } = dataVehicle
+
     return (
       <ScrollView
         refreshControl={
@@ -40,8 +102,83 @@ export default class Checkout extends Component {
         <View style={styles.container}>
           <View style={styles.boxTitles}>
             <Text style={styles.title}>Checkout de Traslado</Text>
-            <Text style={styles.subtitle}>{JSON.stringify(this.props.navigation.state.params.dataReservation)}</Text>
+            <Text style={styles.subtitle}>Recuerda confirmar tus datos de la reservación antes de continuar.</Text>
           </View>
+
+          <View style={styles.boxTitles}>
+            <Text style={styles.title}>Información Personal</Text>
+            <Divider style={[styles.dividerStyles, { width: 180 }]} />
+            {
+              this.state.dataReservation && (
+                <View>
+                  <Text style={styles.subtitle}>{user_name}</Text>
+                  <Text style={styles.subtitle}>{user_dni}</Text>
+                  <Text style={styles.subtitle}>{user_phone}</Text>
+                  <Text style={styles.subtitle}>{user_email}</Text>
+                  <Text style={styles.subtitle}>{user_address}</Text>
+                </View>
+              )
+            }
+          </View>
+
+          <View style={styles.boxTitles}>
+            <Text style={styles.title}>Detalles de la Orden</Text>
+            <Divider style={[styles.dividerStyles, { width: 180 }]} />
+            {
+              this.state.dataReservation && (
+                <View>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>N° Orden:  </Text>999</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>N° Factura:  </Text>A1B2C3D4</Text>
+                </View>
+              )
+            }
+          </View>
+
+          <View style={styles.boxTitles}>
+            <Text style={styles.title}>Detalles del Traslado</Text>
+            <Divider style={[styles.dividerStyles, { width: 180 }]} />
+            {
+              this.state.dataReservation && (
+                <View>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Origen:  </Text>{origin_name}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Destino:  </Text>{arrival_name}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Tipo de Traslado:  </Text>{round_trip ? 'Ida/Vuelta' : 'Sólo Ida'}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Adultos/Niños:  </Text>{quantity_adults}/{quantity_kids}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Fecha de Origen:  </Text>{flight_origin_picker}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Fecha de Destino:  </Text>{flight_arrival_picker}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Hora de Origen:  </Text>{hour_origin_picker}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Hora de Destino:  </Text>{hour_arrival_picker}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Equipaje:  </Text>{quantity_seat} piezas</Text>
+                </View>
+              )
+            }
+          </View>
+
+          <View style={styles.boxTitles}>
+            <Text style={styles.title}>Descripción de la Orden</Text>
+            <Divider style={[styles.dividerStyles, { width: 180 }]} />
+            {
+              this.state.dataReservation && (
+                <View>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Concepto:  </Text>{title['es']}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Precio:  </Text>$ {price_destination} {currency.toUpperCase()}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Cantidad:  </Text>{round_trip ? 2 : 1}</Text>
+                  <Text style={styles.subtitle}> <Text style={styles.strong}>Total:  </Text>$ {round_trip ? parseFloat(price_destination) * 2 : price_destination} {currency.toUpperCase()}</Text>
+                </View>
+              )
+            }
+          </View>
+
+          <View style={[styles.boxBottonSend]}>
+            <Button
+              title='CONFIRMAR RESERVACIÓN'
+              type='outline'
+              raised={true}
+              buttonStyle={styles.buttonSend}
+              titleStyle={styles.buttonTitleStyle}
+            />
+          </View>
+
         </View>
 
       </ScrollView>
@@ -72,4 +209,74 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 10
   },
+  travellerTitle:{
+    fontFamily: 'Poppins-Medium',
+    fontSize: 12,
+    marginBottom: -10
+  },
+  strong:{
+    fontFamily: 'Poppins-Bold',
+    fontSize: 12,
+  },
+  dividerStyles: {
+    height: 3,
+    backgroundColor: '#e1e8ee',
+    marginBottom: 15
+  },
+  dividerBilling: {
+    height: 3,
+    backgroundColor: '#e1e8ee',
+  },
+  imageStyle: {
+    height: 200,
+    borderBottomColor: '#d6d7da',
+    borderBottomWidth: 1
+  },
+  boxBottonSend: {
+    flexGrow: 0,
+    flexShrink: 1,
+    flexBasis: "auto",
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "stretch",
+    marginTop: 20,
+    marginBottom: 30
+  },
+  buttonSend: {
+    backgroundColor: "#9dc107",
+    borderColor: "#9dc107",
+    borderRadius: 5,
+    padding: 10,
+    width: 360
+  },
+  buttonTitleStyle: {
+    fontFamily: 'Poppins-Regular',
+    color: '#fff',
+    // marginLeft: 20,
+  },
+  iconContainer:{
+    paddingRight: 20
+  },
+
+  boxInputFlexTwo: {
+    paddingTop: 0,
+    paddingBottom: 25,
+    paddingHorizontal: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignSelf: 'stretch',
+  },
+  containerInput:{
+    flex: 1,
+  },
+  inputLeft:{
+    paddingRight: 20
+  },
+  inputRight:{
+    paddingLeft: 20
+  },
+  fontFamily:{
+    fontFamily: 'Poppins-Light',
+  },
+
 });

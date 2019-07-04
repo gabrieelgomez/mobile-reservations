@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Text, RefreshControl, ToastAndroid } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, RefreshControl, ToastAndroid, AsyncStorage } from 'react-native';
 import { Button, Divider } from 'react-native-elements'
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -37,7 +37,16 @@ export default class Reservation extends Component {
     this.setState({
       isLoading: false,
     });
+    this.getData('userData')
   }
+
+  getData(key){
+		AsyncStorage.getItem(key).then((value) => {
+			if (key == 'userData' && value != null){
+				this.setState({userData: JSON.parse(value)});
+			}
+		})
+	}
 
   onFocus() {
     let { errors = {} } = this.state;
@@ -282,7 +291,8 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='Identificación'
                       keyboardType = 'numeric'
-
+                      value={this.state.userData ? this.state.userData.dni : ''}
+                      disabled={this.state.userData ? true : false}
                       ref={this.userDniRef}
                       enablesReturnKeyAutomatically={true}
                       onFocus={this.onFocus}
@@ -296,7 +306,8 @@ export default class Reservation extends Component {
                       containerStyle={[styles.containerInput, styles.inputRight]}
                       tintColor='#9dc107'
                       label='Nombre y Apellido'
-
+                      value={this.state.userData ? this.state.userData.name : ''}
+                      disabled={this.state.userData ? true : false}
                       ref={this.userNameRef}
                       autoCorrect={true}
                       enablesReturnKeyAutomatically={true}
@@ -315,7 +326,8 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='Teléfono'
                       keyboardType = 'phone-pad'
-
+                      value={this.state.userData ? this.state.userData.phone : ''}
+                      disabled={this.state.userData ? true : false}
                       ref={this.userPhoneRef}
                       enablesReturnKeyAutomatically={true}
                       onFocus={this.onFocus}
@@ -330,7 +342,8 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='E-mail'
                       keyboardType = 'email-address'
-
+                      value={this.state.userData ? this.state.userData.email : ''}
+                      disabled={this.state.userData ? true : false}
                       ref={this.userEmailRef}
                       autoCorrect={true}
                       enablesReturnKeyAutomatically={true}

@@ -145,6 +145,7 @@ export default class TransferWidget extends Component {
 								this.removeData('uid')
 								this.removeData('client')
 								this.removeData('access-token')
+								this.removeData('userData')
 								this.setState({currentUser: false, userEmail: ''})
 								ToastAndroid.show('¡Hasta Luego!', ToastAndroid.SHORT);
 							} else {
@@ -166,10 +167,6 @@ export default class TransferWidget extends Component {
 		this.getData('uid')
 		this.getData('userData')
 	}
-
-	// componentWillUnmount(){
-	// 	this.setState({showProgress: true})
-	// }
 
   toCreateAccount = () => {
     this.props.navigation.navigate('CreateAccount');
