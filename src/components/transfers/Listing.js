@@ -42,25 +42,24 @@ export default class Listing extends Component {
     console.log(query)
     return fetch(`https://receptivocolombia.com/es/usd/vehicles.json?${query}`)
       .then((response) => response.json())
-        .then((responseJson) => {
-          if (responseJson == undefined){
-            this.setState({
-              searching: 'Oops..! Sin resultados disponibles.',
-              refreshing: false
-            })
-          } else {
-            this.setState({ refreshing: false, searching: 'Escoge el vehículo que se adapte a tus necesidades.', dataSource: responseJson.data.reverse() })
-          }
-        })
-          .catch((error) => {
-            if(error == 'TypeError: Network request failed'){
-              this.setState({
-                searching: 'Oops..! Intente de nuevo, deslice hacia abajo. Kindly check if the device is connected to stable cellular data plan or WiFi.',
-                refreshing: false
-              })
-            }
-          });
-
+      .then((responseJson) => {
+        if (responseJson == undefined){
+          this.setState({
+            searching: 'Oops..! Sin resultados disponibles.',
+            refreshing: false
+          })
+        } else {
+          this.setState({ refreshing: false, searching: 'Escoge el vehículo que se adapte a tus necesidades.', dataSource: responseJson.data.reverse() })
+        }
+      })
+      .catch((error) => {
+        if(error == 'TypeError: Network request failed'){
+          this.setState({
+            searching: 'Oops..! Intente de nuevo, deslice hacia abajo. Kindly check if the device is connected to stable cellular data plan or WiFi.',
+            refreshing: false
+          })
+        }
+      });
   }
 
   _onRefresh = () => {

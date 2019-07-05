@@ -18,12 +18,12 @@ import TransferWidget from './src/screens/TransferWidget';
 import TransferList from './src/components/transfers/Listing';
 import TransferReservation from './src/components/transfers/reservations/Reservation';
 import TransferCheckout from './src/components/transfers/checkout/Checkout';
+import TransferSuccesReservation from './src/components/transfers/reservations/SuccessReservation'
 
 // Others Widgets Components
 import TourWidget from './src/screens/TourWidget';
 import CircuitWidget from './src/screens/CircuitWidget';
 import MultidestinationWidget from './src/screens/MultidestinationWidget';
-
 // Profile - User Components
 import Login from './src/screens/Login';
 import Profile from './src/screens/Profile';
@@ -100,6 +100,17 @@ const StackTransferNavigator = createStackNavigator(
         // headerTintColor: '#ffffff',
       }
     },
+
+    TransferSuccesReservation: {
+      screen: TransferSuccesReservation,
+      navigationOptions: {
+        key: 'TransferSuccesReservationtScreen',
+        // headerTitle: '<ListTitle />',
+        headerStyle:{backgroundColor:'#fff'},
+        // headerTintColor: '#ffffff',
+      }
+    },
+
   }
 );
 
