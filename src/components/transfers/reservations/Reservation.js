@@ -291,7 +291,7 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='Identificación'
                       keyboardType = 'numeric'
-                      value={this.state.userData ? this.state.userData.dni : ''}
+                      value={this.state.userData ? this.state.userData.dni : this.state.user_dni}
                       disabled={this.state.userData ? true : false}
                       ref={this.userDniRef}
                       enablesReturnKeyAutomatically={true}
@@ -306,7 +306,7 @@ export default class Reservation extends Component {
                       containerStyle={[styles.containerInput, styles.inputRight]}
                       tintColor='#9dc107'
                       label='Nombre y Apellido'
-                      value={this.state.userData ? this.state.userData.name : ''}
+                      value={this.state.userData ? this.state.userData.name : this.state.user_name}
                       disabled={this.state.userData ? true : false}
                       ref={this.userNameRef}
                       autoCorrect={true}
@@ -326,7 +326,7 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='Teléfono'
                       keyboardType = 'phone-pad'
-                      value={this.state.userData ? this.state.userData.phone : ''}
+                      value={this.state.userData ? this.state.userData.phone : this.state.user_phone}
                       disabled={this.state.userData ? true : false}
                       ref={this.userPhoneRef}
                       enablesReturnKeyAutomatically={true}
@@ -342,7 +342,7 @@ export default class Reservation extends Component {
                       tintColor='#9dc107'
                       label='E-mail'
                       keyboardType = 'email-address'
-                      value={this.state.userData ? this.state.userData.email : ''}
+                      value={this.state.userData ? this.state.userData.email : this.state.user_email}
                       disabled={this.state.userData ? true : false}
                       ref={this.userEmailRef}
                       autoCorrect={true}
