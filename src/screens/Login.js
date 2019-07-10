@@ -72,7 +72,7 @@ export default class TransferWidget extends Component {
 
 	async onLoginPressed() {
 		this.setState({showProgress: true})
-		return fetch('https://receptivocolombia.com/v1/auth/sign_in', {
+		return fetch('http://192.168.88.48:3000/v1/auth/sign_in', {
 														method: 'POST',
 														headers: {
 															'Accept': 'application/json',
@@ -128,7 +128,7 @@ export default class TransferWidget extends Component {
 
 	async signOut(){
 		this.setState({showProgress: true})
-		return fetch('https://receptivocolombia.com/v1/auth/sign_out', {
+		return fetch('http://192.168.88.48:3000/v1/auth/sign_out', {
 														method: 'DELETE',
 														headers: {
 															'Accept': 'application/json',

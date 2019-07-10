@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View, Text, RefreshControl, ToastAndroid, Async
 import { Button, Divider } from 'react-native-elements'
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import PriceDestination from './PriceDestination'
 
 export default class Checkout extends Component {
 
@@ -30,7 +31,7 @@ export default class Checkout extends Component {
   }
 
   requestReservationApi(){
-    return fetch(`https://receptivocolombia.com/api/get_reservation`)
+    return fetch(`http://192.168.88.48:3000/api/get_reservation`)
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson == undefined){
@@ -107,7 +108,7 @@ export default class Checkout extends Component {
       title
     } = dataVehicle
 
-    return fetch('https://receptivocolombia.com/api/transfers/create_reservation', {
+    return fetch('http://192.168.88.48:3000/api/transfers/create_reservation', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -131,7 +132,8 @@ export default class Checkout extends Component {
                 quantity_kids: quantity_kids,
                 description: user_address,
                 quantity_kit: quantity_seat,
-                round_trip: round_trip ? 'true' : 'false'
+                round_trip: round_trip ? 'true' : 'false',
+                reservation_mobile: true
               },
               user: {
                 name: user_name,
@@ -296,17 +298,12 @@ export default class Checkout extends Component {
             </View>
 
             <View style={styles.boxTitles}>
-              <Text style={styles.title}>Descripción de la Orden</Text>
-              <Divider style={[styles.dividerStyles, { width: 180 }]} />
               {
-                this.state.dataReservation && (
-                  <View>
-                    <Text style={styles.subtitle}> <Text style={styles.strong}>Concepto:  </Text>{title['es']}</Text>
-                    <Text style={styles.subtitle}> <Text style={styles.strong}>Precio:  </Text>$ {price_destination} {currency.toUpperCase()}</Text>
-                    <Text style={styles.subtitle}> <Text style={styles.strong}>Cantidad:  </Text>{round_trip ? 2 : 1}</Text>
-                    <Text style={styles.subtitle}> <Text style={styles.strong}>Total:  </Text>$ {round_trip ? parseFloat(price_destination) * 2 : price_destination} {currency.toUpperCase()}</Text>
-                  </View>
-                )
+                <PriceDestination
+                  dataVehicle={dataVehicle}
+                  dataWidgetReservation={dataWidgetReservation}
+                  dataReservation={this.state.dataReservation}
+                />
               }
             </View>
 

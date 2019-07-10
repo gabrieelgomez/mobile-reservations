@@ -42,7 +42,7 @@ export default class SuccessReservation extends Component {
                   <Text style={styles.subtitle}> <Text style={styles.strong}>N° de Factura:  </Text>{data.invoice.token}</Text>
                   <Text style={styles.subtitle}> <Text style={styles.strong}>Origen:  </Text>{data.origin}</Text>
                   <Text style={styles.subtitle}> <Text style={styles.strong}>Destino:  </Text>{data.arrival}</Text>
-                  <Text style={styles.subtitle}> <Text style={styles.strong}>Total:  </Text>{data.invoice.currency.toUpperCase()} ${data.order.price_total_pax}</Text>
+                  <PriceDestination data={data}/>
                 </View>
               )
             }
@@ -67,6 +67,17 @@ export default class SuccessReservation extends Component {
     );
   }
 
+}
+
+const PriceDestination = (data) => {
+  if (data.data.order.price_total_pax == 0){
+    price_total_pax = 'Por Cotizar'
+  } else {
+    price_total_pax = `${data.invoice.currency.toUpperCase()} $${data.order.price_total_pax}`
+  }
+  return (
+    <Text style={styles.subtitle}> <Text style={styles.strong}>Total:  </Text>{price_total_pax}</Text>
+  )
 }
 
 const styles = StyleSheet.create({

@@ -15,7 +15,7 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 
 // Transfers Components
 import TransferWidget from './src/screens/TransferWidget';
-import TransferList from './src/components/transfers/Listing';
+import TransferList from './src/components/transfers/listing/Listing';
 import TransferReservation from './src/components/transfers/reservations/Reservation';
 import TransferCheckout from './src/components/transfers/checkout/Checkout';
 import TransferSuccesReservation from './src/components/transfers/reservations/SuccessReservation'

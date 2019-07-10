@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View, Text, RefreshControl } from 'react-native';
 import { Divider, Title, Avatar, Paragraph  } from 'react-native-paper';
-import OfflineNotice from '../offline/OfflineNotice'
+import OfflineNotice from '../../offline/OfflineNotice'
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import PriceDestination from './PriceDestination'
 
 export default class Listing extends Component {
 
@@ -40,7 +41,7 @@ export default class Listing extends Component {
 
     const query = `round_trip=${round_trip}&origin_name=${origin_name}&origin_location=${origin_location}&origin_locality=${origin_locality}&origin_departament=${origin_departament}&flight_origin_picker=${flight_origin_picker}&arrival_name=${arrival_name}&arrival_location=${arrival_location}&arrival_locality=${arrival_locality}&arrival_departament=${arrival_departament}&flight_arrival_picker=${flight_arrival_picker}&quantity_adults=${quantity_adults}&quantity_kids=${quantity_kids}`
     console.log(query)
-    return fetch(`https://receptivocolombia.com/es/usd/vehicles.json?${query}`)
+    return fetch(`http://192.168.88.48:3000/es/usd/vehicles.json?${query}`)
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson == undefined){
@@ -93,7 +94,7 @@ export default class Listing extends Component {
                 <Card
                   containerStyle={styles.containerStyle}
                   imageStyle={styles.imageStyle}
-                  image={{ uri: `https://receptivocolombia.com${item.attributes.cover.url}` }}
+                  image={{ uri: `http://192.168.88.48:3000/${item.attributes.cover.url}` }}
                 >
                   <Text style={[styles.titleCard]}>
                     {item.attributes.title['es']}
@@ -107,7 +108,9 @@ export default class Listing extends Component {
                       <Text style={[styles.subtitle]}>{`${item.attributes.kit['quantity']} pzas. (${item.attributes.kit['weight']}kg)`}</Text>
                     </View>
                     <View>
-                      <Text style={[styles.titlePrice]}>{`$ ${item.attributes.price_destination} ${item.attributes.currency.toUpperCase()}`}</Text>
+                      <PriceDestination
+                        dataForm = {item.attributes}
+                      />
                     </View>
                   </View>
 
@@ -189,12 +192,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
     fontSize: 12,
     color: '#000'
-  },
-  titlePrice:{
-    fontFamily: 'Poppins-Bold',
-    fontSize: 15,
-    color: 'green',
-    marginTop: 32
   },
   imageStyle: {
     height: 200,
