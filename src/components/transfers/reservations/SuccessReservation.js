@@ -70,7 +70,8 @@ export default class SuccessReservation extends Component {
 }
 
 const PriceDestination = (data) => {
-  if (data.data.order.price_total_pax == 0){
+  data = data.data
+  if (data.order.price_total_pax == 0){
     price_total_pax = 'Por Cotizar'
   } else {
     price_total_pax = `${data.invoice.currency.toUpperCase()} $${data.order.price_total_pax}`
