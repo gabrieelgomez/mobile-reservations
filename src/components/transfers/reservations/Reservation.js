@@ -3,12 +3,15 @@ import { ScrollView, StyleSheet, View, Text, RefreshControl, ToastAndroid, Async
 import { Button, Divider } from 'react-native-elements'
 import { TextField } from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import TimePickerFlyging from './TimePickerFlyging'
 
 export default class Reservation extends Component {
 
   constructor(props){
     super(props);
-    navigate = props = this.props.navigation.state.params
+    today = new Date();
+    time  = today.getHours() + ":" + today.getMinutes();
+    navigate = props = this.props.navigation.state.params,
 
     this.onFocus      = this.onFocus.bind(this);
     this.onSubmit     = this.onSubmit.bind(this);
@@ -23,13 +26,14 @@ export default class Reservation extends Component {
     this.userEmailRef         = this.updateRef.bind(this, 'user_email');
     this.userAddressRef       = this.updateRef.bind(this, 'user_address');
 
-
     this.state = {
       isLoading:       true,
       refreshing:      false,
       vehicleTitle:    'Vehículo...',
       dataVehicle:     navigate.dataVehicle,
-      dataReservation: navigate.dataReservation
+      dataReservation: navigate.dataReservation,
+      hour_origin_picker: time,
+      hour_arrival_picker: time,
     }
   }
 
@@ -63,7 +67,7 @@ export default class Reservation extends Component {
   }
 
   onChangeText(text) {
-    ['quantity_seat', 'hour_origin_picker', 'hour_arrival_picker', 'user_dni', 'user_name', 'user_phone', 'user_email', 'user_address']
+    ['quantity_seat', 'user_dni', 'user_name', 'user_phone', 'user_email', 'user_address']
       .map((name) => ({ name, ref: this[name] }))
       .forEach(({ name, ref }) => {
           if (ref.isFocused()) {
@@ -78,7 +82,7 @@ export default class Reservation extends Component {
 
     let errors = {};
     var validates = 0;
-    ['quantity_seat', 'hour_origin_picker', 'hour_arrival_picker', 'user_dni', 'user_name', 'user_phone', 'user_email', 'user_address']
+    ['quantity_seat', 'user_dni', 'user_name', 'user_phone', 'user_email', 'user_address']
       .forEach((name) => {
         let value = this[name].value();
 
@@ -114,6 +118,13 @@ export default class Reservation extends Component {
 
   updateRef(name, ref) {
     this[name] = ref;
+  }
+
+  updateState(key, value) {
+    console.log(key, value)
+    this.setState({ [key]: value }, () => {
+      console.log(value)
+    });
   }
 
   _onRefresh = () => {
@@ -175,38 +186,10 @@ export default class Reservation extends Component {
 
                   </View>
 
-                  <View style={[styles.boxInputFlexTwo]}>
-                    <TextField
-                      labelTextStyle={styles.fontFamily}
-                      containerStyle={[styles.containerInput, styles.inputLeft]}
-                      tintColor='#9dc107'
-                      label='Hora Origen'
-                      keyboardType = 'numeric'
-
-                      ref={this.hourOriginPickerRef}
-                      enablesReturnKeyAutomatically={true}
-                      onFocus={this.onFocus}
-                      onChangeText={this.onChangeText}
-                      returnKeyType='next'
-                      error={errors.hour_origin_picker}
-                    />
-
-                    <TextField
-                      labelTextStyle={styles.fontFamily}
-                      containerStyle={[styles.containerInput, styles.inputRight]}
-                      tintColor='#9dc107'
-                      label='Hora Destino'
-                      keyboardType = 'numeric'
-
-                      ref={this.hourArrivalPickerRef}
-                      enablesReturnKeyAutomatically={true}
-                      onFocus={this.onFocus}
-                      onChangeText={this.onChangeText}
-                      returnKeyType='next'
-                      error={errors.hour_arrival_picker}
-                    />
-
-                  </View>
+                  <TimePickerFlyging
+                    dataForm={this.state}
+                    updateFormState={this.updateState.bind(this)}
+                  />
 
                 </View>
               )
