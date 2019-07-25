@@ -220,6 +220,7 @@ export default class Login extends Component {
 									label='Contraseña'
 									selectTextOnFocus
 									secureTextEntry={true}
+									autoCapitalize = 'none'
 									value={this.state.password}
 									onChangeText={password => this.setState({ password })}
 								/>

@@ -185,8 +185,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   boxBottonSend: {
-    flexGrow: 0,
-    flexShrink: 1,
+    flexGrow: 2,
+    flexShrink: 0,
     flexBasis: "auto",
     alignItems: "center",
     justifyContent: "center",
@@ -208,8 +208,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#70727363",
     // borderColor: "#24292e",
     borderRadius: 5,
-    padding: 10,
-    width: 360
+    // padding: 10,
+    // width: 360
   },
   buttonTitleStyleDisabled: {
     fontFamily: 'Poppins-Regular',

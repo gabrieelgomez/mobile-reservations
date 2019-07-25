@@ -202,8 +202,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#9dc107',
     borderColor: '#9dc107',
     borderRadius: 5,
-    padding: 10,
-    width: 340
+    // padding: 10,
+    // width: 340
   },
   buttonTitleStyle: {
     fontFamily: 'Poppins-Regular',
