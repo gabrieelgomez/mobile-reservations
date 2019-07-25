@@ -326,6 +326,7 @@ export default class Reservation extends Component {
                       label='E-mail'
                       keyboardType = 'email-address'
                       value={this.state.userData ? this.state.userData.email : this.state.user_email}
+                      autoCapitalize = 'none'
                       disabled={this.state.userData ? true : false}
                       ref={this.userEmailRef}
                       autoCorrect={true}

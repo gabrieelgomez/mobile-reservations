@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Text, RefreshControl, Image, Dimensions, ActivityIndicator, AsyncStorage, ToastAndroid } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, RefreshControl, Image, Dimensions, ActivityIndicator, AsyncStorage, ToastAndroid, Linking } from 'react-native';
 import { TextField } from 'react-native-material-textfield';
 import OfflineNotice from '../components/offline/OfflineNotice';
 import { ButtonGroup, Button, ListItem } from 'react-native-elements';
 import { Chip, List, withTheme, type Theme } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { NavigationActions, StackActions } from 'react-navigation';
 
 let ScreenHeight = Dimensions.get("window").height;
 
-export default class TransferWidget extends Component {
+export default class Login extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -60,19 +61,9 @@ export default class TransferWidget extends Component {
 		})
 	}
 
-	async removeData(key) {
-    try {
-      await AsyncStorage.removeItem(key);
-      return true;
-    }
-    catch(exception) {
-      return false;
-    }
-  }
-
 	async onLoginPressed() {
 		this.setState({showProgress: true})
-		return fetch('https://receptivocolombia.com/v1/auth/sign_in', {
+		return fetch('http://192.168.43.39:3000/v1/auth/sign_in', {
 														method: 'POST',
 														headers: {
 															'Accept': 'application/json',
@@ -101,22 +92,27 @@ export default class TransferWidget extends Component {
 						return response;
 					})
 					.then((response) => response.json())
-						.then((responseJson) => {
-							if (responseJson == undefined){
-								console.log('json undefined')
-							} else if (responseJson.errors){
-								console.log("error " + responseJson.errors[0]);
-								ToastAndroid.show(responseJson.errors[0], ToastAndroid.SHORT);
-								this.setState({showProgress: false, errorResponse: responseJson.errors[0]});
-							} else if (responseJson.data){
-								console.log(responseJson.data)
-								this.storeData('userData', JSON.stringify(responseJson.data));
-								this.setState({showProgress: false, currentUser: true, errorResponse: ''});
-							}
-							else {
-								console.log(responseJson)
-							}
-						})
+					.then((responseJson) => {
+						if (responseJson == undefined){
+							console.log('json undefined')
+						}
+
+						else if (responseJson.errors){
+							console.log("error " + responseJson.errors[0]);
+							ToastAndroid.show(responseJson.errors[0], ToastAndroid.SHORT);
+							this.setState({showProgress: false, errorResponse: responseJson.errors[0]});
+						}
+
+						else if (responseJson.data){
+							console.log(responseJson.data)
+							this.storeData('userData', JSON.stringify(responseJson.data));
+							this.setState({showProgress: false, currentUser: true, errorResponse: ''});
+							this.props.navigation.navigate('App')
+						}
+						else {
+							console.log(responseJson)
+						}
+					})
 					.catch((error) =>{
 						if(error == 'TypeError: Network request failed'){
 							ToastAndroid.show('No hay conexión a internet. Intente más tarde.', ToastAndroid.SHORT);
@@ -124,41 +120,6 @@ export default class TransferWidget extends Component {
 						this.setState({showProgress: false})
 						// console.error(error);
 					});
-	}
-
-	async signOut(){
-		this.setState({showProgress: true})
-		return fetch('https://receptivocolombia.com/v1/auth/sign_out', {
-														method: 'DELETE',
-														headers: {
-															'Accept': 'application/json',
-															'Content-Type': 'application/json',
-															'access-token': this.state.userAccessToken,
-															'client': this.state.userClient,
-															'uid': this.state.userEmail
-														}
-													})
-					.then((response) => response.json())
-						.then((responseJson) => {
-							this.setState({showProgress: false})
-							if (responseJson.success){
-								this.removeData('uid')
-								this.removeData('client')
-								this.removeData('access-token')
-								this.removeData('userData')
-								this.setState({currentUser: false, userEmail: ''})
-								ToastAndroid.show('¡Hasta Luego!', ToastAndroid.SHORT);
-							} else {
-								ToastAndroid.show('Error al cerrar sesión, intente de nuevo.', ToastAndroid.SHORT);
-							}
-						})
-						.catch((error) =>{
-							if(error == 'TypeError: Network request failed'){
-								ToastAndroid.show('No hay conexión a internet. Intente más tarde.', ToastAndroid.SHORT);
-							}
-							this.setState({showProgress: false})
-							// console.error(error);
-						});
 	}
 
 	componentDidMount(){
@@ -216,138 +177,93 @@ export default class TransferWidget extends Component {
 
 				{this.state.showProgress == false && (
 					<View>
-						{!this.state.currentUser &&(
-						  <View>
 
-						    <View style={styles.loginLogo}>
-						      <Image
-						          style={styles.logo}
-						          source={require('../images/login_new.png')}
-						          resizeMode='contain'
-						        />
-						    </View>
+						<View>
 
-						    <View style={styles.loginSwitch}>
-						      <Chip
-						        mode='outlined'
-						        // icon='contacts'
-						        // selected={this.isAgency}
-						        style={styles.chipContainer}
-						        selectedColor='#9dc107'
-						        onPress={this.setAgency}
-						      >
-						        <Text style={styles.chipTitle}>¿Eres Agencia?</Text>
-						      </Chip>
-						    </View>
+							<View style={styles.loginLogo}>
+								<Image
+										style={styles.logo}
+										source={require('../images/login_new.png')}
+										resizeMode='contain'
+									/>
+							</View>
 
-						    <View style={[styles.boxInputs]}>
-						      <TextField
-						        // containerStyle={styles.containerInput}
-						        labelTextStyle={styles.fontFamily}
-						        tintColor='#9dc107'
-						        label='E-mail'
-						        selectTextOnFocus
-						        value={this.state.email}
-						        onChangeText={email => this.setState({ email })}
-						      />
+							<View style={styles.loginSwitch}>
+								<Chip
+									mode='outlined'
+									// icon='contacts'
+									// selected={this.isAgency}
+									style={styles.chipContainer}
+									selectedColor='#9dc107'
+									onPress={this.setAgency}
+								>
+									<Text style={styles.chipTitle}>¿Eres Agencia?</Text>
+								</Chip>
+							</View>
 
-						      <TextField
-						        // containerStyle={styles.containerInput}
-						        labelTextStyle={styles.fontFamily}
-						        tintColor='#9dc107'
-						        label='Contraseña'
-						        selectTextOnFocus
-						        secureTextEntry={true}
-						        value={this.state.password}
-						        onChangeText={password => this.setState({ password })}
-						      />
+							<View style={[styles.boxInputs]}>
+								<TextField
+									// containerStyle={styles.containerInput}
+									labelTextStyle={styles.fontFamily}
+									tintColor='#9dc107'
+									label='E-mail'
+									selectTextOnFocus
+									autoCapitalize = 'none'
+									value={this.state.email}
+									onChangeText={email => this.setState({ email })}
+								/>
 
-						      {this.state.isAgency && (
-						        <TextField
-						          // containerStyle={styles.containerInput}
-						          labelTextStyle={styles.fontFamily}
-						          tintColor='#9dc107'
-						          label='Código Agencia'
-						          selectTextOnFocus
-						          secureTextEntry={true}
-						          value={this.state.agencyCode}
-						          onChangeText={agencyCode => this.setState({ agencyCode })}
-						        />
-						      )}
-						    </View>
+								<TextField
+									// containerStyle={styles.containerInput}
+									labelTextStyle={styles.fontFamily}
+									tintColor='#9dc107'
+									label='Contraseña'
+									selectTextOnFocus
+									secureTextEntry={true}
+									value={this.state.password}
+									onChangeText={password => this.setState({ password })}
+								/>
 
-						    <Text style={[styles.fontCurrent, styles.errors]}>
-						      {this.state.errorResponse}
-						    </Text>
+								{this.state.isAgency && (
+									<TextField
+										// containerStyle={styles.containerInput}
+										labelTextStyle={styles.fontFamily}
+										tintColor='#9dc107'
+										label='Código Agencia'
+										selectTextOnFocus
+										secureTextEntry={true}
+										value={this.state.agencyCode}
+										onChangeText={agencyCode => this.setState({ agencyCode })}
+									/>
+								)}
+							</View>
 
-						    <View style={styles.forgotPassword}>
-						      <Text style={[styles.fontCurrent, styles.titleForgot]} onPress={this.handlePress}>¿Olvidaste tu contraseña?</Text>
-						    </View>
+							<Text style={[styles.fontCurrent, styles.errors]}>
+								{this.state.errorResponse}
+							</Text>
 
-						    <View style={[styles.boxButtonLogin]}>
-						      <Button
-						        title='Iniciar Sesión'
-						        type='outline'
-						        raised={true}
-						        buttonStyle={styles.buttonLogin}
-						        titleStyle={styles.buttonTitleStyle}
-						        onPress={this.onLoginPressed.bind(this)}
-						      />
+							<View style={styles.forgotPassword}>
+								<Text style={[styles.fontCurrent, styles.titleForgot]} onPress={ ()=>{ Linking.openURL('http://192.168.43.39:3000/users/sign_in')}}>¿Olvidaste tu contraseña?</Text>
+							</View>
 
-						      <View style={styles.createAccount}>
-						        <Text style={[styles.fontCurrent, styles.titleCreateAccount]}>¿Aún no tienes una cuenta?</Text>
-						        <Text style={[styles.fontCurrent, styles.titleRegister]} onPress={this.handlePress}>¡Registrate ahora!</Text>
-						      </View>
-						    </View>
+							<View style={[styles.boxButtonLogin]}>
+								<Button
+									title='Iniciar Sesión'
+									type='outline'
+									raised={true}
+									buttonStyle={styles.buttonLogin}
+									titleStyle={styles.buttonTitleStyle}
+									onPress={this.onLoginPressed.bind(this)}
+								/>
 
-						  </View>
-						)}
+								<View style={styles.createAccount}>
+									<Text style={[styles.fontCurrent, styles.titleCreateAccount]}>¿Aún no tienes una cuenta?</Text>
+									<Text style={[styles.fontCurrent, styles.titleRegister]} onPress={ ()=>{ Linking.openURL('http://192.168.43.39:3000/users/sign_in')}}>¡Registrate ahora!</Text>
+								</View>
+							</View>
 
-						{this.state.currentUser &&(
+						</View>
 
-						  <View>
-						    <View style={styles.loginLogo}>
-						      <Image
-						          style={styles.logo}
-						          source={require('../images/login_new.png')}
-						          resizeMode='contain'
-						        />
-						    </View>
-
-								<View style={styles.boxTitles}>
-				          <Text style={styles.subtitle}>{'¡Bienvenido!, ' + this.state.userEmail}</Text>
-				        </View>
-
-						    <View>
-						      {
-						        options.map((item, i) => (
-						          <ListItem
-						            key={i}
-						            title={item.title}
-												titleStyle={[styles.fontCurrent, styles.fontSize, styles.titleBtn]}
-						            chevron={true}
-						            topDivider={true}
-						            bottomDivider={true}
-						            onPress={this.handlePress}
-						            leftIcon={{ name: item.icon }}
-						          />
-						        ))
-						      }
-						      <ListItem
-						        key={6}
-						        title='Cerrar Sesión'
-										containerStyle={[styles.btnLogout]}
-										titleStyle={[styles.fontCurrent, styles.fontSize, styles.titleBtn, styles.btnLogout]}
-						        chevron={true}
-						        topDivider={true}
-						        bottomDivider={true}
-										leftIcon={{ name: 'exit-to-app', color: 'red' }}
-						        onPress={this.signOut.bind(this)}
-						      />
-
-						    </View>
-						  </View>
-						)}
 					</View>
 				)}
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ScrollView, StyleSheet, View, Text, RefreshControl } from "react-native";
+import { ScrollView, StyleSheet, View, Text, RefreshControl, AsyncStorage } from "react-native";
 import InputOriginGoogleMaps from "../components/widget/transfers/InputOriginGoogleMaps";
 import InputArrivalGoogleMaps from "../components/widget/transfers/InputArrivalGoogleMaps";
 import InputsDatePicker from "../components/widget/transfers/InputsDatePicker";
@@ -52,10 +52,22 @@ export default class TransferWidget extends Component {
     });
   }
 
+  getData(key){
+		AsyncStorage.getItem(key).then((value) => {
+			if (key == 'uid' && value != null){
+				this.setState({showProgress: false, currentUser: true, userEmail: value});
+			} else{
+        this.props.navigation.navigate('Auth');
+      }
+      this.setState({showProgress: false})
+		})
+	}
+
   componentDidMount() {
     this.setState({
       isLoading: false
     });
+    this.getData('uid')
   }
 
   handlePress = () => {

@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import { ActivityIndicator} from 'react-native';
-import { Image, StyleSheet, View, Text } from "react-native";
+import { Image, StyleSheet, View, Text, AsyncStorage } from "react-native";
 import SplashScreen from 'react-native-splash-screen'
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-import {
-  createStackNavigator,
-  createAppContainer,
-  createBottomTabNavigator,
-  BottomTabBar
-} from 'react-navigation';
-
+import { createStackNavigator, createAppContainer, createBottomTabNavigator, BottomTabBar, createSwitchNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
 // Transfers Components
@@ -26,8 +19,7 @@ import CircuitWidget from './src/screens/CircuitWidget';
 import MultidestinationWidget from './src/screens/MultidestinationWidget';
 // Profile - User Components
 import Login from './src/screens/Login';
-import Profile from './src/screens/Profile';
-import CreateAccount from './src/screens/CreateAccount';
+import Profile from './src/components/profile/Profile';
 
 class LogoTitle extends React.Component {
   render() {
@@ -45,19 +37,6 @@ class LogoTitle extends React.Component {
   }
 }
 
-
-class ListTitle extends React.Component {
-  render() {
-    return (
-      <View style={styles.container_logo}>
-          <Text style={styles.titleList}>Resultados de la búsqueda</Text>
-      </View>
-
-    );
-  }
-}
-
-// REALIZAR UN STACKNAVIGATOR PARA OBJETO DEL BOTTON NAVIGATOR, ES DECIR, UN STACK PARA TRANSFERWIDGET Y OTRO PARA TOURWIDGET EN BOTTON NAVIGATOR
 const StackTransferNavigator = createStackNavigator(
   {
     TransferWidget: {
@@ -66,8 +45,6 @@ const StackTransferNavigator = createStackNavigator(
       navigationOptions: {
         key: 'transferWidgetScreen',
         headerTitle: <LogoTitle />,
-        // headerStyle:{backgroundColor:'#9dc107'},
-        // headerTintColor: '#ffffff',
       }
     },
 
@@ -75,9 +52,7 @@ const StackTransferNavigator = createStackNavigator(
       screen: TransferList,
       navigationOptions: {
         key: 'transferListScreen',
-        // headerTitle: '<ListTitle />',
         headerStyle:{backgroundColor:'#fff'},
-        // headerTintColor: '#ffffff',
       }
     },
 
@@ -85,9 +60,7 @@ const StackTransferNavigator = createStackNavigator(
       screen: TransferReservation,
       navigationOptions: {
         key: 'TransferReservationScreen',
-        // headerTitle: '<ListTitle />',
         headerStyle:{backgroundColor:'#fff'},
-        // headerTintColor: '#ffffff',
       }
     },
 
@@ -95,9 +68,7 @@ const StackTransferNavigator = createStackNavigator(
       screen: TransferCheckout,
       navigationOptions: {
         key: 'TransferCheckoutScreen',
-        // headerTitle: '<ListTitle />',
         headerStyle:{backgroundColor:'#fff'},
-        // headerTintColor: '#ffffff',
       }
     },
 
@@ -105,16 +76,28 @@ const StackTransferNavigator = createStackNavigator(
       screen: TransferSuccesReservation,
       navigationOptions: {
         key: 'TransferSuccesReservationtScreen',
-        // headerTitle: '<ListTitle />',
         headerStyle:{backgroundColor:'#fff'},
-        // headerTintColor: '#ffffff',
       }
     },
 
   }
 );
 
-const TabNavigator = createMaterialBottomTabNavigator(
+const StackLoginNavigator    = createStackNavigator(
+  {
+    Login: {
+      screen: Login,
+      key: 'LoginScreen',
+      navigationOptions: {
+        key: 'LoginScreen',
+        headerTitle: <LogoTitle />,
+      }
+    }
+
+  }
+);
+
+const TabNavigator           = createMaterialBottomTabNavigator(
   {
     TransferWidget: {
       screen: StackTransferNavigator,
@@ -179,12 +162,12 @@ const TabNavigator = createMaterialBottomTabNavigator(
         )
       })
     },
-    Login: {
-      screen: Login,
-      key: 'LoginScreen',
+    Profile: {
+      screen: Profile,
+      key: 'ProfileScreen',
       navigationOptions: () => ({
-        key: 'LoginScreen',
-        title: 'Login',
+        key: 'ProfileScreen',
+        title: 'Profile',
         headerTitle: "something",
         tabBarIcon: ({focused, tintColor}) => (
           <Icon
@@ -199,7 +182,6 @@ const TabNavigator = createMaterialBottomTabNavigator(
   {
     initialRouteName: 'TransferWidget',
     barStyle: { backgroundColor: '#fff' },
-    // shifting: true,
     activeTintColor: '#43b7e8',
     inactiveTintColor: 'gray',
     labelStyle: {
@@ -208,16 +190,38 @@ const TabNavigator = createMaterialBottomTabNavigator(
   }
 );
 
-const Stack = createAppContainer(StackTransferNavigator);
-const BottomTab = createAppContainer(TabNavigator);
 
-// export default BottomTab;
+const StackLogin    = createAppContainer(StackLoginNavigator);
+const StackTransfer = createAppContainer(StackTransferNavigator);
+const BottomTab     = createAppContainer(TabNavigator);
+
+const SwichtNavigat = createSwitchNavigator(
+  {
+    Auth: StackLogin,
+    App: BottomTab,
+  },
+  {
+    initialRouteName: 'Auth',
+  }
+)
+
+const Switch = createAppContainer(SwichtNavigat);
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+    this.getData('uid')
     this.state = { isLoaded: false };
   }
+
+  getData(key){
+		AsyncStorage.getItem(key).then((value) => {
+			if (key == 'uid' && value != null){
+				this.setState({showProgress: false, currentUser: true, userEmail: value});
+			}
+      this.setState({showProgress: false})
+		})
+	}
 
   componentDidMount() {
     this.setState({
@@ -228,12 +232,14 @@ export default class App extends React.Component {
 
   renderLoading = () => <ActivityIndicator />;
 
-  renderApp = () => <BottomTab />;
+  // renderApp = () => <Switch />;
+  // renderApp = () => <StackLogin />;
+  // renderApp = () => this.state.currentUser ? <BottomTab /> : <Login />;
+  renderApp = () => this.state.currentUser ? <BottomTab /> : <Switch />;
 
   render = () =>
     this.state.isLoaded ? this.renderApp() : this.renderLoading();
 }
-
 
 const styles = StyleSheet.create({
   container: {
