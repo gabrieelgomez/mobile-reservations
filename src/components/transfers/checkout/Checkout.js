@@ -105,7 +105,8 @@ export default class Checkout extends Component {
       price_destination,
       cover,
       currency,
-      title
+      title,
+      cotization
     } = dataVehicle
     return fetch('https://receptivocolombia.com/api/transfers/create_reservation', {
             method: 'POST',
@@ -145,7 +146,8 @@ export default class Checkout extends Component {
                 currency: currency,
                 price_destination: price_destination,
                 title: title,
-                token: this.state.token
+                token: this.state.token,
+                cotization: cotization
               }
             })
           })

@@ -28,11 +28,11 @@ export default class PriceDestination extends Component {
   }
 
   render() {
-    item = this.props.dataForm
+    item = this.props.dataVehicle
     return (
       <View>
-        {this.state.agency && ( <Cotization /> )}
-        {!this.state.agency && (<Client item={item}/>)}
+        {(this.state.agency || item.cotization) && ( <Cotization /> )}
+        {(!this.state.agency && !item.cotization) && (<Client item={item}/>)}
       </View>
     );
   }

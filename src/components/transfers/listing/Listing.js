@@ -109,7 +109,7 @@ export default class Listing extends Component {
                     </View>
                     <View>
                       <PriceDestination
-                        dataForm = {item.attributes}
+                        dataVehicle = {item.attributes}
                       />
                     </View>
                   </View>

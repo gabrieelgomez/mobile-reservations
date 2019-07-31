@@ -7,7 +7,8 @@ export default class PriceDestination extends Component {
   constructor(props){
     super(props);
     this.state = {
-      agency: false
+      agencyCol: false,
+      agencyNormal: false
     }
   }
 
@@ -22,8 +23,11 @@ export default class PriceDestination extends Component {
         this.setState({userData: user});
         console.log(user)
         if ((user.roles.includes('agent') || user.roles.includes('agency')) && user.agency.country == 'CO'){
-          this.setState({agency: true});
+          this.setState({agencyCol: true});
+        }
 
+        if (user.roles.includes('agent') || user.roles.includes('agency')) {
+          this.setState({agencyNormal: true});
         }
       }
     })
@@ -39,15 +43,16 @@ export default class PriceDestination extends Component {
       price_destination,
       cover,
       currency,
-      title
+      title,
+      cotization
     } = this.props.dataVehicle
 
     return (
       <View>
         <Text style={styles.title}>Descripción de la Orden</Text>
         <Divider style={[styles.dividerStyles, { width: 180 }]} />
-          {this.state.agency && ( <Cotization title={title} round_trip={round_trip} /> )}
-          {!this.state.agency && (<Client title={title} price_destination={price_destination} round_trip={round_trip} currency={currency}/>)}
+          {(this.state.agencyCol || cotization) && ( <Cotization title={title} round_trip={round_trip} /> )}
+          {(!this.state.agencyCol && !item.cotization) && (<Client title={title} price_destination={price_destination} round_trip={round_trip} currency={currency}/>)}
       </View>
     );
   }
