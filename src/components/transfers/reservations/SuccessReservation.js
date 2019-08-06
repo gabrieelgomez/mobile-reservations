@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Text, Image } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, Image, Linking } from 'react-native';
 import { Divider, Title, Avatar, Paragraph  } from 'react-native-paper';
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
 
@@ -9,6 +9,7 @@ export default class SuccessReservation extends Component {
     super(props);
     navigate = this.props.navigation.state.params
     this.state = {
+      status_pay: 'ACEPTAR',
       dataReservation: navigate.data.data
     }
   }
@@ -48,20 +49,7 @@ export default class SuccessReservation extends Component {
             }
           </View>
 
-          <View style={[styles.boxBottonSend]}>
-            <Button
-              title='ACEPTAR'
-              type='outline'
-              raised={true}
-              buttonStyle={styles.buttonSend}
-              titleStyle={styles.buttonTitleStyle}
-              onPress={(event) => {
-                  this.props.navigation.navigate('TransferWidget')
-                }
-              }
-            />
-          </View>
-
+          <ButtonPay data={data} props={this.props}/>
         </View>
       </ScrollView>
     );
@@ -74,11 +62,42 @@ const PriceDestination = (data) => {
   if (data.order.price_total_pax == 0){
     price_total_pax = 'Por Cotizar'
   } else {
-    price_total_pax = `${data.invoice.currency.toUpperCase()} $${data.order.price_total_pax}`
+    price_total_pax = `${data.invoice.currency.toUpperCase()} $${data.invoice.amount}`
   }
   return (
     <Text style={styles.subtitle}> <Text style={styles.strong}>Total:  </Text>{price_total_pax}</Text>
   )
+}
+
+const ButtonPay = (data) => {
+  if (data){
+    props = data.props
+    data = data.data
+    var status_pay = 'ACEPTAR'
+    if (data.order.price_total_pax == 0){
+      status_pay = 'ACEPTAR'
+    } else if(data.order.status_pay == 'pending'){
+      status_pay = 'PAGAR'
+    }
+    return (
+      <View style={[styles.boxBottonSend]}>
+        <Button
+          title={status_pay}
+          type='outline'
+          raised={true}
+          buttonStyle={styles.buttonSend}
+          titleStyle={styles.buttonTitleStyle}
+          onPress={() => {
+            if(status_pay == 'PAGAR'){
+              Linking.openURL(data.pay_to)
+            }
+            props.navigation.navigate('TransferWidget')
+          }}
+        />
+      </View>
+    )
+
+  }
 }
 
 const styles = StyleSheet.create({
