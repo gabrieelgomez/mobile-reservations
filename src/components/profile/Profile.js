@@ -15,10 +15,6 @@ export default class Profile extends Component {
 		}
 	}
 
-  handlePress = () => {
-    console.log('Pressed')
-  };
-
 	getData(key){
 		AsyncStorage.getItem(key).then((value) => {
 			console.log(value)
@@ -51,7 +47,7 @@ export default class Profile extends Component {
 
 	async signOut(){
 		this.setState({showProgress: true})
-		return fetch('https://receptivocolombia.com/v1/auth/sign_out', {
+		return fetch('http://192.168.88.48:3000/v1/auth/sign_out', {
 														method: 'DELETE',
 														headers: {
 															'Accept': 'application/json',
@@ -83,6 +79,16 @@ export default class Profile extends Component {
 							this.setState({showProgress: false})
 							// console.error(error);
 						});
+	}
+
+	redirectTo(params = null, that = null){
+		switch (params) {
+		  case 'Traslados':
+		    this.props.navigation.navigate('TransferOrders');
+		  default:
+		    null
+		    break;
+		}
 	}
 
 	componentDidMount(){
@@ -160,7 +166,7 @@ export default class Profile extends Component {
                     chevron={true}
                     topDivider={true}
                     bottomDivider={true}
-                    onPress={this.handlePress}
+                    onPress={this.redirectTo.bind(this, item.title)}
                     leftIcon={{ name: item.icon }}
                   />
                 ))

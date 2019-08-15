@@ -12,6 +12,7 @@ import TransferList from './src/components/transfers/listing/Listing';
 import TransferReservation from './src/components/transfers/reservations/Reservation';
 import TransferCheckout from './src/components/transfers/checkout/Checkout';
 import TransferSuccesReservation from './src/components/transfers/reservations/SuccessReservation'
+import TransferOrders from './src/components/transfers/orders/Order'
 
 // Others Widgets Components
 import TourWidget from './src/screens/TourWidget';
@@ -76,6 +77,28 @@ const StackTransferNavigator = createStackNavigator(
       screen: TransferSuccesReservation,
       navigationOptions: {
         key: 'TransferSuccesReservationtScreen',
+        headerStyle:{backgroundColor:'#fff'},
+      }
+    },
+
+  }
+);
+
+const StackProfileNavigator = createStackNavigator(
+  {
+    Profile: {
+      screen: Profile,
+      key: 'profileScreen',
+      navigationOptions: {
+        key: 'profileScreen',
+        headerTitle: <LogoTitle />,
+      }
+    },
+
+    TransferOrders: {
+      screen: TransferOrders,
+      navigationOptions: {
+        key: 'orderScreen',
         headerStyle:{backgroundColor:'#fff'},
       }
     },
@@ -163,7 +186,7 @@ const TabNavigator           = createMaterialBottomTabNavigator(
       })
     },
     Profile: {
-      screen: Profile,
+      screen: StackProfileNavigator,
       key: 'ProfileScreen',
       navigationOptions: () => ({
         key: 'ProfileScreen',
@@ -193,6 +216,7 @@ const TabNavigator           = createMaterialBottomTabNavigator(
 
 const StackLogin    = createAppContainer(StackLoginNavigator);
 const StackTransfer = createAppContainer(StackTransferNavigator);
+const StackProfile = createAppContainer(StackProfileNavigator);
 const BottomTab     = createAppContainer(TabNavigator);
 
 const SwichtNavigat = createSwitchNavigator(

@@ -41,7 +41,7 @@ export default class Listing extends Component {
 
     const query = `round_trip=${round_trip}&origin_name=${origin_name}&origin_location=${origin_location}&origin_locality=${origin_locality}&origin_departament=${origin_departament}&flight_origin_picker=${flight_origin_picker}&arrival_name=${arrival_name}&arrival_location=${arrival_location}&arrival_locality=${arrival_locality}&arrival_departament=${arrival_departament}&flight_arrival_picker=${flight_arrival_picker}&quantity_adults=${quantity_adults}&quantity_kids=${quantity_kids}`
     console.log(query)
-    return fetch(`https://receptivocolombia.com/es/usd/vehicles.json?${query}`)
+    return fetch(`http://192.168.88.48:3000/es/usd/vehicles.json?${query}`)
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson == undefined){
@@ -94,7 +94,7 @@ export default class Listing extends Component {
                 <Card
                   containerStyle={styles.containerStyle}
                   imageStyle={styles.imageStyle}
-                  image={{ uri: `https://receptivocolombia.com/${item.attributes.cover.url}` }}
+                  image={{ uri: `http://192.168.88.48:3000/${item.attributes.cover.url}` }}
                 >
                   <Text style={[styles.titleCard]}>
                     {item.attributes.title['es']}

@@ -63,7 +63,7 @@ export default class Login extends Component {
 
 	async onLoginPressed() {
 		this.setState({showProgress: true})
-		return fetch('https://receptivocolombia.com/v1/auth/sign_in', {
+		return fetch('http://192.168.88.48:3000/v1/auth/sign_in', {
 														method: 'POST',
 														headers: {
 															'Accept': 'application/json',
@@ -244,7 +244,7 @@ export default class Login extends Component {
 							</Text>
 
 							<View style={styles.forgotPassword}>
-								<Text style={[styles.fontCurrent, styles.titleForgot]} onPress={ ()=>{ Linking.openURL('https://receptivocolombia.com/users/sign_in')}}>¿Olvidaste tu contraseña?</Text>
+								<Text style={[styles.fontCurrent, styles.titleForgot]} onPress={ ()=>{ Linking.openURL('http://192.168.88.48:3000/users/sign_in')}}>¿Olvidaste tu contraseña?</Text>
 							</View>
 
 							<View style={[styles.boxButtonLogin]}>
@@ -259,7 +259,7 @@ export default class Login extends Component {
 
 								<View style={styles.createAccount}>
 									<Text style={[styles.fontCurrent, styles.titleCreateAccount]}>¿Aún no tienes una cuenta?</Text>
-									<Text style={[styles.fontCurrent, styles.titleRegister]} onPress={ ()=>{ Linking.openURL('https://receptivocolombia.com/users/sign_in')}}>¡Registrate ahora!</Text>
+									<Text style={[styles.fontCurrent, styles.titleRegister]} onPress={ ()=>{ Linking.openURL('http://192.168.88.48:3000/users/sign_in')}}>¡Registrate ahora!</Text>
 								</View>
 							</View>
 
