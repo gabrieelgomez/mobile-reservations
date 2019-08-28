@@ -89,6 +89,9 @@ export default class Login extends Component {
 								userEmail: uid
 							})
 						}
+						if (response.status == 500){
+							ToastAndroid.show('Error in server, status 500.', ToastAndroid.SHORT);
+						}
 						return response;
 					})
 					.then((response) => response.json())
@@ -138,29 +141,6 @@ export default class Login extends Component {
   }
 
   render() {
-
-		const options = [
-			{
-				title: 'Mi Perfil',
-				icon: 'account-circle'
-			},
-		  {
-		    title: 'Traslados',
-		    icon: 'directions-car'
-		  },
-		  {
-		    title: 'Tours',
-		    icon: 'map'
-		  },
-			{
-				title: 'Circuitos',
-				icon: 'directions-railway'
-			},
-			{
-				title: 'Multidestinos',
-				icon: 'flight-takeoff'
-			},
-		]
 
     return (
 
