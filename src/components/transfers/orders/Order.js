@@ -31,7 +31,7 @@ export default class Order extends Component {
 	}
 
   requestOrders(user) {
-    return fetch(`http://192.168.88.48:3000/api/transfers/orders?user=${user}`)
+    return fetch(`https://receptivocolombia.com/api/transfers/orders?user=${user}`)
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson == undefined){

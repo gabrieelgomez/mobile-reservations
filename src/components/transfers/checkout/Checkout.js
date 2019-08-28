@@ -31,7 +31,7 @@ export default class Checkout extends Component {
   }
 
   requestReservationApi(){
-    return fetch(`http://192.168.88.48:3000/api/get_reservation`)
+    return fetch(`https://receptivocolombia.com/api/get_reservation`)
       .then((response) => response.json())
       .then((responseJson) => {
         if (responseJson == undefined){
@@ -108,7 +108,7 @@ export default class Checkout extends Component {
       title,
       cotization
     } = dataVehicle
-    return fetch('http://192.168.88.48:3000/api/transfers/create_reservation', {
+    return fetch('https://receptivocolombia.com/api/transfers/create_reservation', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',

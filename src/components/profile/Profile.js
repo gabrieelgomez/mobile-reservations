@@ -47,7 +47,7 @@ export default class Profile extends Component {
 
 	async signOut(){
 		this.setState({showProgress: true})
-		return fetch('http://192.168.88.48:3000/v1/auth/sign_out', {
+		return fetch('https://receptivocolombia.com/v1/auth/sign_out', {
 														method: 'DELETE',
 														headers: {
 															'Accept': 'application/json',

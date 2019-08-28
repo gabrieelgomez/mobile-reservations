@@ -36,7 +36,7 @@ export default class Profile extends Component {
 
       if (key == 'userData' && value != null){
         userData = JSON.parse(value)
-        avatar   = `http://192.168.88.48:3000${userData['avatar']['url']}`
+        avatar   = `https://receptivocolombia.com${userData['avatar']['url']}`
 				this.setState({userData: userData, userAvatar: avatar})
 			}
 
